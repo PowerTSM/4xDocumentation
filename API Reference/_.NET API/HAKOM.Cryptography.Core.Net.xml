@@ -1,0 +1,519 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Cryptography.Core.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Cryptography.Core.Net.Api.CertificateStores.Exceptions.CertificateNameAlreadyTakenException">
+            <summary>
+            Is thrown when a <see cref="M:HAKOM.Cryptography.Core.Net.Api.ICertificateStore.Save(System.String,System.Security.Cryptography.X509Certificates.X509Certificate2,System.Threading.CancellationToken)"/> method invocation tries to save an certificate by a name, that is already taken.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Api.CertificateStores.Exceptions.CertificateNameAlreadyTakenException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Api.CertificateStores.Exceptions.CertificateNameAlreadyTakenException.DuplicatedName">
+            <summary>
+            The name of the certificate in <see cref="T:HAKOM.Cryptography.Core.Net.Api.ICertificateStore"/> that is already taken.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Cryptography.Core.Net.Api.CertificateStores.Exceptions.CertificateNameNotFoundInConfigurationException">
+            <summary>
+            Is thrown when a <see cref="M:HAKOM.Cryptography.Core.Net.Api.ICertificateStore.Load(System.String,System.Threading.CancellationToken)"/>,
+            or <see cref="M:HAKOM.Cryptography.Core.Net.Api.ICertificateStore.Delete(System.String,System.Threading.CancellationToken)"/>
+            method invocation doesn't find a given certificate name in the <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Api.CertificateStores.Exceptions.CertificateNameNotFoundInConfigurationException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Cryptography.Core.Net.Api.CertificateStores.Exceptions.CertificateStoreException">
+            <summary>
+            Parent exception class for all certificate store exceptions
+            </summary>
+        </member>
+        <member name="T:HAKOM.Cryptography.Core.Net.Api.CertificateStores.FileSystem.Exceptions.AllRootPathAlternativesExhaustedException">
+            <summary>
+            Gets thrown when a given certificates relative path could not be resolved because 
+            the root path alternatives have all been tried and no combination yielded a valid 
+            absolute path for the given certificate.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Api.CertificateStores.FileSystem.Exceptions.AllRootPathAlternativesExhaustedException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Cryptography.Core.Net.Api.CertificateStores.FileSystem.Exceptions.CertificateFileDoesNotExistException">
+            <summary>
+            Is thrown by the <see cref="T:HAKOM.Cryptography.Core.Net.Api.ICertificateStore"/> when a certificate file could not be found.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Api.CertificateStores.FileSystem.Exceptions.CertificateFileDoesNotExistException.FileName">
+            <summary>
+            The full filename which does not exist.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Api.CertificateStores.FileSystem.Exceptions.CertificateFileDoesNotExistException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Cryptography.Core.Net.Api.CertificateStores.FileSystem.Exceptions.CertificateFilenameAlreadyExistsException">
+            <summary>
+            Gets thrown when a certificate save operation is being attempted in a location already occupied by a different file.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Api.CertificateStores.FileSystem.Exceptions.CertificateFilenameAlreadyExistsException.ExistingCertificateFilename">
+            <summary>
+            The full filename which is already occupied.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Api.CertificateStores.FileSystem.Exceptions.CertificateFilenameAlreadyExistsException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Api.CertificateStores.FileSystem.Exceptions.PasswordWrongOrCertificateIsInvalidException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Api.CertificateStores.LocalUser.Exceptions.ConfiguredCertificateNotFoundInStoreException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Cryptography.Core.Net.Api.Exceptions.CertificateNotFoundException">
+            <summary>
+            Indicates that a certificate was not found in any of the configured stores.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Api.Exceptions.CertificateNotFoundException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Cryptography.Core.Net.Api.Exceptions.InvalidRsaCertificateException">
+            <summary>
+            Abstract class for Exceptions indicating an invalid RSA certificate, because a key is missing.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Cryptography.Core.Net.Api.Exceptions.InvalidRsaCertificateExceptions.MissingRsaPrivateKeyException">
+            <summary>
+            Indicates the private key of the certificate is missing.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Api.Exceptions.InvalidRsaCertificateExceptions.MissingRsaPrivateKeyException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Cryptography.Core.Net.Api.Exceptions.InvalidRsaCertificateExceptions.MissingRsaPublicKeyException">
+            <summary>
+            Indicates the public key of the certificate is missing.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Api.Exceptions.InvalidRsaCertificateExceptions.MissingRsaPublicKeyException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Cryptography.Core.Net.Api.Extensions.ContainerExtensions">
+            <summary>
+            Provides extension methods for registering common types
+            of cryptography services.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.Extensions.ContainerExtensions.UseDefaultCryptographyService(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Register the default CryptographyService with the container.
+            </summary>
+            <param name="container">Container to register the cryptography service with.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="T:HAKOM.Cryptography.Core.Net.Api.ICertificateStore">
+            <summary>
+            Used to save, load and delete certificates.
+            </summary>
+            <remarks>
+            Some methods from this interface return <see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate2"/> objects. The caller is responsible to dispose of those!
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICertificateStore.Find(System.Threading.CancellationToken)">
+            <summary>
+            Returns all configured certificates, which exist in the store.
+            </summary>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> used to interrupt the async method.</param>
+            <returns>An <see cref="T:System.Collections.Generic.IAsyncEnumerable`1"/> of disposeable certificates.
+            The caller has the responsibility to dispose of the <see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate2"/> objects!
+            </returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICertificateStore.Load(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Searches for a certificate based on the given <paramref name="name"/>. If there is no configured certificate with that name, or if it can't be found
+            in the store, a relevant exception will be trhown instead.
+            </summary>
+            <param name="name">The name of the certificate."/></param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> used to interrupt the async method.</param>
+            <returns>An awaitable <see cref="T:System.Threading.Tasks.Task`1"/>
+            containing a disposable certificate. The caller has the responsibility to dispose of it!
+            </returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICertificateStore.TryLoad(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to find a certificate based on the given <paramref name="name"/>. Returns null,
+            if there is no configured certificate with that name, or if it can't be found in the store.
+            </summary>
+            <param name="name">The name of the certificate.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> used to interrupt the async method.</param>
+            <returns>An awaitable <see cref="T:System.Threading.Tasks.Task`1"/>
+            containing a disposable certificate or null. The caller has the responsibility to dispose of it!
+            </returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICertificateStore.Delete(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to delete a certificate in the store based on the given <paramref name="name"/>.
+            Throws an appropriate exception, if such a certificate can't be found in the configuration or the store,
+            or if there was a problem while attempting to delete it.
+            </summary>
+            <param name="name">The name of the certificate.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> used to interrupt the async method.</param>
+            <returns>An awaitable <see cref="T:System.Threading.Tasks.Task"/> signifying successful deletion.</returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICertificateStore.Save(System.String,System.Security.Cryptography.X509Certificates.X509Certificate2,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to save the given <paramref name="certificateToSave"/> to the store based on the given <paramref name="name"/>.
+            Throws an appropriate exception, if such a certificate already exists in the configuration,
+            or if there was a problem while attempting to save it.
+            </summary>
+            <param name="name">The name of the certificate</param>
+            <param name="certificateToSave">The <see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate2"/> which will be saved.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> used to interrupt the async method.</param>
+            <returns>An awaitable <see cref="T:System.Threading.Tasks.Task"/> signifying a successful save.</returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICertificateStore.Configure(Microsoft.Extensions.Configuration.IConfiguration,System.Threading.CancellationToken)">
+            <summary>
+            Uses an <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> object to initialise some internal variables necessary for the other certificate store operations.
+            </summary>
+            <param name="configuration">The <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> object.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> used to interrupt the async method.</param>
+            <returns>An awaitable <see cref="T:System.Threading.Tasks.Task"/> signifying the configuration has been completed successfully.</returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICertificateStoreFactory.Create(System.String,Microsoft.Extensions.Configuration.IConfiguration,System.Threading.CancellationToken)">
+            <summary>
+            Creates an instance of an <see cref="T:HAKOM.Cryptography.Core.Net.Api.ICertificateStore"/> with the specified <paramref name="name"/>
+            using the specified <paramref name="configuration"/>.
+            </summary>
+            <param name="name">The name of the store to create.</param>
+            <param name="configuration">The configuration of the store to create.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> of the created <see cref="T:HAKOM.Cryptography.Core.Net.Api.ICertificateStore"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICertificateStoreFactory.TryCreate(System.String,Microsoft.Extensions.Configuration.IConfiguration,System.Threading.CancellationToken)">
+            <summary>
+            Tries to create an instance of an <see cref="T:HAKOM.Cryptography.Core.Net.Api.ICertificateStore"/> with the specified <paramref name="name"/>
+            using the specified <paramref name="configuration"/>.
+            </summary>
+            <param name="name">The name of the store to create.</param>
+            <param name="configuration">The configuration of the store to create.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> containing the created <see cref="T:HAKOM.Cryptography.Core.Net.Api.ICertificateStore"/>.</returns>
+            <remarks>
+            The <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> will provide additional information about success or failure.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Cryptography.Core.Net.Api.ICryptographyService">
+            <summary>
+            Provides functions to encrypt and decrypt data, aws well as signing data and verifying signatures.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICryptographyService.Encrypt(System.Byte[],System.Security.Cryptography.X509Certificates.X509Certificate2)">
+            <summary>
+            Encrypts the given <paramref name="data"/> with the public key from the given <paramref name="certificate"/>.
+            </summary>
+            <param name="data">The data, which will be encrypted.</param>
+            <param name="certificate">The certificate containing the public key, which will be used for the encryption.</param>
+            <returns>A <see cref="T:System.Byte"/> array, which represents the encrypted data.</returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICryptographyService.Encrypt(System.Byte[],System.String,System.Threading.CancellationToken)">
+            <summary>
+            Tries to load a certificate with the given <paramref name="certificateName"/> then encrypts the given <paramref name="data"/>
+            with the public key from found certificate.
+            </summary>
+            <param name="data">The data, which will be encrypted.</param>
+            <param name="certificateName">The name of the certificate containing the public key, which will be used for the encryption.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> used to interrupt the async method.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> containing the encrypted <see cref="T:System.Byte"/> array.</returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICryptographyService.EncryptBase64(System.Byte[],System.String,System.Threading.CancellationToken)">
+            <summary>
+            Tries to load a certificate with the given <paramref name="certificateName"/> then encrypts the given <paramref name="data"/>
+            with the public key from found certificate.
+            </summary>
+            <param name="data">The data, which will be encrypted.</param>
+            <param name="certificateName">The name of the certificate containing the public key, which will be used for the encryption.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> used to interrupt the async method.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> containing the a base64 encoded representation of the encrypted byte array.</returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICryptographyService.Decrypt(System.Byte[],System.Security.Cryptography.X509Certificates.X509Certificate2)">
+            <summary>
+            Decrypts the encrypted <paramref name="data"/> with the private key from the given <paramref name="certificate"/>.
+            </summary>
+            <param name="data">The encrypted data, which will be decrypted.</param>
+            <param name="certificate">The certificate containing the private key, which will be used for the decryption.</param>
+            <returns>The decrypted data.</returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICryptographyService.Decrypt(System.Byte[],System.String,System.Threading.CancellationToken)">
+            <summary>
+            Tries to load a certificate with the given <paramref name="certificateName"/> then decrypts the given <paramref name="data"/>
+            with the private key from found certificate.
+            </summary>
+            <param name="data">The encrypted data, which will be decrypted.</param>
+            <param name="certificateName">The name of the certificate containing the private key, which will be used for the decryption.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> used to interrupt the async method.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> containing the decrypted <see cref="T:System.Byte"/> array. </returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICryptographyService.DecryptBase64(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Tries to load a certificate with the given <paramref name="certificateName"/> then decrypts the given <paramref name="base64String"/>
+            with the private key from found certificate.
+            </summary>
+            <param name="base64String">The encrypted base64 encoded string.</param>
+            <param name="certificateName">The name of the certificate containing the private key, which will be used for the decryption.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> used to interrupt the async method.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> containing the decrypted <see cref="T:System.Byte"/> array. </returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICryptographyService.Sign(System.Byte[],System.Security.Cryptography.X509Certificates.X509Certificate2)">
+            <summary>
+            Signs the encrypted <paramref name="data"/> with the private key from the given <paramref name="certificate"/>.
+            </summary>
+            <param name="data">The encrypted data, which will be signed.</param>
+            <param name="certificate">The certificate containing the private key, which will be used for the signature.</param>
+            <returns>The RSA signature for the specified data.</returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICryptographyService.Sign(System.Byte[],System.String,System.Threading.CancellationToken)">
+            <summary>
+            Tries to load a certificate with the given <paramref name="certificateName"/> then signs the given <paramref name="data"/>
+            with the private key from found certificate.
+            </summary>
+            <param name="data">The encrypted data, which will be signed.</param>
+            <param name="certificateName">The name of the certificate containing the private key, which will be used for the signature.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> used to interrupt the async method.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> containing the signature for the specified data.</returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICryptographyService.Verify(System.Byte[],System.Byte[],System.Security.Cryptography.X509Certificates.X509Certificate2)">
+            <summary>
+            Verifies that the given <paramref name="data"/> was signed with the private key coresponding to the public key from the given <paramref name="certificate"/>.
+            </summary>
+            <param name="data">The signed data.</param>
+            <param name="signature">The signature, which will be tested.</param>
+            <param name="certificate">The certificate containing the public key, which will be used for the signature verification.</param>
+            <returns>True, if the data was signed by the entity with the public key from the given <paramref name="certificate"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.Api.ICryptographyService.Verify(System.Byte[],System.Byte[],System.String,System.Threading.CancellationToken)">
+            <summary>
+            Tries to load a certificate with the given <paramref name="certificateName"/> then verifies
+            that the given <paramref name="data"/> was signed with the private key coresponding to the public key from the found certificate.
+            </summary>
+            <param name="data">The signed data.</param>
+            <param name="signature">The signature, which will be tested.</param>
+            <param name="certificateName">The name of the certificate containing the private key, which will be used for the signature verification.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> used to interrupt the async method.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> containing the verification result: true,
+            if the data was signed by the entity with the public key from the found certificate.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.CryptographyService.Decrypt(System.Byte[],System.Security.Cryptography.X509Certificates.X509Certificate2)">
+            <inheritdoc/>
+            <exception cref="T:HAKOM.Cryptography.Core.Net.Api.Exceptions.InvalidRsaCertificateExceptions.MissingRsaPrivateKeyException">Throws if the <paramref name="certificate"/> doesn't contain an RSA private key.</exception>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.CryptographyService.Decrypt(System.Byte[],System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+            <exception cref="T:HAKOM.Cryptography.Core.Net.Api.Exceptions.InvalidRsaCertificateExceptions.MissingRsaPrivateKeyException">Throws if the found certificate with <paramref name="certificateName"/> doesn't contain an RSA private key.</exception>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.CryptographyService.Encrypt(System.Byte[],System.Security.Cryptography.X509Certificates.X509Certificate2)">
+            <inheritdoc/>
+            <exception cref="T:HAKOM.Cryptography.Core.Net.Api.Exceptions.InvalidRsaCertificateExceptions.MissingRsaPublicKeyException">Throws if the <paramref name="certificate"/> doesn't contain an RSA public key.</exception>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.CryptographyService.Encrypt(System.Byte[],System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+            <exception cref="T:HAKOM.Cryptography.Core.Net.Api.Exceptions.InvalidRsaCertificateExceptions.MissingRsaPublicKeyException">Throws if the found certificate with <paramref name="certificateName"/> doesn't contain an RSA public key.</exception>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.CryptographyService.Sign(System.Byte[],System.Security.Cryptography.X509Certificates.X509Certificate2)">
+            <inheritdoc/>
+            <exception cref="T:HAKOM.Cryptography.Core.Net.Api.Exceptions.InvalidRsaCertificateExceptions.MissingRsaPrivateKeyException">Throws if the <paramref name="certificate"/> doesn't contain an RSA private key.</exception>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.CryptographyService.Sign(System.Byte[],System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+            <exception cref="T:HAKOM.Cryptography.Core.Net.Api.Exceptions.InvalidRsaCertificateExceptions.MissingRsaPrivateKeyException">Throws if the found certificate with <paramref name="certificateName"/> doesn't contain an RSA private key.</exception>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.CryptographyService.Verify(System.Byte[],System.Byte[],System.Security.Cryptography.X509Certificates.X509Certificate2)">
+            <inheritdoc/>
+            <exception cref="T:HAKOM.Cryptography.Core.Net.Api.Exceptions.InvalidRsaCertificateExceptions.MissingRsaPublicKeyException">Throws if the <paramref name="certificate"/> doesn't contain an RSA public key.</exception>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.CryptographyService.Verify(System.Byte[],System.Byte[],System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+            <exception cref="T:HAKOM.Cryptography.Core.Net.Api.Exceptions.InvalidRsaCertificateExceptions.MissingRsaPublicKeyException">Throws if the found certificate with <paramref name="certificateName"/> doesn't contain an RSA public key.</exception>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.CryptographyService.DecryptBase64(System.String,System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+            <exception cref="T:HAKOM.Cryptography.Core.Net.Api.Exceptions.InvalidRsaCertificateExceptions.MissingRsaPrivateKeyException">Throws if the found certificate with <paramref name="certificateName"/> doesn't contain an RSA private key.</exception>
+        </member>
+        <member name="M:HAKOM.Cryptography.Core.Net.CryptographyService.EncryptBase64(System.Byte[],System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+            <exception cref="T:HAKOM.Cryptography.Core.Net.Api.Exceptions.InvalidRsaCertificateExceptions.MissingRsaPublicKeyException">Throws if the found certificate with <paramref name="certificateName"/> doesn't contain an RSA public key.</exception>
+        </member>
+        <member name="T:HAKOM.Cryptography.Core.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.AllRootPathAlternativesExhaustedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to All root path alternatives have been exhausted for certificate: {0}, check the log for further details!.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.CertificateFileDoesNotExistExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Certificate file &apos;{0}&apos; does not exist!.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.CertificateFileNameAlreadyExistsExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Cannot save the certificate at filename &apos;{0}&apos; because this filename is already in use!.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.CertificateFoundInStoreLogMessage">
+            <summary>
+              Looks up a localized string similar to A certificate with name &apos;{0}&apos; has been found in the &apos;{1}&apos; store..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.CertificateNameAlreadyTakenExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The certificate name &apos;{0}&apos; is already taken! Please use a different name, or delete the certificate under this name and retry afterwards!.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.CertificateNameNotFoundInConfigurationExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Cannot find a certificate called &apos;{0}&apos; in the configuration..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.CertificateNotFoundExceptionMessage">
+            <summary>
+              Looks up a localized string similar to No certificate named &apos;{0}&apos; could be found in any of the configured stores..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.ConfigurationFileNotFoundExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The configuration file &apos;{0}&apos; was not found..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.ConfiguredCertificateFileNameTypeLogMessage">
+            <summary>
+              Looks up a localized string similar to The certificate candidate filename &apos;{0}&apos; for the certificate &apos;{1}&apos; is {2}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.ConfiguredCertificateNotFoundInStoreExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The configured certificate &apos;{0}&apos;doesn&apos;t exist in the store..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.DeleteCertificateFileLogMessage">
+            <summary>
+              Looks up a localized string similar to Deleting certificate &apos;{0}&apos; from &apos;{1}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.DeleteCertificateLogMessage">
+            <summary>
+              Looks up a localized string similar to Successfully deleted certificate with name &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.ExportCertificateLogMessage">
+            <summary>
+              Looks up a localized string similar to Exporting certificate &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.FileTypeAbsolute">
+            <summary>
+              Looks up a localized string similar to absolute.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.FileTypeRelative">
+            <summary>
+              Looks up a localized string similar to relative.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.FoundCertificateLogMessage">
+            <summary>
+              Looks up a localized string similar to Certificate with name &apos;{0}&apos; found..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.InvalidRsaCertificateExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Invalid RSA certificate - missing &apos;{0}&apos; key..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.LoadCertificateLogMessage">
+            <summary>
+              Looks up a localized string similar to Successfully loaded certificate with name &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.LoadingPasswordLogMessage">
+            <summary>
+              Looks up a localized string similar to Loading password for certificate &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.PasswordWrongOrCertificateIsInvalidExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The certificate &apos;{0}&apos; has either an incorrect password or is invalid!.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.PropertyIsMissingInSerializationInfoMessage">
+            <summary>
+              Looks up a localized string similar to Cannot deserialize &apos;{0}&apos; because property &apos;{1}&apos; is null or missing in serialization info..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.RootPathCandidateLogMessage">
+            <summary>
+              Looks up a localized string similar to Root path candidate to create absolute certificate file path from relative path, &apos;{0}&apos;, picked from: {1}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.SaveCertificateFileLogMessage">
+            <summary>
+              Looks up a localized string similar to Saving certificate &apos;{0}&apos; to &apos;{1}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.SaveCertificateLogMessage">
+            <summary>
+              Looks up a localized string similar to Certificate saved under name &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.SearchingForCertificateInStoreLogMessage">
+            <summary>
+              Looks up a localized string similar to Searching for a certificate named &apos;{0}&apos; in the &apos;{1}&apos; store..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Core.Net.Properties.Strings.SettingsProviderNotConfiguredMessage">
+            <summary>
+              Looks up a localized string similar to FileSystemStore requires a registered {0} in order to support saving certificates.
+            </summary>
+        </member>
+    </members>
+</doc>

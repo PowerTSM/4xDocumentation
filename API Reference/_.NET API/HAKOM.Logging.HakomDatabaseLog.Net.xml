@@ -1,0 +1,509 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Logging.HakomDatabaseLog.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Exceptions.CannotLogToSpecifiedRepositoryException">
+            <summary>
+            Thrown when the repository to log to is not defined in the available configuration.
+            </summary>
+            <remarks>
+            <para>The configuration for database logging must include a &quot;Repository&quot; setting (see <see cref="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLoggerOptions.Repository"/>)
+            That setting must be equal to the name of a repository configured under Persistence:Repositories.
+            If there is no configured repository with a matching name, this exception is thrown.
+            </para>
+            <para>
+            To fix this error, make sure the setting matches a configured repository name, or add a matching repository configuration to HAKOM:TSM:Persistence:Repositories
+            section, or add the missing
+            </para>
+            <para>This exception is identified by error code HK05007.</para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.Exceptions.CannotLogToSpecifiedRepositoryException.RepositoryName">
+            <summary>
+            The name of the repository that wasn't found.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.Exceptions.CannotLogToSpecifiedRepositoryException.EquivalentHttpStatusCode">
+            <summary>
+            When this exception is thrown inside an HTTP request, the request should return a response
+            with HTTP status code 500 (Internal server error)
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Exceptions.NamespaceDoc">
+            <summary>
+            Exceptions relating to HAKOMs implementation of writing structured logs into a database.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Exceptions.NoRepositoryConfiguredException">
+            <summary>
+            Thrown when there is no repository configured for the logger to log to.
+            </summary>
+            <remarks>
+            <para>
+            Configuration of file logging requires a &quot;Repository&quot; setting (see <see cref="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLoggerOptions.Repository"/>). If this setting is missing or empty, the logger does not know what repository to log to.
+            </para>
+            <para>
+            Make sure to set the &quot;Repository&quot; to a value that corresponds to the name of a configured repository in order to fix this error.
+            </para>
+            <para>This exception is identified by error code HK05006</para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.Exceptions.NoRepositoryConfiguredException.EquivalentHttpStatusCode">
+            <summary>
+            When this exception is thrown inside an HTTP request, the request should return a response
+            with HTTP status code 500 (Internal server error)
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Exceptions.RepositoryConfigurationRequiredForDatabaseLogException">
+            <summary>
+            Thrown when there is no Persistence:Repositories section in the available configuration.
+            </summary>
+            <remarks>
+            <para>
+            This indicates that there is no configuration of available repositories to connect to.
+            </para>
+            <para>
+            Make sure there is at least one repository configured and that the &quot;Repository&quot; setting (see <see cref="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLoggerOptions.Repository"/>) matches exactly one repository name. 
+            </para>
+            <para>This exception is identified by error code HK05008</para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.Exceptions.RepositoryConfigurationRequiredForDatabaseLogException.EquivalentHttpStatusCode">
+            <summary>
+            When this exception is thrown inside an HTTP request, the request should return a response
+            with HTTP status code 500 (Internal server error)
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Exceptions.UnknownLogLevelException">
+            <summary>
+            Thrown when an attempt is made to log using a log level that is unknown
+            </summary>
+            <remarks>
+            <para>
+            When calling <see cref="M:Microsoft.Extensions.Logging.ILogger.Log``1(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,``0,System.Exception,System.Func{``0,System.Exception,System.String})"/> or any of the &quot;Log&quot; extension methods in <see cref="T:Microsoft.Extensions.Logging.LoggerExtensions"/> while passing a <see cref="T:Microsoft.Extensions.Logging.LogLevel"/> that this database logger does not support, this exception is thrown.
+            </para>
+            <para>
+            Loggers will usually support all defined <see cref="T:Microsoft.Extensions.Logging.LogLevel"/>s. Make sure the level is defined by calling <see cref="M:System.Enum.IsDefined(System.Type,System.Object)"/>.
+            </para>
+            <para>
+            This exception is identified by error code HK05005.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.Exceptions.UnknownLogLevelException.EquivalentHttpStatusCode">
+            <summary>
+            When this exception is thrown inside an HTTP request, the request should return a response
+            with HTTP status code 500 (Internal server error)
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Extensions.ContainerExtensions">
+            <summary>
+            Provides extension methods to register services required for database logging with an <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/>.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Extensions.ContainerExtensions.UseSessionFactory(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers the default implementation of <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.ISessionFactory"/> with the given <paramref name="container"/>.
+            </summary>
+            <param name="container">The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> instance to register the <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.ISessionFactory"/> with.</param>
+            <returns>The <paramref name="container"/> for chaining.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="container"/> is null.</exception>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Extensions.LoggerExtensions">
+            <summary>
+            Adds extension methods to <see cref="T:Microsoft.Extensions.Logging.ILogger"/> for database logging specific calls.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Extensions.LoggerExtensions.BeginSession(Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Calls the BeginScope method on the <see cref="T:Microsoft.Extensions.Logging.ILogger"/> 
+            and sets the state to a new instance of <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/>.
+            </summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger"/> to start a session for.</param>
+            <returns>The <paramref name="logger"/> for chaining.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="logger"/> is null.</exception>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Extensions.LoggerExtensions.LogProgress(Microsoft.Extensions.Logging.ILogger,System.String,System.Object[])">
+            <summary>
+            Calls <see cref="M:Microsoft.Extensions.Logging.LoggerExtensions.Log(Microsoft.Extensions.Logging.ILogger,Microsoft.Extensions.Logging.LogLevel,System.String,System.Object[])"/>
+            with <see cref="F:Microsoft.Extensions.Logging.LogLevel.None"/>.
+            </summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger"/> to call the underlying method on.</param>
+            <param name="message">The message to log.</param>
+            <param name="args">Optional array of parameters for the message.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="logger"/> is null.</exception>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Extensions.LoggingBuilderExtensions">
+            <summary>
+            Provides extension methods to add database logging to a <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/>.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Extensions.LoggingBuilderExtensions.AddHakomDatabaseLog(Microsoft.Extensions.Logging.ILoggingBuilder)">
+            <summary>
+            Adds database logging to the <paramref name="loggingBuilder"/>.
+            </summary>
+            <param name="loggingBuilder">The <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/> to add database logging to.</param>
+            <returns>The <paramref name="loggingBuilder"/> for chaining.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="loggingBuilder"/> is null.</exception>
+            <exception cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Exceptions.RepositoryConfigurationRequiredForDatabaseLogException">
+            Thrown if underlying <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> has not been configured (i.e. via <see cref="M:HAKOM.Configuration.Core.Net.Api.Extensions.ContainerExtensions.UseConfiguration(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Action{Microsoft.Extensions.Configuration.IConfigurationBuilder},System.Boolean)"/>).
+            </exception>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Extensions.NamespaceDoc">
+            <summary>
+            Contains extension methods for enabling database logging as well as log-session management.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLogEntry">
+            <summary>
+            Represents a single entry in a HAKOM database log.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLogEntry.Session">
+            <summary>
+            The <see cref="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLogEntry.Session"/> this entry belongs to.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLogEntry.LogLevel">
+            <summary>
+            The <see cref="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLogEntry.LogLevel"/> of the entry.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLogEntry.Message">
+            <summary>
+            A <see cref="T:System.String"/> that contains information about the entry.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLogEntry.Source">
+            <summary>
+            A <see cref="T:System.String"/> that identifies the source that created the entry.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLoggerOptions">
+            <summary>
+            Configures the behavior of a HAKOM database logger
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLoggerOptions.Repository">
+            <summary>
+            The repository to log into.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLoggerOptions.LogLevel">
+            <summary>
+            The minimum <see cref="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLoggerOptions.LogLevel"/> for which to write log entries.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLoggerOptions.QueueSize">
+            <summary>
+            Actual writing of the entries is queued on a background process for performance
+            reasons. This option specifies how many log entries that queue should hold.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLoggerOptions.TimeToWaitForOpenSlot">
+            <summary>
+            How long to wait for the queue to have room for additional messages.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLoggerOptions.FinalFlushGracePeriod">
+            <summary>
+            How long to allow for the logger to flush the queue into the repository on disposal of the logger.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.ISessionFactory">
+            <summary>
+            Creates <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/> instances for structured logging in a HAKOM log database.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.ISessionFactory.Create">
+            <summary>
+            Creates a new <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/>.
+            </summary>
+            <returns>The new <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.ISessionFactory.Inactive(HAKOM.Logging.HakomDatabaseLog.Net.Api.Session)">
+            <summary>
+            Creates a new <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/> from an existing one and sets its status to inactive (<see cref="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session.Active"/> = false).
+            </summary>
+            <param name="session">The <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/> to inactivate.</param>
+            <returns>The inactivated <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/>.</returns>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.NamespaceDoc">
+            <summary>
+            HAKOMs implementation of writing structured logs into databases.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Persistence.IHakomDatabaseLogStore">
+            <summary>
+            Used to write log entries into a repository.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Persistence.IHakomDatabaseLogStore.Write(HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLogEntry,System.Threading.CancellationToken)">
+            <summary>
+            Writes the given <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLogEntry"/> into the repository.
+            </summary>
+            <param name="entry">The entry to write.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> that can be used to attempt to 
+            cancel the write operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> that completes when the entry has been successfully written.</returns>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Persistence.IHakomDatabaseLogStore.SupportsLogLevel(Microsoft.Extensions.Logging.LogLevel)">
+            <summary>
+            Returns whether this <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Persistence.IHakomDatabaseLogStore"/> supports the given <see cref="T:Microsoft.Extensions.Logging.LogLevel"/>.
+            </summary>
+            <param name="logLevel">The <see cref="T:Microsoft.Extensions.Logging.LogLevel"/> to check for support.</param>
+            <returns>True if <paramref name="logLevel"/> is supported, false otherwise.</returns>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Persistence.IHakomDatabaseLogStoreFactory">
+            <summary>
+            Used to create <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Persistence.IHakomDatabaseLogStore"/> instances.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Persistence.IHakomDatabaseLogStoreFactory.Create(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Creates an instance of <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Persistence.IHakomDatabaseLogStore"/> for the specified repository <paramref name="repositoryName"/> />.
+            </summary>
+            <param name="repositoryName">The name of the repository which the <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Persistence.IHakomDatabaseLogStore"/> will be created for.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> of the created <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Persistence.IHakomDatabaseLogStore"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Persistence.IHakomDatabaseLogStoreFactory.TryCreate(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Tries to create an instance of <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Persistence.IHakomDatabaseLogStore"/> for the specified repository <paramref name="repositoryName"/> />.
+            </summary>
+            <param name="repositoryName">The name of the repository which the <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Persistence.IHakomDatabaseLogStore"/> will be created for.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> containing a new <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Persistence.IHakomDatabaseLogStore"/> instance.</returns>
+            <remarks>
+            The <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> will provide additional information about success or failure.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Persistence.NamespaceDoc">
+            <summary>
+            Contains interfaces used to write <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLogEntry"/> instances into
+            a database.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session">
+            <summary>
+            Represents a session within the database logs.
+            </summary>
+            <remarks>
+            <para>
+            Sessions are a special - HAKOM specific - implementation of the concept of "scopes" in Microsoft.Extensions.Logging.
+            A session is started by invoking <see cref="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Extensions.LoggerExtensions.BeginSession(Microsoft.Extensions.Logging.ILogger)"/>
+            and ends on disposal of the return value of that function.
+            </para>
+            <code language="csharp title=&quot;Starting a Session&quot; linenums=&quot;1&quot; hl_lines=&quot;1 4&quot;">
+            using (var session = logger.BeginSession()) {// starts the session
+            	logger.LogError("Some error"); // write log messages within the session
+            	logger.LogWarning("Some warning"); //...
+            } // ends the session
+            </code>
+            <para>
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session.Id">
+            <summary>
+            The numeric identifier of the session.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session.Active">
+            <summary>
+            Indicates wether the session is still active or has already been ended.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session.Equals(HAKOM.Logging.HakomDatabaseLog.Net.Api.Session)">
+            <summary>
+            Compares another <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/> to this one.
+            </summary>
+            <param name="other">The <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/> to compare with.</param>
+            <returns>True if they are the same session, false otherwise.</returns>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session.op_Equality(HAKOM.Logging.HakomDatabaseLog.Net.Api.Session,HAKOM.Logging.HakomDatabaseLog.Net.Api.Session)">
+            <summary>
+            Operator overload to compare two <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/> instances with
+            one another.
+            </summary>
+            <param name="left">One of the two <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/>s to compare.</param>
+            <param name="right">The other of the two <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/>s to compare.</param>
+            <returns>True if they are equal.</returns>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session.op_Inequality(HAKOM.Logging.HakomDatabaseLog.Net.Api.Session,HAKOM.Logging.HakomDatabaseLog.Net.Api.Session)">
+            <summary>
+            Operator overload to compare two <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/> instances with
+            one another.
+            </summary>
+            <param name="left">One of the two <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/>s to compare.</param>
+            <param name="right">The other of the two <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/>s to compare.</param>
+            <returns>True if they are not equal.</returns>
+        </member>
+        <member name="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session.ToString">
+            <summary>
+            A string representation of this <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.Session"/> object.
+            </summary>
+            <returns>A string showing the Id and Active status of the session.</returns>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.AssemblyDoc">
+            <summary>
+            This assembly provides a way to write log messages into a HAKOM database.
+            </summary>
+            <remarks>
+            <para>
+            Some configuration is required to be able to log messages into a database. For basic information on how to configure a HAKOM application, including the various configuration sources like files, environment variables, etc., please refer to the <see cref="T:HAKOM.Configuration.Core.Net.Api.Extensions.ContainerExtensions"/> in the configuration module.
+            </para>
+            <para>
+            In order to use HAKOM database logs, there must be at least one repository configured.
+            This is done in the `Persistence:Repositories` section.
+            </para>
+            <para>
+            The documentation for <see cref="T:HAKOM.Persistence.Core.Net.Api.Configuration.IRepositoryConfiguration"/> describes in detail on how to configure repositories. 
+            </para>
+            <para>
+            In addition, the logger must be configured to use one of the repositories in the `Logging:HakomDatabase` section.
+            </para>
+            <para>
+            <![CDATA[
+            === "HAKOM.xml"
+            	```xml title="Configuration of repository" linenums="1" hl_lines="4"
+            	<HAKOM>
+            		<Logging>
+            			<HakomDatabase>
+            				<Repository>ExampleRepository</Repository>
+            			</HakomDatabase>
+            		</Logging>
+            	</HAKOM>
+            	```
+            === "Json"
+            	```json title="Configuration of repository" linenums="1" hl_lines="4"
+            	{
+            		"Logging" : {
+            			"HakomDatabase": {
+            				"Repository": "ExampleRepository"
+            			}
+            		}
+            	}
+            	```
+            === "Environment Variables"
+            	```bash title="Configuration of repository" linenums="1" hl_lines="1"
+            	set HAKOM__Logging__HakomDatabase__Repository=ExampleRepository
+            	```
+            === "Commandline Parameters"
+            	```bash title="Configuration of repository linenums="1" hl_lines="1"
+            	--HAKOM:Logging:HakomDatabase:Repository=ExampleRepository
+            	```
+            ]]>
+            </para>
+            <para>
+            &gt; Please ensure that the repository configured here points to a database that supports HAKOM database logs.
+            </para>
+            <para>Additional settings of the logger are described here: <see cref="T:HAKOM.Logging.HakomDatabaseLog.Net.Api.IHakomDatabaseLoggerOptions"/></para>
+            <para>
+            Finally, add the logger to your logging setup
+            </para>
+            <code language="csharp title=&quot;Adding database logging to an ILoggingBuilder&quot; linenums=&quot;1&quot; hl_lines=&quot;2&quot;">
+            container.UseLogging((loggingBuilder)=>{
+            	loggingBuilder.AddHakomDatabaseLog();
+            });
+            </code>
+            <para>
+            Refer to the <see cref="T:HAKOM.Logging.Core.Net.Api.Extensions.ContainerExtensions"/> in the core module for a description of the various methods that can be used to set up logging.
+            </para>
+            <para>
+            &gt; Note that the database logger does not support registration via configuration _only_ like console or file logging, so even when using <see cref="M:HAKOM.Logging.Core.Net.Api.Extensions.ContainerExtensions.UseConfiguredLogging(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.String)"/>, you must still manually call <see cref="M:HAKOM.Logging.HakomDatabaseLog.Net.Api.Extensions.LoggingBuilderExtensions.AddHakomDatabaseLog(Microsoft.Extensions.Logging.ILoggingBuilder)"/> in the action passed as the second parameter of <see cref="M:HAKOM.Logging.Core.Net.Api.Extensions.ContainerExtensions.UseConfiguredLogging(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.String)"/>.
+            </para>
+            <para>
+            #### Using configuration from a different section
+            </para>
+            <para>
+            When using a section for configuring logging that is different from the default ("Logging") the configuration of the database logger must be moved to that section as well.
+            </para>
+            <para>
+            Given the following configuration file
+            </para>
+            <code language="xml title=&quot;Configuring file and database logging in a custom section.&quot; linenums=&quot;1&quot; hl_lines=&quot;2 3 12 13&quot;">
+            &lt;HAKOM&gt;
+            	&lt;CustomAppConfig&gt;
+            		&lt;LogSettings&gt;
+            			&lt;File&gt;
+            				&lt;LogLevel&gt;Warning&lt;/LogLevel&gt;
+            				&lt;FileNamePattern&gt;customapp.{timestamp}.log&lt;/FileNamePattern&gt;
+            			&lt;/File&gt;
+            			&lt;HakomDatabase&gt;
+            				&lt;LogLevel&gt;Critical&lt;/LogLevel&gt;
+            				&lt;Repository&gt;ExampleRepository&lt;/Repository&gt;
+            			&lt;/HakomDatabase&gt;
+            		&lt;/LogSettings&gt;
+            	&lt;/CustomAppConfig&gt;
+            &lt;/HAKOM&gt;
+            </code>
+            The following code sets up logging to use the configuration from the section above.
+            <code language="csharp title=&quot;Configuring the database logger with a custom logging section.&quot; linenums=&quot;1&quot; hl_lines=&quot;3&quot;">
+            container.UseConfiguredLogging((loggingBuilder)=>{
+            	loggingBuilder.AddHakomDatabaseLog();
+            }, "CustomAppConfig:LogSettings");
+            </code>
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Logging.HakomDatabaseLog.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Properties.Strings.CannotLogToSpecifiedRepositoryExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Cannot write logs to repository &apos;{0}&apos;. Details: {1}.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Properties.Strings.CouldNotDeserializeRepositoryNameMessage">
+            <summary>
+              Looks up a localized string similar to Could not deserialize repository name..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Properties.Strings.NoMoreDetailsAvailableMessage">
+            <summary>
+              Looks up a localized string similar to No additional details are available..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Properties.Strings.NoRepositoryConfiguredMessage">
+            <summary>
+              Looks up a localized string similar to Configuration does not specify a repository to use for logging..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Properties.Strings.NullRepositoryNameMessage">
+            <summary>
+              Looks up a localized string similar to &lt;null&gt; (No repository name given).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Properties.Strings.RepositoryConfigurationRequiredForDatabaseLogMessage">
+            <summary>
+              Looks up a localized string similar to A configuration must be registered with the container and contain a valid &apos;Repositories&apos; section to allow for database logging..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.HakomDatabaseLog.Net.Properties.Strings.UnknownLogLevelMessage">
+            <summary>
+              Looks up a localized string similar to The log level &apos;{0}&apos; is unknown. Possible values are {1}..
+            </summary>
+        </member>
+    </members>
+</doc>

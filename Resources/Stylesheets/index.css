@@ -1,0 +1,85 @@
+
+/* mobile menu shown full width */
+@media screen and (max-width: 76.1875em) {
+	.md-version__item{
+		max-width:10em;
+		text-overflow:ellipsis;
+		overflow:hidden;
+		white-space:nowrap;
+		display:block;
+		float:left;
+	}
+	.md-version__current a {
+		max-width:10em;
+		text-overflow:ellipsis;
+		overflow:hidden;
+		white-space:nowrap;
+		display:block;
+		float:left;
+	}
+	/*
+	.md-header__topic > .md-ellipsis {
+		display:none
+	}*/
+}
+
+/* proper styling of long headings */
+.md-content > article > h1 {
+	overflow:hidden;
+	text-overflow: ellipsis
+}
+/* hide prev/next */
+.md-footer__inner:not([hidden]) {
+    display: none
+}
+
+:root {
+  --md-primary-fg-color:        #7fc9cb;
+  --md-text-link-color: #f00;
+}
+
+.md-container {
+	background-image: url('../Images/background.png');
+	background-attachment:fixed;
+}
+
+@media screen and (min-width: 60em) {
+	.md-search {
+		margin-right: 1em
+	}
+	/* full width header */
+	nav.md-header__inner {
+		max-width: initial
+	}
+
+	/* tabs full width */
+	.md-tabs__inner {
+		max-width: initial;
+	}
+
+	/* make content full width */
+	.md-main__inner.md-grid {
+		max-width: initial
+	}
+
+	/* auto scale side navigation */
+	.md-sidebar.md-sidebar--primary {
+		width: initial
+	}
+
+	.md-sidebar.md-sidebar--secondary a.md-nav__link {
+		white-space:nowrap;
+		max-width:20em
+	}
+
+}
+/* prettify (R) */
+.md-header__title sup {
+	font-size:.5em
+}
+
+a.md-nav__link {
+	display:inline-block;
+	white-space:nowrap;
+	max-width:10rem;
+}

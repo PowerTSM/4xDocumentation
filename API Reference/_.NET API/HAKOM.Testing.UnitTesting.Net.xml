@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Testing.UnitTesting.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Testing.UnitTesting.Net.Api.ApiComplianceTests`1">
+            <summary>
+            Tests for common requirements in terms of Api design and structure
+            </summary>
+            <typeparam name="TTypeInAssemblyUnderTest">Should be any type within the .Api namespace of the assembly to be tested</typeparam>
+        </member>
+        <member name="T:HAKOM.Testing.UnitTesting.Net.Api.TryMethodComplianceTests`1">
+            <summary>
+            Tests for common requirements in terms of `Try`-Methods and default implementations in interface
+            </summary>
+            <typeparam name="TTypeInAssemblyUnderTest">Should be any type within the .Api namespace of the assembly to be tested</typeparam>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,305 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Http.Core.Net</name>
+    </assembly>
+    <members>
+        <member name="P:HAKOM.Http.Core.Net.Api.Exceptions.CouldNotReadServiceSettingsException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Http.Core.Net.Api.Exceptions.NoDescriptionForAssemblyException">
+            <summary>
+            This exception is thrown when an attempt is made to register <see cref="T:HAKOM.Http.Core.Net.Api.IServiceInformation"/> that is based on an assembly yet that assembly does not contain a <see cref="T:System.Reflection.AssemblyDescriptionAttribute"/>.
+            </summary>
+            <remarks>
+            <para>
+            Make sure that the assembly used to setup the service information has a <see cref="T:System.Reflection.AssemblyDescriptionAttribute"/>.
+            </para>
+            <para>This error can be identified by the code HK10001.</para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Http.Core.Net.Api.Exceptions.NoDescriptionForAssemblyException.EquivalentHttpStatusCode">
+            <summary>
+            A service that throws this exception would normally do so during initial startup. Additional configuration, if not code changes are required to make the service run. Therefor there is no meaningful HTTP status code to return from this. In a deployment scenario where a proxy is put before the failing service, that proxy should probably return an HTTP status code 500 (Internal Server Error) or 502 (Bad Gateway).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Http.Core.Net.Api.Exceptions.NoTitleForAssemblyException">
+            <summary>
+            This exception is thrown when an attempt is made to register <see cref="T:HAKOM.Http.Core.Net.Api.IServiceInformation"/> that is based on an assembly yet that assembly does not contain a <see cref="T:System.Reflection.AssemblyDescriptionAttribute"/>.
+            </summary>
+            <remarks>
+            <para>
+            Make sure that the assembly used to setup the service information has a <see cref="T:System.Reflection.AssemblyDescriptionAttribute"/>.
+            </para>
+            <para>This error can be identified by the code HK10002.</para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Http.Core.Net.Api.Exceptions.NoTitleForAssemblyException.EquivalentHttpStatusCode">
+            <summary>
+            A service that throws this exception would normally do so during initial startup. Additional configuration, if not code changes are required to make the service run. Therefor there is no meaningful HTTP status code to return from this. In a deployment scenario where a proxy is put before the failing service, that proxy should probably return an HTTP status code 500 (Internal Server Error) or 502 (Bad Gateway).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Http.Core.Net.Api.Extensions.ContainerExtensions">
+            <summary>
+            Adds services to an instance of <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> that are useful for wiring up an HTTP API.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Http.Core.Net.Api.Extensions.ContainerExtensions.UseServiceInformation(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Reflection.Assembly)">
+            <summary>
+            Registers an instance of <see cref="T:HAKOM.Http.Core.Net.Api.IServiceInformation"/> based on the given <paramref name="serviceAssembly"/>.
+            </summary>
+            <param name="container">The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to register the <see cref="T:HAKOM.Http.Core.Net.Api.IServiceInformation"/> implementation with.</param>
+            <param name="serviceAssembly">The <see cref="T:System.Reflection.Assembly"/> that should be used to get the title and description of the service.</param>
+            <returns>The <paramref name="container"/> for chaining additional setup calls.</returns>
+        </member>
+        <member name="M:HAKOM.Http.Core.Net.Api.Extensions.ContainerExtensions.UseServiceInformation``1(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers an instance of <see cref="T:HAKOM.Http.Core.Net.Api.IServiceInformation"/> based on a type in the services assembly.
+            </summary>
+            <typeparam name="TTypeInServiceAssembly">A type in the assembly that should ber used to determine title and description of the service.</typeparam>
+            <param name="container">The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to register the <see cref="T:HAKOM.Http.Core.Net.Api.IServiceInformation"/> implementation with.</param>
+            <returns>The <paramref name="container"/> for chaining additional setup calls.</returns>
+        </member>
+        <member name="M:HAKOM.Http.Core.Net.Api.Extensions.ContainerExtensions.UseServiceInformation(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.String,System.String)">
+            <summary>
+            Registers an instance of <see cref="T:HAKOM.Http.Core.Net.Api.IServiceInformation"/> based on the <paramref name="title"/> and <paramref name="description"/> given.
+            </summary>
+            <param name="container">The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to register the <see cref="T:HAKOM.Http.Core.Net.Api.IServiceInformation"/> implementation with.</param>
+            <param name="title">The title that should be used by <see cref="P:HAKOM.Http.Core.Net.Api.IServiceInformation.Title"/>.</param>
+            <param name="description">The description that should be used by <see cref="P:HAKOM.Http.Core.Net.Api.IServiceInformation.Description"/>.</param>
+            <returns>The <paramref name="container"/> for chaining additional setup calls.</returns>
+        </member>
+        <member name="T:HAKOM.Http.Core.Net.Api.Extensions.HttpContextExtensions">
+            <summary>
+            Adds methods for passing context between controllers and services within a request pipeline.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Http.Core.Net.Api.Extensions.HttpContextExtensions.GetRequestedMediaTypes(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Gets the list of media types that were requested by the client.
+            </summary>
+            <param name="httpContext">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> of the current request.</param>
+            <returns>A list of <see cref="T:System.Net.Http.Headers.MediaTypeHeaderValue"/>s containing all the requested media types, in descending order of their quality ("q"-parameter) if given.</returns>
+        </member>
+        <member name="M:HAKOM.Http.Core.Net.Api.Extensions.HttpContextExtensions.SetEndpointMediaTypes(Microsoft.AspNetCore.Http.HttpContext,System.Collections.Generic.IReadOnlyList{System.Net.Http.Headers.MediaTypeHeaderValue})">
+            <summary>
+            Allows middleware to set the media types that should be used by the currently selected endpoint (in descending order of their "q"-parameter).
+            </summary>
+            <param name="httpContext">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> of the current request.</param>
+            <param name="mediaTypes">The list of media types - usually a subset of the ones specified in the "Accept"-header - that the endpoint should attempt to use.</param>
+        </member>
+        <member name="M:HAKOM.Http.Core.Net.Api.Extensions.HttpContextExtensions.GetEndpointMediaTypes(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Gets the list of media types that the current endpoint should use in its response, in descending order of their "q"-parameter.
+            </summary>
+            <param name="httpContext">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> of the current request.</param>
+            <returns>The list of media types - usually a subset of the ones specified in the "Accept"-header - that the endpoint should attempt to use.</returns>
+        </member>
+        <member name="T:HAKOM.Http.Core.Net.Api.Extensions.MvcBuilderExtensions">
+            <summary>
+            Provides methods to add features to an MVC framework based web service.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Http.Core.Net.Api.Extensions.MvcBuilderExtensions.AddPrefixedApplicationPart(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.Reflection.Assembly,System.String)">
+            <summary>
+            Adds all controllers found in the given <paramref name="assembly"/> to the service under an optional base path.
+            </summary>
+            <remarks>
+            <para>
+            The <paramref name="basePath"/> parameter can be used to group controllers from one assembly under a specific path.
+            </para>
+            <para>
+            For example:
+            Consider a controller defined in <paramref name="assembly"/> that has a [Route("items")] attribute and a method with a [HttpGet("{id}")] attribute. By specifying <paramref name="basePath"/> as "somemodule", the controllers action would be exposed under "/somemodule/items/{id}" instead of just "/items/{id}".
+            </para>
+            <para>
+            This helps when structuring a complex API that reuses existing controllers and allows avoiding conflicts when combining controllers that define similar route names.
+            </para>
+            </remarks>
+            <param name="mvcBuilder">The <see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/> used to set up the service.</param>
+            <param name="assembly">The assembly that contains controllers that should be added to the service.</param>
+            <param name="basePath">A path that should be prepended to all the routes the controllers define themselves.</param>
+            <returns>The <paramref name="mvcBuilder"/> for chaining additional calls.</returns>
+        </member>
+        <member name="M:HAKOM.Http.Core.Net.Api.Extensions.MvcBuilderExtensions.AddPrefixedApplicationPart(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.Collections.Generic.IEnumerable{System.Reflection.TypeInfo},System.String,System.String)">
+            <summary>
+            Adds the types given in <paramref name="types"/> as controllers to the service under an optional base path.
+            </summary>
+            <remarks>
+            <para>
+            The <paramref name="basePath"/> parameter can be used to group controllers from one assembly under a specific path.
+            </para>
+            <para>
+            For example:
+            Consider a controller defined in one of the <paramref name="types"/> that has a [Route("items")] attribute and a method with a [HttpGet("{id}")] attribute. By specifying <paramref name="basePath"/> as "somemodule", the controllers action would be exposed under "/somemodule/items/{id}" instead of just "/items/{id}".
+            </para>
+            <para>
+            This helps when structuring a complex API that reuses existing controllers and allows avoiding conflicts when combining controllers that define similar route names.
+            </para>
+            </remarks>
+            <param name="mvcBuilder">The <see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/> used to set up the service.</param>
+            <param name="types">A list of controller types that should be added to the service.</param>
+            <param name="name"></param>
+            <param name="basePath">A path that should be prepended to all the routes the controllers define themselves.</param>
+            <returns>The <paramref name="mvcBuilder"/> for chaining additional calls.</returns>
+        </member>
+        <member name="T:HAKOM.Http.Core.Net.Api.Extensions.WebApplicationBuilderExtensions">
+            <summary>
+            Provides methods for setting up basic hosting features for an HTTP API
+            </summary>
+        </member>
+        <member name="M:HAKOM.Http.Core.Net.Api.Extensions.WebApplicationBuilderExtensions.EnableRunningAsService(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String[],System.String,System.String,System.String)">
+            <summary>
+            Registers all services necessary for an HTTP API to be run as a service (daemonized/in the background.).
+            </summary>
+            <remarks>
+            <para>Under Microsoft Windows, the API can then be hosted by calling "sc create".</para>
+            <para>Under Linux, the API can be hosted using systemd by creating an apropriate .service file</para>
+            </remarks>
+            <param name="builder">The <see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/> that is used to create the application host.</param>
+            <param name="args">The command line arguments. These will be used to switch between running as a service and running in the console.</param>
+            <param name="shortFlag">The short name of the command line argument used to run the application as a service. The default is "s", so the service is run as a service when <paramref name="args"/> contains "-s".</param>
+            <param name="flag">The long name of the command line argument used to run the application as a service. The default is "runAsService", so the service is run as a service when <paramref name="args"/> contains "--runAsService".</param>
+            <param name="serviceName">A custom name given to the service. This will show up in log messages.</param>
+            <returns>The <paramref name="builder"/> for chaining additional configuration.</returns>
+        </member>
+        <member name="M:HAKOM.Http.Core.Net.Api.Extensions.WebApplicationBuilderExtensions.EnableRunningAsService(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.Boolean,System.String)">
+            <summary>
+            Registers all services necessary for an HTTP API to be run as a service (a.k.a. daemonized, in the background).
+            </summary>
+            <remarks>
+            <para>Under Microsoft Windows, the API can then be hosted by calling "sc create".</para>
+            <para>Under Linux, the API can be hosted using systemd by creating an apropriate .service file</para>
+            </remarks>
+            <param name="builder">The <see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/> that is used to create the application host.</param>
+            <param name="runAsService">Used to control wether to run the application as a service or as a regular command line application.</param>
+            <param name="serviceName">A custom name given to the service. This will show up in log messages.</param>
+            <returns>The <paramref name="builder"/> for chaining additional configuration.</returns>
+        </member>
+        <member name="T:HAKOM.Http.Core.Net.Api.IServiceInformation">
+            <summary>
+            Describes an HTTP API.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Http.Core.Net.Api.IServiceInformation.Title">
+            <summary>
+            The title of the API.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Http.Core.Net.Api.IServiceInformation.Description">
+            <summary>
+            A description summarizing the APIs intended purpose.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Http.Core.Net.Api.Service">
+            <summary>
+            Base class for HTTP services.
+            </summary>
+            <remarks>
+            <para>
+            This class is provided to take some of the common boiler-plate code off the developers hands.
+            </para>
+            <para>
+            Override any of the virtual methods to modify the services behavior.
+            </para>
+            <para>
+            The methods are called in the following order:
+            <list type="number">
+            	<item><see cref="M:HAKOM.Http.Core.Net.Api.Service.ConfigureBuilder(Microsoft.AspNetCore.Builder.WebApplicationBuilder)"/></item>
+            	<item><see cref="M:HAKOM.Http.Core.Net.Api.Service.ConfigureHakomServices(HAKOM.DependencyInjection.Core.Net.Api.IContainer,Microsoft.Extensions.Configuration.IConfiguration@)"/></item>
+            	<item><see cref="M:HAKOM.Http.Core.Net.Api.Service.ConfigureLogging(Microsoft.Extensions.Logging.ILoggingBuilder)"/></item>
+            	<item><see cref="M:HAKOM.Http.Core.Net.Api.Service.ConfigureMvc(Microsoft.Extensions.DependencyInjection.IMvcBuilder)"/></item>
+            	<item><see cref="M:HAKOM.Http.Core.Net.Api.Service.ConfigureApplication(Microsoft.AspNetCore.Builder.WebApplication)"/></item>
+            </list>
+            </para>
+            </remarks>
+        </member>
+        <member name="F:HAKOM.Http.Core.Net.Api.Service.DEFAULT_URLS">
+            <summary>
+            The base URL to host the service under if nothing else is configured.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Http.Core.Net.Api.Service.Name">
+            <summary>
+            A human-friendly name for the service.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Http.Core.Net.Api.Service.ServiceConfiguration">
+            <summary>
+            The configuration section that holds all the settings for the service.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Http.Core.Net.Api.Service.ConfigurationRoot">
+            <summary>
+            The root node of the configuration used.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Http.Core.Net.Api.Service.HostingSettings">
+            <summary>
+            The settings that determine basic/common hosting behavior (URLs, CORS, SSL, etc)
+            </summary>
+        </member>
+        <member name="P:HAKOM.Http.Core.Net.Api.Service.Urls">
+            <summary>
+            Once the service is running, this property will return the URLs under which it can be accessed.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Http.Core.Net.Api.Service.Setup(System.String[])">
+            <summary>
+            Initializes the service.
+            </summary>
+            <param name="args">Command line parameters.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if no application parts where registered. Make sure to call base.ConfigureMvc from its overridden implementation in order to use controllers from the current assembly or manually add one or more application parts manually (i.e. by calling <see cref="M:HAKOM.Http.Core.Net.Api.Extensions.MvcBuilderExtensions.AddPrefixedApplicationPart(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.Collections.Generic.IEnumerable{System.Reflection.TypeInfo},System.String,System.String)"/>.</exception>
+        </member>
+        <member name="M:HAKOM.Http.Core.Net.Api.Service.ConfigureBuilder(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            Takes care of setting up configuration, logging, being able to run the service as a daemon/Windows service, and a few other things.
+            </summary>
+            <remarks>
+            <para>
+            When overriding this method, make sure to call the base method!
+            </para>
+            </remarks>
+            <param name="builder">The <see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/> used to build the service.</param>
+            <returns>The instance of <see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/> used to configure the MVC framework. This will be passed to <see cref="M:HAKOM.Http.Core.Net.Api.Service.ConfigureMvc(Microsoft.Extensions.DependencyInjection.IMvcBuilder)"/></returns>
+        </member>
+        <member name="T:HAKOM.Http.Core.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Http.Core.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Http.Core.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Http.Core.Net.Properties.Strings.CouldNotReadServiceSettingsExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Failed to read the settings for the service from configuration..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Http.Core.Net.Properties.Strings.NoDescriptionForAssemblyExceptionMessage">
+            <summary>
+              Looks up a localized string similar to No documentation description was explicitly specified and the given assembly does not have an AssemblyDescriptionAttribute..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Http.Core.Net.Properties.Strings.NoTitleForAssemblyExceptionMessage">
+            <summary>
+              Looks up a localized string similar to No documentation title was explicitly specified and the given assembly does not have an AssemblyTitleAttribute..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Http.Core.Net.Properties.Strings.ServiceWorkerAliveLogMessage">
+            <summary>
+              Looks up a localized string similar to {ServiceName} running at {Time}.
+            </summary>
+        </member>
+    </members>
+</doc>

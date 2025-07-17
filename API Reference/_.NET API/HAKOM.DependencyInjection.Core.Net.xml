@@ -1,0 +1,837 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.DependencyInjection.Core.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionException">
+            <summary>
+            Base class for all exceptions indicating issues with dependency injection
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.ContainerRuntimeException">
+            <summary>
+            indicates a problem with the life cycle of the dependency injection container itself.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.ContainerRuntimeException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.ContainerRuntimeExceptions.ApplicationNotStartedException">
+            <summary>
+            Thrown when an attempt is made to access the dependency injection container of the application, before the application
+            has been properly activated.
+            </summary>
+            <remarks>
+            <para>
+            Use the methods in <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IApplicationContext"/> to create and start the container correctly.
+            </para>
+            <para>
+            This exception is identified by error code HK08008
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.ContainerRuntimeExceptions.ApplicationNotStartedException.ActivationMethod">
+            <summary>
+            The name of the activation method which has not been called.
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.ContainerRuntimeExceptions.ContainerAlreadyActivatedException">
+            <summary>
+            Thrown when another registration attempt is made after the registration phase is complete.
+            </summary>
+            <remarks>
+            <para>
+            Add the desired registration to the registration phase and restart the application.
+            </para>
+            <para>
+            This exception is identified by error code HK08011
+            </para>
+            </remarks>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.ContainerRuntimeExceptions.ContainerNotActivatedYetException">
+            <summary>
+            Thrown when the dependency injection container is not yet activated, but the user tries to make a type-resolution.
+            </summary>
+            <remarks>
+            <para>
+            Call the <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.Activate"/> method to activate the dependency injection container.
+            </para>
+            <para>
+            This exception is identified by error code HK08009
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.ContainerRuntimeExceptions.ContainerNotActivatedYetException.ActivationMethod">
+            <summary>
+            The method which has not bee called prior to the resolution attempt.
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeRegistrationException">
+            <summary>
+            Base class for all exceptions indicating that a type could not be registered.
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeRegistrationExceptions.ImplementingTypeDoesNotImplementRegisteringTypeException">
+            <summary>
+            Indicates that a type cannot be registered because it does not implement the interface/base class
+            for which registration is attempted.
+            </summary>
+            <remarks>
+            <para>
+            Ensure that the type implements the desired interface or base class and that the registration references both interface and implementation correctly.
+            </para>
+            <para>
+            This exception is identified by error code HK08003
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeRegistrationExceptions.ImplementingTypeDoesNotImplementRegisteringTypeException.ImplementingType">
+            <summary>
+            The type for which registration has been attempted, but that does not implement the <see cref="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeRegistrationExceptions.ImplementingTypeDoesNotImplementRegisteringTypeException.RegisteringType"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeRegistrationExceptions.ImplementingTypeDoesNotImplementRegisteringTypeException.RegisteringType">
+            <summary>
+            The type that needs to be implemented by the <see cref="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeRegistrationExceptions.ImplementingTypeDoesNotImplementRegisteringTypeException.ImplementingType"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeRegistrationExceptions.ImplementingTypeDoesNotImplementRegisteringTypeException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeRegistrationExceptions.RecursiveDependencyException">
+            <summary>
+            Indicates that a type cannot be registered because resolving its dependencies
+            would result in an infinite loop.
+            </summary>
+            <remarks>
+            <para>
+            The exception message should contain the offending type. Ensure that it doesn't have a dependency to an already registered type, that depends on it.
+            </para>
+            <para>
+            This exception is identified by error code HK08004
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeRegistrationExceptions.RecursiveDependencyException.UnresolvedType">
+            <summary>
+            The Type lacking a concrete implementation thus failing to resolve.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeRegistrationExceptions.RecursiveDependencyException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeRequiresConfigurationAfterInstantiationException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeResolutionException">
+            <summary>
+            Base class for all exceptions indicating that a type could not be resolved from the container
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeResolutionExceptions.MultipleDependenciesCouldNotBeResolvedException">
+            <summary>
+            Indicates that multiple types could not be resolved.
+            </summary>
+            <remarks>
+            <para>
+            See inner exceptions for details on offending types and why they couldn't be resolved.
+            </para>
+            <para>
+            This exception is identified by error code HK08006
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeResolutionExceptions.MultipleDependenciesCouldNotBeResolvedException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeResolutionExceptions.MultipleDependenciesCouldNotBeResolvedException.InnerExceptions">
+            <summary>
+            Exceptions for all types which could not be resolved, the dependencies of the <see cref="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeResolutionExceptions.MultipleDependenciesCouldNotBeResolvedException.DependentType"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeResolutionExceptions.MultipleDependenciesCouldNotBeResolvedException.DependentType">
+            <summary>
+            The Type that could not be resolved due to the missing dependencies in: <see cref="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeResolutionExceptions.MultipleDependenciesCouldNotBeResolvedException.InnerExceptions"/>.
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeResolutionExceptions.NoSuitableConstructorFoundException">
+            <summary>
+            Indicates that the type requested could not be instantiated because
+            there is no constructor accepting only registered types and no parameterless constructor.
+            </summary>
+            <remarks>
+            <para>
+            Ensure that everything this type depends on has already been registered or that it has a parameterless constructor, if it doesn't have any dependencies.
+            </para>
+            <para>
+            This exception is identified by error code HK08001
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeResolutionExceptions.NoSuitableConstructorFoundException.ConstructorMissingType">
+            <summary>
+            The type for which the constructor is missing.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeResolutionExceptions.NoSuitableConstructorFoundException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeResolutionExceptions.TypeNotRegisteredException">
+            <summary>
+            Thrown when attempting to resolve a type, which hasn't been registered, from an <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IActivatedContainer"/>.
+            </summary>
+            <remarks>
+            <para>
+            Ensure the desired type is registered before activating the container.
+            </para>
+            <para>
+            This exception is identified by error code HK08002
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeResolutionExceptions.TypeNotRegisteredException.UnresolvedType">
+            <summary>
+            The type which could not be resolved
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeResolutionExceptions.TypeNotRegisteredException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions">
+            <summary>
+            Functions extending <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to register commonly used
+            services.
+            </summary>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.Use``1(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Type,System.Func{System.Type},System.Func{System.Boolean},System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            <para>
+            Registers an implementation for use with a factory.
+            In contrast to <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.Use``2"/>, this
+            allows specifying initialization code.
+            </para>
+            <para>
+            This code is run on the activated instance when created by a <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.Factories.Factory`1"/>.
+            </para>
+            </summary>
+            <typeparam name="TService">The type for which the registered type is an implementation.</typeparam>
+            <param name="container">The container to register the implementing type with.</param>
+            <param name="implementation">The implementations type to register.</param>
+            <param name="finalImplementation">A function that returns the type of the implementation to use. This can be used if - under certain circumstances, a type other than <paramref name="implementation"/> should be used.</param>
+            <param name="isSupported">The code to run in order to determine if the current registration should be instantiated.</param>
+            <param name="initialization">The code to be run on the activated instance."/></param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/>.</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.Use``1(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Type,System.Func{System.Type},System.Func{System.Boolean},System.Action{``0})">
+            <summary>
+            Registers an implementing type for use with a factory method.
+            In contrast to <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.Use``2"/>, this
+            allows specifying initialization code.
+            This code is run on each activated instance prior to injection.
+            This should be used to register a service with an implementation of <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.Factories.Factory`1"/>
+            </summary>
+            <typeparam name="TService">The type for which the registered type is an implementation.</typeparam>
+            <param name="container">The container to register the implementing type with.</param>
+            <param name="implementation">The implementations type to register.</param>
+            <param name="finalImplementation">A function that returns the type of the implementation to use. This can be used if - under certain circumstances, a type other than <paramref name="implementation"/> should be used.</param>
+            <param name="isSupported">The code to run in order to determine if the current registration should be instantiated.</param>
+            <param name="initialization">The code to be run on the activated instance."/></param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/>.</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.Use``2(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Func{System.Boolean},System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            Registers an implementing type for use with a factory method.
+            In contrast to <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.Use``2"/>, this
+            allows specifying initialization code.
+            This code is run on each activated instance prior to injection.
+            This should be used to register a service with an implementation of <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.Factories.Factory`1"/>
+            </summary>
+            <typeparam name="TService">The type for which the registered type is an implementation.</typeparam>
+            <typeparam name="TImplementation">The concrete implementation type.</typeparam>
+            <param name="container">The container to register the implementing type with.</param>
+            <param name="isSupported">The code to run in order to determine if the current registration should be instantiated.</param>
+            <param name="initialization">The code to be run on the activated instance of <typeparamref name="TImplementation"/> prior to injection."/></param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/>.</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.Use``2(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Func{System.Boolean},System.Action{``0})">
+            <summary>
+            Registers an implementing type for use with a factory method.
+            In contrast to <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.Use``2"/>, this
+            allows specifying initialization code.
+            This code is run on each activated instance prior to injection.
+            This should be used to register a service with an implementation of <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.Factories.Factory`1"/>
+            </summary>
+            <typeparam name="TService">The type for which the registered type is an implementation.</typeparam>
+            <typeparam name="TImplementation">The concrete implementation type.</typeparam>
+            <param name="container">The container to register the implementing type with.</param>
+            <param name="isSupported">The code to run in order to determine if the current registration should be instantiated.</param>
+            <param name="initialization">The code to be run on the activated instance of <typeparamref name="TImplementation"/> prior to injection."/></param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/>.</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.UseWithParameter``2(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Type,System.Func{``0,System.Type},System.Func{``0,System.Boolean},System.Func{``1,``0,System.Threading.Tasks.Task})">
+            <summary>
+            Same as <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.UseWithParameter``3(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Func{``0,System.Boolean},System.Action{``1,``0})"/>
+            but with the support to bind generic types without the requirement of specifying the generic 
+            parameter. This should be used to register a service with a factory implementing 
+            <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.Factories.SyncFactory`2"/>
+            </summary>
+            <typeparam name="TParameter">
+            	The type of parameter used prior to instance activation to determine if
+            	<paramref name="implementationType"/> is the correct type to activate
+            	in the given circumstance.
+            </typeparam>
+            <typeparam name="TService">The service type for which <paramref name="implementationType"/> should be registered.</typeparam>
+            <param name="container">The container to register the implementing type with.</param>
+            <param name="implementationType">The implementation type to register.</param>
+            <param name="finalImplementation">
+            	A function that returns the type of the implementation to use. 
+            	This can be used if - under certain circumstances, a type other than <paramref name="implementationType"/> 
+            	should be used.
+            </param>
+            <param name="parameterMatcher">
+            	Code to determine if <paramref name="implementationType"/> is
+            	appropriate in this circumstance here.
+            </param>
+            <param name="initialization">
+            	Code to run on the created instance of <paramref name="implementationType"/>
+            	prior to injection. This code must run synchronously. If initialization code should be run asynchronously,
+            	consider using <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.UseWithParameter``3(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Func{``0,System.Boolean},System.Func{``1,``0,System.Threading.Tasks.Task})"/>.
+            </param>
+            <returns>This <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/></returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.UseWithParameter``2(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Type,System.Func{``0,System.Type},System.Func{``0,System.Boolean},System.Action{``1,``0})">
+            <summary>
+            Same as <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.UseWithParameter``3(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Func{``0,System.Boolean},System.Action{``1,``0})"/>
+            but with the support to bind generic types without the requirement of specifying the generic 
+            parameter. This should be used to register a service with a factory implementing 
+            <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.Factories.SyncFactory`2"/>
+            </summary>
+            <typeparam name="TParameter">
+            	The type of parameter used prior to instance activation to determine if
+            	<paramref name="implementationType"/> is the correct type to activate
+            	in the given circumstance.
+            </typeparam>
+            <typeparam name="TService">The service type for which <paramref name="implementationType"/> should be registered.</typeparam>
+            <param name="container">The container to register the implementing type with.</param>
+            <param name="implementationType">The implementation type to register.</param>
+            <param name="finalImplementation">
+            	A function that returns the type of the implementation to use. 
+            	This can be used if - under certain circumstances, a type other than <paramref name="implementationType"/> 
+            	should be used.
+            </param>
+            <param name="parameterMatcher">
+            	Code to determine if <paramref name="implementationType"/> is
+            	appropriate in this circumstance here.
+            </param>
+            <param name="initialization">
+            	Code to run on the created instance of <paramref name="implementationType"/>
+            	prior to injection. This code must run synchronously. If initialization code should be run asynchronously,
+            	consider using <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.UseWithParameter``3(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Func{``0,System.Boolean},System.Func{``1,``0,System.Threading.Tasks.Task})"/>.
+            </param>
+            <returns>This <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/></returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.UseWithParameter``3(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Func{``0,System.Boolean},System.Func{``1,``0,System.Threading.Tasks.Task})">
+            <summary>
+            Registers an implementing type for use with a factory method.
+            Allows to specify code that determines if the specific implementation can be used
+            in a given circumstance depending on the specific value of <typeparamref name="TParameter"/>.
+            In contrast to <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.Use``2"/>, this
+            allows specifying initialization code.
+            This code is run on each activated instance prior to injection.
+            This is intended to be used when more than one implementation may be registered
+            for the given <typeparamref name="TService"/>.
+            This should be used to register a service with a factory implementing <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.Factories.Factory`2"/>.
+            </summary>
+            <typeparam name="TParameter">
+            	The type of parameter used prior to instance activation to determine if
+            	<typeparamref name="TImplementation"/> is the correct type to activate
+            	in the given circumstance.
+            </typeparam>
+            <typeparam name="TService">The service type for which <typeparamref name="TImplementation"/> should be registered.</typeparam>
+            <typeparam name="TImplementation">The concrete implementation type.</typeparam>
+            <param name="container">The container to register the implementing type with.</param>
+            <param name="parameterMatcher">
+            	Code to determine if <typeparamref name="TImplementation"/> is
+            	appropriate in this circumstance here.
+            </param>
+            <param name="initialization">
+            	Code to run on the created instance of <typeparamref name="TImplementation"/>
+            	prior to injection. This code may run asynchronously. If initialization code is not asynchronous,
+            	consider using <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.UseWithParameter``3(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Func{``0,System.Boolean},System.Action{``1,``0})"/>.
+            </param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/>.</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.UseWithParameter``3(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Func{``0,System.Boolean},System.Action{``1,``0})">
+            <summary>
+            Same as <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.UseWithParameter``3(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Func{``0,System.Boolean},System.Func{``1,``0,System.Threading.Tasks.Task})"/>
+            but this assumes <typeparamref name="TService"/> to not require asynchronous initialization.
+            This should be used to register a service with a factory implementing <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.Factories.SyncFactory`2"/>
+            </summary>
+            <typeparam name="TParameter"></typeparam>
+            <typeparam name="TService"></typeparam>
+            <typeparam name="TImplementation"></typeparam>
+            <param name="container">The container to register the implementing type with.</param>
+            <param name="parameterMatcher">
+            	Code to determine if <typeparamref name="TImplementation"/> is
+            	appropriate in this circumstance here.
+            </param>
+            <param name="initialization">
+            	Code to run on the created instance of <typeparamref name="TImplementation"/>
+            	prior to injection. This code must run synchronously. If initialization code should be run asynchronously,
+            	consider using <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.UseWithParameter``3(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Func{``0,System.Boolean},System.Func{``1,``0,System.Threading.Tasks.Task})"/>.
+            </param>
+            <returns>This <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/></returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.UseWithParameters``4(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Func{``0,``1,System.Boolean},System.Action{``2,``0,``1})">
+            <summary>
+            Registers an implementing type for use with a factory method.
+            Allows to specify code that determines if the specific implementation can be used
+            in a given circumstance depending on the specific values of <typeparamref name="TParameter1"/> and <typeparamref name="TParameter2"/>.
+            In contrast to <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.Use``2"/>, this
+            allows specifying initialization code.
+            This code is run on each activated instance prior to injection.
+            This is intended to be used when more than one implementation may be registered
+            for the given <typeparamref name="TService"/>.
+            This should be used to register a service with a factory implementing <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.Factories.Factory`3"/>.
+            </summary>
+            <typeparam name="TParameter1">
+            	The type of the first parameter used prior to instance activation to determine if
+            	<typeparamref name="TImplementation"/> is the correct type to activate
+            	in the given circumstance.
+            </typeparam>
+            <typeparam name="TParameter2">
+            	The type of the second parameter used prior to instance activation to determine if
+            	<typeparamref name="TImplementation"/> is the correct type to activate
+            	in the given circumstance.
+            </typeparam>
+            <typeparam name="TService">The service type for which <typeparamref name="TImplementation"/> should be registered.</typeparam>
+            <typeparam name="TImplementation">The concrete implementation type.</typeparam>
+            <param name="container">The container to register the implementing type with.</param>
+            <param name="parameterMatcher">
+            	Code to determine if <typeparamref name="TImplementation"/> is
+            	appropriate in this circumstance here.
+            </param>
+            <param name="initialization"></param>
+            <returns>This <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/></returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.UseWithParameters``4(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Func{``0,``1,System.Boolean},System.Func{``2,``0,``1,System.Threading.Tasks.Task})">
+            <summary>
+            Registers an implementing type for use with a factory method.
+            Allows to specify code that determines if the specific implementation can be used
+            in a given circumstance depending on the specific values of <typeparamref name="TParameter1"/> and <typeparamref name="TParameter2"/>.
+            In contrast to <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.Use``2"/>, this
+            allows specifying initialization code.
+            This code is run on each activated instance prior to injection.
+            This is intended to be used when more than one implementation may be registered
+            for the given <typeparamref name="TService"/>.
+            This should be used to register a service with a factory implementing <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.Factories.Factory`3"/>.
+            </summary>
+            <typeparam name="TParameter1">
+            	The type of the first parameter used prior to instance activation to determine if
+            	<typeparamref name="TImplementation"/> is the correct type to activate
+            	in the given circumstance.
+            </typeparam>
+            <typeparam name="TParameter2">
+            	The type of the second parameter used prior to instance activation to determine if
+            	<typeparamref name="TImplementation"/> is the correct type to activate
+            	in the given circumstance.
+            </typeparam>
+            <typeparam name="TService">The service type for which <typeparamref name="TImplementation"/> should be registered.</typeparam>
+            <typeparam name="TImplementation">The concrete implementation type.</typeparam>
+            <param name="container">The container to register the implementing type with.</param>
+            <param name="parameterMatcher">
+            	Code to determine if <typeparamref name="TImplementation"/> is
+            	appropriate in this circumstance here.
+            </param>
+            <param name="initialization">The initialization code.</param>
+            <returns>This <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/>.</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.UseSharedInstance``2(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers <typeparamref name="TShared"/> to be activated only once for all
+            dependents of type <typeparamref name="TCommon"/>. Think of it as a singleton but only
+            for specific types.
+            Make sure to 
+            <list type="bullet">
+            	<item>register <typeparamref name="TShared"/>! This is not done for you.</item>
+            	<item>
+            		inject <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.ISharedInstance`2"/> with TCommon = <typeparamref name="TCommon"/> and TShared = <typeparamref name="TShared"/> in <typeparamref name="TCommon"/> to use
+            		the shared instance instead of a new one.
+            	</item>
+            </list>
+            </summary>
+            <typeparam name="TCommon">
+            	The service type of which all activated instances should share one instance
+            	of <typeparamref name="TShared"/>.
+            </typeparam>
+            <typeparam name="TShared">The service type to be activated only once for each activated <typeparamref name="TCommon"/>.</typeparam>
+            <param name="container">The container to register the shared instance with.</param>
+            <returns>This <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/></returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.Extensions.ContainerExtensions.TryConfigureUnderlyingServiceCollection(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Func{HAKOM.DependencyInjection.Core.Net.Api.IContainer,HAKOM.DependencyInjection.Core.Net.Api.IContainer})">
+            <summary>
+            If <paramref name="container"/> is HAKOMs default implementation which uses a <see cref="T:Microsoft.Extensions.DependencyInjection.ServiceCollection"/> under the hood, this method can be used to register services via available extension methods on <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>, allowing the use of common libraries with an <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> based application.
+            </summary>
+            <param name="container">The container to attempt to register services with.</param>
+            <param name="configureServiceCollection">An <see cref="T:System.Action`1"/> that is called with the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> underlying the given <paramref name="container"/>.</param>
+            <param name="otherContainerHandler">Called if <paramref name="container"/> is not HAKOMs default implementation.</param>
+            <returns>The <paramref name="container"/> for call chaining.</returns>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.Factories.Exceptions.NoMatchingRegistrationException">
+            <summary>
+            Thrown when an attempt is made to instantiate a type, that has not been registered, via a factory made to create instances of that type.
+            </summary>
+            <remarks>
+            <para>
+            Ensure that all types and factories have been registered correctly. The exception message should contain further details on the offending type.
+            </para>
+            <para>
+            This exception is identified by error code HK08012
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.Factories.Exceptions.NoMatchingRegistrationException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.IActivatedContainer">
+            <summary>
+            A dependency injection container used to resolve dependencies.
+            </summary>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.IActivatedContainer.Resolve``1">
+            <summary>
+            Resolves an instance of the registered implementation for the given type
+            </summary>
+            <typeparam name="TService">The type to find an implementation for</typeparam>
+            <returns>An instance of the registered type</returns>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.IApplicationContext">
+            <summary>
+            Used to configure a dependency injection container and activate
+            a registered service to act as the root of an application.
+            </summary>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.IApplicationContext.Create(System.Action{HAKOM.DependencyInjection.Core.Net.Api.IContainer})">
+            <summary>
+            Creates an application context using the default container.
+            <code language="cs">
+            var app = IApplicationContext.Create((container)=>{
+            
+            	container
+            		.Use&lt;ISomeService,ISomeImplementation&gt;();
+            		.Use&lt;ISomeOtherService,ISomeOtherImplementation&gt;();
+            		
+            });
+            
+            var myApp = app.Start&lt;ISomeService&gt;();
+            </code>
+            </summary>
+            <param name="containerConfigurator">Register any dependencies within this action.</param>
+            <returns>The IApplicationContext that can be used to activate any registered type.</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.IApplicationContext.Create``1(``0)">
+            <summary>
+            Creates an application context based on the given container.
+            <code language="cs">
+            var container = new AutoFacContainer(); //must implement IContainer
+            
+            container
+            	.Use&lt;ISomeService,ISomeImplementation&gt;();
+            	.Use&lt;ISomeOtherService,ISomeOtherImplementation&gt;();
+            	
+            var app = IApplicationContext.Create(container);
+            
+            var myApp = app.Start&lt;ISomeService&gt;();
+            </code>
+            </summary>
+            <typeparam name="TContainer">The type of container to use.</typeparam>
+            <param name="container">The container to use.</param>
+            <returns>The IApplicationContext that can be used to activate any registered type.</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.IApplicationContext.Create``1(System.Action{``0})">
+            <summary>
+            Creates an application context based on the given container type.
+            Allows configuration of the container using the given action.
+            </summary>
+            <typeparam name="TContainer">The type of container to use.</typeparam>
+            <param name="containerConfigurator">Register any dependencies within this action.</param>
+            <returns>The IApplicationContext that can be used to wire up any registered class.</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.IApplicationContext.Start``1">
+            <summary>
+            Tries to instantiate the given type based on all types registered with the app context's DI container.
+            </summary>
+            <typeparam name="TRoot">The type to instantiate.</typeparam>
+            <returns>The instance of the requested type as resolved by the underlying container.</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.IApplicationContext.Start``1(``0@)">
+            <summary>
+            Tries to instantiate the given type based on all types registered with the app context's DI container.
+            </summary>
+            <typeparam name="TRoot">The type to instantiate.</typeparam>
+            <param name="root">The instance of the requested type as resolved by the underlying container.</param>
+            <returns>An <see cref="T:System.IDisposable"/> that can be used to dispose of the context along
+            with its DI container.</returns>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer">
+            <summary>
+            Dependency injection container used to register/resolve services/implementing types
+            </summary>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.UseSingleton``1(``0)">
+            <summary>
+            Registers the given instance to be injected into any class depending on it.
+            If <typeparamref name="TService"/> itself has dependencies to be injected, consider using
+            <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.UseOnce``2"/> instead.
+            If the instance implements <see cref="T:System.IDisposable"/> and should be disposed along
+            with the container, consider using <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.UseAndDisposeSingleton``1(``0)"/>
+            instead.
+            </summary>
+            <typeparam name="TService">The registering type/interface.</typeparam>
+            <param name="instance">The instance implementing <typeparamref name="TService"/></param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> itself</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.UseAndDisposeSingleton``1(``0)">
+            <summary>
+            Registers the given instance to be injected into any class depending on it
+            and makes sure the instance is disposed of along with the container.
+            </summary>
+            <typeparam name="TService">The registering type/interface.</typeparam>
+            <param name="instance">The instance implementing <typeparamref name="TService"/></param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> itself</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.UseOnce``2">
+            <summary>
+            Registers the given implementation type to be injected into any class depending on it.
+            The type is only instantiated once (having been injected with any dependencies itself)
+            and reused each time it is requested after that.
+            </summary>
+            <typeparam name="TService">The type/interface for which <typeparamref name="TImplementation"/> is being registered.</typeparam>
+            <typeparam name="TImplementation">The type to be registered for <typeparamref name="TService"/>.</typeparam>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> itself</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.Use``1(System.Type)">
+            <summary>
+            Registers the given implementation type <paramref name="implementation"/> to be injected into any class 
+            requesting an instance of <typeparamref name="TService"/> in its constructor.
+            The <paramref name="implementation"/> is instantiated every time it is requested. 
+            To reduce potential ocurrences of runtime exceptions, consider using <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.Use``2"/>
+            instead as this uses type constraints to produce compile-time errors in case <paramref name="implementation"/> does not implement
+            <typeparamref name="TService"/>.
+            </summary>
+            <typeparam name="TService">The registering type/interface</typeparam>
+            <param name="implementation">The type to be injected</param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> itself</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.Use(System.Type,System.Type)">
+            <summary>
+            Registers the given implementation type <paramref name="implementation"/> to be injected into any class 
+            requesting an instance of <paramref name="service"/> in its constructor.
+            The <paramref name="implementation"/> is instantiated every time it is requested. 
+            <para>
+            To reduce potential ocurrences of runtime exceptions, consider using <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.Use``2"/>
+            instead as this uses type constraints to produce compile-time errors in case <paramref name="implementation"/> does not implement
+            <paramref name="service"/>.
+            </para>
+            <para>
+            This may be useful when registering unbound generics, for example: 
+            registering Class&lt;T&gt; to be used whenever an IInterface&lt;T&gt; is requested:
+            </para>
+            <code language="cs">
+            	container.Use(typeof(IInterface&lt;&gt;), typeof(Class&lt;&gt;));
+            </code>
+            </summary>
+            <param name="service"></param>
+            <param name="implementation"></param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> itself</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.Use``2">
+            <summary>
+            Registers the given implementation type to be injected into any class depending on it.
+            The type is instantiated every time it is requested.
+            </summary>
+            <typeparam name="TService">The registering type/interface</typeparam>
+            <typeparam name="TImplementation">The type to be injected</typeparam>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> itself</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.TryResolveSingletonEarly``1(``0@)">
+            <summary>
+            Resolves an already registered singleton service before the container
+            has been activated. There are only very few use cases for this. Use with caution.
+            </summary>
+            <typeparam name="TService">The service to resolve</typeparam>
+            <param name="service">The service or null if none could be resolved.</param>
+            <returns>True if the service was resolved, false otherwise.</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.TryResolveSingletonsEarly``1(System.Collections.Generic.IEnumerable{``0}@)">
+            <summary>
+            Resolves already registered singleton services of the same type before the container
+            has been activated. There are only very few use cases for this. Use with caution.
+            </summary>
+            <typeparam name="TService">The type of the services to resolve</typeparam>
+            <param name="services">The services or null if none could be resolved.</param>
+            <returns>True if the services were resolved, false otherwise.</returns>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.Activate">
+            <summary>
+            Seals the container against additional registrations.
+            May perform additional tasks such as checking against cirular dependencies, etc.
+            Must be called <i>before</i> any call to <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.IActivatedContainer.Resolve``1"/>.
+            </summary>
+            <returns>The activated <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> as an <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IActivatedContainer"/></returns>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Api.ISharedInstance`2">
+            <summary>
+            Represents a container for an instance of type <typeparamref name="TShared"/>
+            that all activations of <typeparamref name="TCommon"/> want to share among themselves.
+            The implementation of <typeparamref name="TCommon"/> should add a dependency to 
+            <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.ISharedInstance`2"/> to access the shared instance
+            through <see cref="P:HAKOM.DependencyInjection.Core.Net.Api.ISharedInstance`2.Instance"/>.
+            </summary>
+            <typeparam name="TCommon">The type wanting to share an instance of <typeparamref name="TShared"/>.</typeparam>
+            <typeparam name="TShared">The type of object all <typeparamref name="TCommon"/> want to share.</typeparam>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Api.ISharedInstance`2.Instance">
+            <summary>
+            Returns the instance of <typeparamref name="TShared"/> shared across activations of <typeparamref name="TCommon"/>.
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.DisposableInstance`1">
+            <summary>
+            For handling disposal of instances registered with <see cref="M:HAKOM.DependencyInjection.Core.Net.Api.IContainer.UseAndDisposeSingleton``1(``0)"/>.
+            </summary>
+            <typeparam name="TService">The service type that has been registered as a singleton
+            instance and should be disposed with the container.</typeparam>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.IDisposableInstance">
+            <summary>
+            Non-generic interface to allow resolution
+            of all <see cref="T:HAKOM.DependencyInjection.Core.Net.DisposableInstance`1"/> instances.
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Core.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.ApplicationNotStartedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to ApplicationContext has not been started! Call {0} first..
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.ContainerAlreadyActivatedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Container has already been activated. No more additional registrations..
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.ContainerNotActivatedYetExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Container has not been activated yet. call {0} method first!.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.ImplementingTypeDoesNotImplementRegisteringTypeExceptionGenericMessage">
+            <summary>
+              Looks up a localized string similar to The implementing type does not implement the registering type, see inner exception for further detail!.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.ImplementingTypeDoesNotImplementRegisteringTypeExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The implementing type  {0} does not implement the registering type {1}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.MultipleDependenciesCouldNotBeResolvedExceptionGenericMessage">
+            <summary>
+              Looks up a localized string similar to Multiple Exceptions occurred please see inner exception for further details!.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.MultipleDependenciesCouldNotBeResolvedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Could not resolve multiple dependencies:\n{0} of {1}.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.NoMatchingRegistrationExceptionMessage">
+            <summary>
+              Looks up a localized string similar to No matching implementation for service type {0} was registered..
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.NoMatchingRegistrationExceptionMessageWithParameters">
+            <summary>
+              Looks up a localized string similar to  that accepts the values for the given parameters:.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.NoSuitableConstructorFoundExceptionGenericMessage">
+            <summary>
+              Looks up a localized string similar to No constructor found for a registered type. Please make sure to make the constructor accessible! See inner exception for further details!.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.NoSuitableConstructorFoundExceptionMessage">
+            <summary>
+              Looks up a localized string similar to No constructor found for {0}. Please make sure to make the constructor accessible!.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.PropertyIsMissingInSerializationInfoMessage">
+            <summary>
+              Looks up a localized string similar to Cannot deserialize &apos;{0}&apos; because property &apos;{1}&apos; is null or missing in serialization info..
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.PropertyIsNotValidInSerializationInfoMessage">
+            <summary>
+              Looks up a localized string similar to {0} in SerializationInfo is not a valid type..
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.RecursiveDependencyExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Could not resolve type {0} because resolving it would end up in an infinite loop due to circular dependencies. The inner exception may provide additional details..
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.TypeNotRegisteredExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Could not find a registered implementation for {0} {1}.&quot;.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Core.Net.Properties.Strings.TypeRequiresConfigurationAfterInstantiationExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The type &apos;{0}&apos; requires that after instantiation (via injection or otherwise), the method &apos;{1}&apos; be called, before accessing &apos;{2}&apos;..
+            </summary>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Core.Net.ServiceCollectionContainer.Resolve``1">
+            <inheritdoc/>
+            <exception cref="T:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeResolutionExceptions.TypeNotRegisteredException">
+            Thrown when the requested type has no registered implementation or when it or its dependencies rely on
+            a type which has no registered implementation.
+            </exception>
+            <exception cref="T:HAKOM.DependencyInjection.Core.Net.Api.Exceptions.DependencyInjectionExceptions.TypeResolutionExceptions.MultipleDependenciesCouldNotBeResolvedException">
+            Thrown when more than one of the types dependencies rely on
+            a type which has no registered implementation.
+            </exception>
+        </member>
+    </members>
+</doc>

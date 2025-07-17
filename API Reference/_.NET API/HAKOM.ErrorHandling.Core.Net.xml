@@ -1,0 +1,397 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.ErrorHandling.Core.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.ErrorHandling.Core.Net.Api.Exceptions.ErrorDuringEnumerationException">
+            <summary>
+            Indicates that an error ocurred while iterating over an enumerator and converting the values to <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> or <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> instances.
+            </summary>
+            <remarks>
+            <para>
+            See the <see cref="P:System.Exception.InnerException"/> property for more information that may help in resolving the particular issue.
+            </para>
+            <para>
+            This error is identified by code HK09004.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Api.Exceptions.ErrorDuringEnumerationException.EquivalentHttpStatusCode">
+            <summary>
+            Returns 500 (Internal Server Error). If this exception is raised while processing a web service request, the response should be returned with this status code.
+            </summary>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Core.Net.Api.Exceptions.ExceptionIsNotAHakomExceptionException">
+            <summary>
+            This exception indicates that an attempt was made to call a method within the ErrorHandling
+            module (Probably one of <see cref="T:HAKOM.ErrorHandling.Core.Net.ErrorCodeResolver"/>) with an exception type as a parameter
+            that was expected to be derived from <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/>
+            but was not.
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Api.Exceptions.ExceptionIsNotAHakomExceptionException.ExceptionType">
+            <summary>
+            The type of exception that was expected to derive from <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Api.Exceptions.ExceptionIsNotAHakomExceptionException.EquivalentHttpStatusCode">
+            <summary>
+            When unhandled within an HTTP request,this exception should produce an HTTP status code of 500 (internal server error)
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Api.Exceptions.UnexpectedErrorException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException">
+            <summary>
+            Base class for all exceptions thrown by HAKOM software
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Api.HakomException.EquivalentHttpStatusCode">
+            <summary>
+            Override this to provide a proper HTTP status in Webservices.
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Api.HakomException.Code">
+            <summary>
+            Gets a unique code that can be used to quickly
+            find documentation on the type of exception that occurred
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Api.HakomException.Message">
+            <summary>
+            Gets the description of the exception that occurred including the <see cref="P:HAKOM.ErrorHandling.Core.Net.Api.HakomException.Code"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Api.HakomException.RawMessage">
+            <summary>
+            Gets the description of the exception that occurred without the <see cref="P:HAKOM.ErrorHandling.Core.Net.Api.HakomException.Code"/>.
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.HakomException.#ctor(System.Exception)">
+            <summary>
+            Creates a new exception from some exception as the root cause.
+            </summary>
+            <param name="innerException">The root cause of the exception</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.HakomException.#ctor(System.String)">
+            <summary>
+            Creates new exception with the given message.
+            </summary>
+            <param name="message">A message with additional information</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.HakomException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates a new exception with the given message and root cause.
+            </summary>
+            <param name="message">A message with additional information</param>
+            <param name="innerException">The root cause of the exception</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.HakomException.HttpStatus(HAKOM.ErrorHandling.Core.Net.Api.HakomException)">
+            <summary>
+            Returns the HTTP status code for a given HAKOM exception
+            </summary>
+            <param name="exception">The exception for which to get the status code</param>
+            <returns>The status code</returns>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.HakomException.HttpStatus(System.Exception)">
+            <summary>
+            Returns the default HTTP status code for an exception
+            </summary>
+            <param name="exception">The exception for which to get the status code</param>
+            <returns>The status code</returns>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Core.Net.Api.Result">
+            <summary>
+            Base class for result objects which can represent either the success or the failure of an operation.
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Api.Result.Successful">
+            <summary>
+            Whether or not the operation succeeded.
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result.Success">
+            <summary>
+            Creates a result that represents the result of a successful operation.
+            </summary>
+            <returns>An instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success"/>.</returns>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result.Failure(System.Exception)">
+            <summary>
+            Creates a result that represents the failure of an operation due to <paramref name="exception"/>.
+            </summary>
+            <param name="exception">The <see cref="T:System.Exception"/> that caused the failure.</param>
+            <returns>An instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure"/>.</returns>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result.Failure">
+            <summary>
+            Creates a result that represents the failure of an operation.
+            </summary>
+            <returns>An instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure"/>.</returns>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result.Success``1(``0)">
+            <summary>
+            Creates a new instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1"/> from the given <paramref name="value"/>, representing an operation that succeeded and returned <paramref name="value"/>.
+            </summary>
+            <typeparam name="T">The type of value that the operation returned.</typeparam>
+            <param name="value">The value returned by the operation.</param>
+            <returns>An instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1"/> representing the successful result of an operation.</returns>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result.Failure``1(System.Exception)">
+            <summary>
+            Creates a new instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/> from the given <paramref name="exception"/>, representing an operation that failed due to <paramref name="exception"/>.
+            </summary>
+            <typeparam name="T">The type of value that the operation would return if it had not failed.</typeparam>
+            <param name="exception">An <see cref="T:System.Exception"/> representing the cause of the operations failure.</param>
+            <returns>An instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/> representing the failure of an operation.</returns>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result.op_Implicit(System.Exception)~HAKOM.ErrorHandling.Core.Net.Api.Result">
+            <summary>
+            Converts an exception to an instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> representing failure.
+            </summary>
+            <param name="exception">The exception to convert.</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result.op_Implicit(HAKOM.ErrorHandling.Core.Net.Api.Result)~System.Exception">
+            <summary>
+            Attempts to convert an instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> to an exception if the result represents a failed operation. If the result represents success this conversion will yield null.
+            </summary>
+            <param name="result">The result to attempt to convert to its underlying exception.</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result.Failure``1">
+            <summary>
+            Creates a new instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/> representing an operation that failed due to an unspecified error.
+            </summary>
+            <typeparam name="T">The type of value that the operation would return if it had not failed.</typeparam>
+            <returns>An instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/> representing the failure of an operation.</returns>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1">
+            <summary>
+            Represents the result of an operation that is supposed to return a value of type <typeparamref name="TValue"/>.
+            </summary>
+            <typeparam name="TValue">The type of value the operation would return if successful.</typeparam>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Api.Result`1.Successful">
+            <summary>
+            Whether or not the operation succeeded.
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result`1.GetValueOrThrow">
+            <summary>
+            Gets either the value of this instance (if it is a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1"/>) or throws the exception that caused the result to be a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/>.
+            </summary>
+            <returns>Either the value of the result or nothing but instead throwing the underlying exception.</returns>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result`1.TryGetValue(`0@)">
+            <summary>
+            Outputs the value of the <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> if it is a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1"/> or leaves it as default value 
+            when it is a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/>.<br/>
+            Information about this is provided by the returned <see cref="T:System.Boolean"/>.
+            </summary>
+            <param name="value">
+            Contains the value of the successful operation, or the default value for <typeparamref name="TValue"/> if the operation was not successful.
+            </param>
+            <returns>
+            <see langword="true"/> when the Result instance represents a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1"/> and <see langword="false"/> otherwise when it
+            represents an <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/>.
+            </returns>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result`1.GetValueOrError(`0@,HAKOM.ErrorHandling.Core.Net.Api.HakomException@)">
+            <summary>
+            Get either the value or the error of a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/>.
+            </summary>
+            <remarks>
+            <para>
+            Outputs the value of the <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> when it is a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1"/> or leaves it as default value 
+            when it is a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/>.
+            </para>
+            <para>
+            Does the opposite for <paramref name="exception"/> so that when the <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> is a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1"/> it will be set as default
+            and when its a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/> it sets the correct <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/>.
+            </para>
+            <para>
+            Information about this is provided by the returned <see cref="T:System.Boolean"/> (<see langword="false"/> if <paramref name="exception"/> has been set, <see langword="true"/> otherwise).
+            </para>
+            </remarks>
+            <param name="value">
+            Contains the <see cref="P:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1.Value"/> of the successful operation, or the default value for <typeparamref name="TValue"/> if the operation was not successful.
+            </param>
+            <param name="exception">
+            Contains the <see cref="P:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1.Error"/> of the failure operation, or the default value for <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/> if the operation was successful.
+            </param>
+            <returns>
+            <see langword="true"/> when the Result instance represents a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1"/> and <see langword="false"/> when it represents an <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/>.
+            </returns>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result`1.op_Implicit(HAKOM.ErrorHandling.Core.Net.Api.Result{`0})~`0">
+            <summary>
+            Converts an instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> to its value.
+            If the operation was unsuccessful due to an exception, that exception will be thrown.
+            </summary>
+            <param name="result">The result to convert to its value.</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result`1.op_Implicit(`0)~HAKOM.ErrorHandling.Core.Net.Api.Result{`0}">
+            <summary>
+            Converts a value of type <typeparamref name="TValue"/> instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> representing success.
+            </summary>
+            <param name="value">The value to convert.</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result`1.op_Implicit(System.Exception)~HAKOM.ErrorHandling.Core.Net.Api.Result{`0}">
+            <summary>
+            Converts an exception to an instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> representing failure.
+            </summary>
+            <param name="exception">The exception to convert.</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result`1.op_Implicit(HAKOM.ErrorHandling.Core.Net.Api.Result{`0})~System.Exception">
+            <summary>
+            Attempts to convert an instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> to an exception if the result represents a failed operation. If the result represents success this conversion will yield null.
+            </summary>
+            <param name="result">The result to attempt to convert to its underlying exception.</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Result`1.op_Implicit(HAKOM.ErrorHandling.Core.Net.Api.Result{`0})~HAKOM.ErrorHandling.Core.Net.Api.Result">
+            <summary>
+            Attempts to convert an instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> to an instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/>. if the result represents a failed operation..
+            </summary>
+            <param name="result">The result to attempt to convert to its underlying exception.</param>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure">
+            <summary>
+            Represents the failure of an operation that would normally return void.
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure.Error">
+            <summary>
+            The error that caused the operation to fail.
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure.#ctor(HAKOM.ErrorHandling.Core.Net.Api.HakomException)">
+            <summary>
+            Creates a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure"/> from a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/>.
+            </summary>
+            <param name="error">The <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/> that caused this error.</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure.op_Implicit(System.Exception)~HAKOM.ErrorHandling.Core.Net.Api.Results.Failure">
+            <summary>
+            Creates an instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure"/> from an exception.
+            </summary>
+            <param name="exception">The <see cref="T:System.Exception"/> to create the failure result from. Exceptions that do not derive from <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/> will be wrapped in an <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Exceptions.UnexpectedErrorException"/>.</param>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1">
+            <summary>
+            Represents the result of an unsuccessful operation that was supposed to return a value of type <typeparamref name="TValue"/>.
+            </summary>
+            <typeparam name="TValue">The type of the value that was supposed to be returned by the operation.</typeparam>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1.Error">
+            <summary>
+            A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/> representing the cause of failure.
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1.#ctor(HAKOM.ErrorHandling.Core.Net.Api.HakomException)">
+            <summary>
+            Creates a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/> from a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/>.
+            </summary>
+            <param name="error">The <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/> that caused this error.</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1.op_Implicit(HAKOM.ErrorHandling.Core.Net.Api.Results.Failure{`0})~`0">
+            <summary>
+            Throws the exception that caused the operation to fail.
+            </summary>
+            <param name="failure">The unsuccessful failure of an operation.</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1.op_Implicit(System.Exception)~HAKOM.ErrorHandling.Core.Net.Api.Results.Failure{`0}">
+            <summary>
+            Creates an instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/> from an exception.
+            </summary>
+            <param name="exception">The <see cref="T:System.Exception"/> to create the failure result from. Exceptions that do not derive from <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/> will be wrapped in an <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Exceptions.UnexpectedErrorException"/>.</param>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success">
+            <summary>
+            Represents the successful completion of an operation returning void.
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Results.Success.#ctor">
+            <summary>
+            Creates a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success"/> instance.
+            </summary>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1">
+            <summary>
+            Represents the result of a successful operation that returned a value of type <typeparamref name="TValue"/>.
+            </summary>
+            <typeparam name="TValue">The type of the value returned by the operation.</typeparam>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1.Value">
+            <summary>
+            The value successfully returned by the operation.
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1.#ctor(`0)">
+            <summary>
+            Creates a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1"/> instance from its value.
+            </summary>
+            <param name="value">The value of the result.</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1.op_Implicit(HAKOM.ErrorHandling.Core.Net.Api.Results.Success{`0})~`0">
+            <summary>
+            Converts the successful Result to its value.
+            </summary>
+            <param name="success">The result of the operation to convert to its value.</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1.op_Implicit(`0)~HAKOM.ErrorHandling.Core.Net.Api.Results.Success{`0}">
+            <summary>
+            Converts a value to a successful result of that value.
+            </summary>
+            <param name="value">The value to convert.</param>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Core.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Properties.Strings.ExceptionIsNotAHakomExceptionExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Exception of type &apos;{0}&apos; is not a HAKOM exception and does not have an error code assigned to it..
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Properties.Strings.ExceptionTypeIsMissingInSerializationInfoMessage">
+            <summary>
+              Looks up a localized string similar to ExceptionType is missing in the SerializationInfo..
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Properties.Strings.ExceptionTypeIsNotValidInSerializationInfoMessage">
+            <summary>
+              Looks up a localized string similar to ExceptionType in SerializationInfo is not a valid type..
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Properties.Strings.UnexpectedErrorExceptionMessage">
+            <summary>
+              Looks up a localized string similar to An unexpected error ({0}) occurred while processing the requested operation: {1}.
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Properties.Strings.UnexpectedErrorExceptionMessageDefault">
+            <summary>
+              Looks up a localized string similar to No further details available..
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Core.Net.Properties.Strings.UnexpectedErrorExceptionNameDefault">
+            <summary>
+              Looks up a localized string similar to Unknown.
+            </summary>
+        </member>
+    </members>
+</doc>

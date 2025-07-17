@@ -1,0 +1,427 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Serialization.Core.Net</name>
+    </assembly>
+    <members>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.Exceptions.DeserializationFailedException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Api.Exceptions.MediaTypeCouldNotBeParsedException">
+            <summary>
+            Media type cannot be parsed.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.Exceptions.MediaTypeCouldNotBeParsedException.InvalidMediaType">
+            <summary>
+            The raw string which cannot be parsed into a valid Mediatype.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.Exceptions.MediaTypeCouldNotBeParsedException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Api.Exceptions.NoMatchingSerializerFoundException">
+            <summary>
+            No serializer could be found for a type.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.Exceptions.NoMatchingSerializerFoundException.TheTypeWithMissingSerializer">
+            <summary>
+            The type name for which no serializer could be found.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.Exceptions.NoMatchingSerializerFoundException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Api.Exceptions.SerializationException">
+            <summary>
+            Base class for any exception related to serialization/deserialization
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.Exceptions.SerializationFailedException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Api.Exceptions.SerializationTypeMismatchException">
+            <summary>
+            Indicates that the actual type did not match the expected.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.Exceptions.SerializationTypeMismatchException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 406 (Not Acceptable).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Api.Exceptions.UnsupportedMediaTypeException">
+            <summary>
+            Indicates that the media type is not supported by the serializer
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.Exceptions.UnsupportedMediaTypeException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 406 (Not Acceptable).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Api.Exceptions.UnsupportedMediaTypeExceptions.UnsupportedMediaTypeParameterException">
+            <summary>
+            Base class for all exceptions indicating that one or more parameters of the media
+            type are unsupported
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.Exceptions.UnsupportedMediaTypeExceptions.UnsupportedMediaTypeParameterException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 406 (Not Acceptable).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Api.Exceptions.UnsupportedMediaTypeExceptions.UnsupportedMediaTypeParameterExceptions.UnsupportedEncodingException">
+            <summary>
+            Indicates that the encoding/character set specified in the media type is
+            not supported
+            </summary>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Api.Extensions.ContainerExtensions">
+            <summary>
+            Provides extension methods on <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> for registering types used in serialization.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.Extensions.ContainerExtensions.UseSerializerFactory(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers the default implementation of <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializerFactory"/> with the <paramref name="container"/>.
+            </summary>
+            <param name="container">The container to register the <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializerFactory"/> with.</param>
+            <returns>The <paramref name="container"/> itself for call chaining.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="container"/> is null.</exception>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.Extensions.ContainerExtensions.UseSerializationContractTypeProvider(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers the default implementation of <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializationContractTypeProvider"/> with the <paramref name="container"/>.
+            </summary>
+            <param name="container">The container to register the <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializationContractTypeProvider"/> with.</param>
+            <returns>The <paramref name="container"/> itself for call chaining.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="container"/> is null.</exception>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.Extensions.ContainerExtensions.UseSerializer``2(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Predicate{System.Type},System.Predicate{System.String},System.Predicate{System.String},System.Predicate{System.Collections.Generic.ICollection{System.Net.Http.Headers.NameValueHeaderValue}})">
+            <summary>
+            Registers a serializer with the <paramref name="container"/>.
+            </summary>
+            <typeparam name="TData">The type of data the serializer can serialize/deserialize.</typeparam>
+            <typeparam name="TSerializer">The type of the serializer.</typeparam>
+            <param name="container">The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to register the serializer with.</param>
+            <param name="dataTypeMatcher">Used to determine if a specific type can be used with this serializer.</param>
+            <param name="typeMatcher">Used to determine if a media type can be used with this serializer.</param>
+            <param name="subTypeMatcher">Used to determine if a media type can be used with this serializer.</param>
+            <param name="parameterMatcher">Used to determine if a media type can be used with this serializer.</param>
+            <returns>The <paramref name="container"/> itself for call chaining.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="container"/> is null.</exception>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.Extensions.ContainerExtensions.UseGenericSerializer(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Type,System.Predicate{System.Type},System.Predicate{System.String},System.Predicate{System.String},System.Predicate{System.Collections.Generic.ICollection{System.Net.Http.Headers.NameValueHeaderValue}})">
+            <summary>
+            Registers a generic implementation of <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer"/> with the <paramref name="container"/> that supports more than one data type.
+            </summary>
+            <param name="container">The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to register the serializer with.</param>
+            <param name="serializerType">The type of serializer. The type must implement <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer`1"/>.</param>
+            <param name="dataTypeMatcher">Optional delegate to check if a type is supported. If null, its assumed that all types of objects are supported.</param>
+            <param name="typeMatcher">Used to determine if a media type can be used with this serializer.</param>
+            <param name="subTypeMatcher">Used to determine if a media type can be used with this serializer.</param>
+            <param name="parameterMatcher">Used to determine if a media type can be used with this serializer.</param>
+            <returns>The <paramref name="container"/> itself for call chaining.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="container"/> is null.</exception>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.Extensions.ContainerExtensions.UseJsonSerialization(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers various factories and default serializers with the container to enable serializing objects to JSON.
+            </summary>
+            <param name="container">The container to register the services with.</param>
+            <returns>The <paramref name="container"/> for chaining.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="container"/> is null.</exception>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Api.IMediaTypeMatcher">
+            <summary>
+            Represents an object that is used to determine wether a specific implementation of <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer"/> can be used to serialize/deserialize an object of a given type for the given media type.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.IMediaTypeMatcher.IsMatch(System.Type,System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Returns wether or not the <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer"/> associated with this registration is able to serialize/deserialize objects of <paramref name="type"/> for the given <paramref name="mediaType"/>.
+            </summary>
+            <param name="type">The <see cref="T:System.Type"/> of the object to serialize.</param>
+            <param name="mediaType">The media type that defines how the object should be serialized (i.e. "application/json", "text/plain", etc.</param>
+            <returns>Returns wether or not the <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer"/> supports this combination of <paramref name="mediaType"/> and <paramref name="type"/>.</returns>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Api.ISerializationContractTypeProvider">
+            <summary>
+            Provides serializable contract types/DTOs for types which may not usually be serializable such as interfaces.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.ISerializationContractTypeProvider.GetContractType``1">
+            <summary>
+            Returns the type to serialize/deserialize an object of type <typeparamref name="TTypeToSerialize"/> to/from.
+            The returned type should
+            <list type="bullet">
+            <item>have a public parameterless constructor,</item>
+            <item>
+            contain all serializable properties as public properties including getter and setter methods.
+            </item>
+            <item>
+            if <typeparamref name="TTypeToSerialize"/> is an interface, implement this interface,
+            </item>
+            <item>
+            if <typeparamref name="TTypeToSerialize"/> is a class, derive from this class,
+            </item>
+            </list>
+            </summary>
+            <typeparam name="TTypeToSerialize">The type for which to get a serializable type.</typeparam>
+            <returns>The type to be used in serialization/deserialization</returns>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.ISerializationContractTypeProvider.GetContractType(System.Type)">
+            <summary>
+            Returns the type to serialize/deserialize an object of type <paramref name="typeToSerialize"/> to/from.
+            The returned type should
+            <list type="bullet">
+            <item>have a public parameterless constructor,</item>
+            <item>
+            contain all serializable properties as public properties including getter and setter methods.
+            </item>
+            <item>
+            if <paramref name="typeToSerialize"/> is an interface, implement this interface,
+            </item>
+            <item>
+            if <paramref name="typeToSerialize"/> is a class, derive from this class,
+            </item>
+            </list>
+            </summary>
+            <returns>The type to be used in serialization/deserialization</returns>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Api.ISerializer">
+            <summary>
+            General interface representing an object that can be used to serialize/deserialize an object to a stream.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.ISerializer.Configure(System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Configures this instance with a specific media type (i.e. "application/json", "text/html", etc.).
+            Implementations must use this method to interpret media type parameters, set default values, etc.
+            This method must also set <see cref="P:HAKOM.Serialization.Core.Net.Api.ISerializer.OriginalMediaType"/> to the value of <paramref name="mediaType"/> and <see cref="P:HAKOM.Serialization.Core.Net.Api.ISerializer.ParsedMediaType"/> to the media type containing no wildcards and any default values for parameters used.
+            </summary>
+            <param name="mediaType">The media type for this serializer to use.</param>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.ISerializer.SerializeObject(System.Object,System.IO.Stream,System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously serializes <paramref name="data"/> into the <paramref name="outputStream"/>.
+            </summary>
+            <param name="data">The object to serialize.</param>
+            <param name="outputStream">The stream to serialize to.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to signal the serializer to attempt cancelling the operation.</param>
+            <returns>Returns a <see cref="T:System.Threading.Tasks.Task"/> that completes once all of <paramref name="data"/> has been written to <paramref name="outputStream"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.ISerializer.DeserializeAsObject(System.IO.Stream,System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously deserializes an object from the given <paramref name="inputStream"/>.
+            </summary>
+            <param name="inputStream">The <see cref="T:System.IO.Stream"/> to read data from.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to signal the serializer to attempt cancelling the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that completes when the object has been successfully read from the <paramref name="inputStream"/>.</returns>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.ISerializer.OriginalMediaType">
+            <summary>
+            The media type this serializer was initially configured with (see the <see cref="M:HAKOM.Serialization.Core.Net.Api.ISerializer.Configure(System.Net.Http.Headers.MediaTypeHeaderValue)"/> method). May include wildcards etc. i.e. "*/*+json".
+            Must be set by <see cref="M:HAKOM.Serialization.Core.Net.Api.ISerializer.Configure(System.Net.Http.Headers.MediaTypeHeaderValue)"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.ISerializer.ParsedMediaType">
+            <summary>
+            The actual media type that's used by the serializer. For example, assuming <see cref="M:HAKOM.Serialization.Core.Net.Api.ISerializer.Configure(System.Net.Http.Headers.MediaTypeHeaderValue)"/> is called with "*/*+json" this serializer may interpret this  as "application/hal+json;charset=utf-8;indentation=true". This property should then contain that final media type used.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Api.ISerializerFactory">
+            <summary>
+            Used to instantiate serializers.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.ISerializerFactory.Matchers">
+            <summary>
+            List of all known <see cref="T:HAKOM.Serialization.Core.Net.Api.IMediaTypeMatcher"/>s. These are used to determine which serializer can be created for what media type/object type.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.ISerializerFactory.TryCreate``1(System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Tries to create an instance of <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer`1"/> for the given <paramref name="mediaType"/>.
+            Will fail if none of the <see cref="P:HAKOM.Serialization.Core.Net.Api.ISerializerFactory.Matchers"/> match the <typeparamref name="TData"/>/<paramref name="mediaType"/> combination.
+            </summary>
+            <typeparam name="TData"></typeparam>
+            <param name="mediaType"></param>
+            <returns>A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> containing the <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer`1"/> object.</returns>
+            <remarks>
+            The <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> will provide additional information about success or failure.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Api.ISerializer`1">
+            <summary>
+            Provides methods for serializing and deserializing <typeparamref name="TData"/> instances to/from a <see cref="T:System.IO.Stream"/>.
+            </summary>
+            <typeparam name="TData">The type of objects the serializer can serialize/deserialize.</typeparam>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.ISerializer`1.Serialize(`0,System.IO.Stream,System.Threading.CancellationToken)">
+            <summary>
+            Serializes the given instance of <typeparamref name="TData"/> to the <paramref name="outputStream"/>.
+            </summary>
+            <param name="data">The object to serialize.</param>
+            <param name="outputStream">The <see cref="T:System.IO.Stream"/> to serialize to.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to signal the operation that it should be canceled.</param>
+            <returns>A task that completes when <paramref name="data"/> has been serialized.</returns>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.ISerializer`1.Deserialize(System.IO.Stream,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to deserialize an object of type <typeparamref name="TData"/> from the given <paramref name="inputStream"/>.
+            </summary>
+            <param name="inputStream">The <see cref="T:System.IO.Stream"/> to deserialize from.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to signal the operation that it should be canceled.</param>
+            <returns>A task that completes when deserialization is done.</returns>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Api.Json.Extensions.JsonSerializerOptionsExtensions">
+            <summary>
+            Provides methods to add HAKOM serialization to <see cref="T:System.Text.Json.JsonSerializerOptions"/>.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.Json.Extensions.JsonSerializerOptionsExtensions.AddHakomSerializers(System.Text.Json.JsonSerializerOptions,HAKOM.Serialization.Core.Net.Api.ISerializerFactory,System.Type[])">
+            <summary>
+            Adds a converter that allows JSON serialization using <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer"/>/<see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer`1"/> implementations.
+            </summary>
+            <param name="options">The <see cref="T:System.Text.Json.JsonSerializerOptions"/> to add HAKOM serializers to.</param>
+            <param name="serializerFactory">The <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializerFactory"/> that should be used to create serializers.</param>
+            <param name="typesToIgnore">An optional list of <see cref="T:System.Type"/> for which HAKOM serializers should not be used.</param>
+            <returns>The <paramref name="options"/> for chaining of additional extension methods.</returns>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.Json.Extensions.JsonSerializerOptionsExtensions.AddHakomSerializers(System.Text.Json.JsonSerializerOptions,System.Action{HAKOM.DependencyInjection.Core.Net.Api.IContainer})">
+            <summary>
+            Adds a converter that allows JSON serialization using <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer"/>/<see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer`1"/> implementations.
+            </summary>
+            <remarks>
+            This spins up a dependency-injection container with everything that's needed for serialization using HAKOM serializers.
+            Use <paramref name="configureContainer"/> to add any additional services like logging, configuration, etc. or to register additional serializers using the methods provided by <see cref="T:HAKOM.Serialization.Core.Net.Api.Extensions.ContainerExtensions"/>.
+            </remarks>
+            <param name="options">The <see cref="T:System.Text.Json.JsonSerializerOptions"/> to add HAKOM serializers to.</param>
+            <param name="configureContainer">A method to add services to the <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> used to create the required <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializerFactory"/> and any <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer"/>s.</param>
+            <returns></returns>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Api.Serializer`2">
+            <summary>
+            Provides a base implementation for custom serializers (<see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer"/>).
+            </summary>
+            <typeparam name="TData">The type of data that this serializer serializes/deserializes.</typeparam>
+            <typeparam name="TParameters">The type of parameters (<see cref="T:HAKOM.Serialization.Core.Net.Api.Parametrization.ISerializationParameters"/>) that this serializer uses. These are parsed from the media type it is configured with using the <see cref="M:HAKOM.Serialization.Core.Net.Api.Serializer`2.Configure(System.Net.Http.Headers.MediaTypeHeaderValue)"/> method.</typeparam>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.Serializer`2.Parameters">
+            <summary>
+            Provides access to the parameters parsed from the media type upon.
+            
+            This property is set during initialization (<see cref="M:HAKOM.Serialization.Core.Net.Api.Serializer`2.Configure(System.Net.Http.Headers.MediaTypeHeaderValue)"/>).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.Serializer`2.OriginalMediaType">
+            <inheritdoc/>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.Serializer`2.ParsedMediaType">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.Serializer`2.#ctor(HAKOM.Serialization.Core.Net.Api.Parametrization.ISerializationParametersFactory{`1})">
+            <summary>
+            Instantiates the serializer.
+            </summary>
+            <param name="parametersFactory">The factory that should be used to parse the serializers media type into an object of type <typeparamref name="TParameters"/>.</param>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.Serializer`2.DefaultType">
+            <summary>
+            Specifies which type should be used if the serializer is initialized with a wildcard type. (i.e. if <see cref="M:HAKOM.Serialization.Core.Net.Api.Serializer`2.Configure(System.Net.Http.Headers.MediaTypeHeaderValue)"/> is called with "*/json", the "*" is then replaced with <see cref="P:HAKOM.Serialization.Core.Net.Api.Serializer`2.DefaultType"/> so that <see cref="P:HAKOM.Serialization.Core.Net.Api.Serializer`2.ParsedMediaType"/> would become, for example: "application/json".).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Api.Serializer`2.DefaultSubType">
+            <summary>
+            Specifies which type should be used if the serializer is initialized with a wildcard type. (i.e. if <see cref="M:HAKOM.Serialization.Core.Net.Api.Serializer`2.Configure(System.Net.Http.Headers.MediaTypeHeaderValue)"/> is called with "application/*", the "*" is then replaced with <see cref="P:HAKOM.Serialization.Core.Net.Api.Serializer`2.DefaultSubType"/> so that <see cref="P:HAKOM.Serialization.Core.Net.Api.Serializer`2.ParsedMediaType"/> would become, for example: "application/xml".).
+            </summary>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.Serializer`2.Configure(System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.Serializer`2.SerializeObject(System.Object,System.IO.Stream,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.Serializer`2.DeserializeAsObject(System.IO.Stream,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Serialization.Core.Net.Api.Serializer`2.ProcessMediaType">
+            <summary>
+            Processes <see cref="P:HAKOM.Serialization.Core.Net.Api.Serializer`2.OriginalMediaType"/> and sets <see cref="P:HAKOM.Serialization.Core.Net.Api.Serializer`2.ParsedMediaType"/> based on <see cref="P:HAKOM.Serialization.Core.Net.Api.Serializer`2.DefaultType"/>, <see cref="P:HAKOM.Serialization.Core.Net.Api.Serializer`2.DefaultSubType"/> and the media type parameters parsed using the <see cref="T:HAKOM.Serialization.Core.Net.Api.Parametrization.ISerializationParametersFactory`1"/> injected into the constructor <see cref="M:HAKOM.Serialization.Core.Net.Api.Serializer`2.#ctor(HAKOM.Serialization.Core.Net.Api.Parametrization.ISerializationParametersFactory{`1})"/>.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:HAKOM.Serialization.Core.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Properties.Strings.DeserializationFailedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The object could not be deserialized: {0}.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Properties.Strings.MediaTypeCouldNotBeParsedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Media type &apos;{0}&apos; could not be parsed..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Properties.Strings.NoMatchingSerializerFoundExceptionMessage">
+            <summary>
+              Looks up a localized string similar to No serializer could be found for the type &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Properties.Strings.PropertyIsMissingInSerializationInfoMessage">
+            <summary>
+              Looks up a localized string similar to Cannot deserialize &apos;{0}&apos; because property &apos;{1}&apos; is null or missing in serialization info..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Properties.Strings.SerializationFailedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The object could not be serialized: {0}.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Properties.Strings.SerializationTypeMismatchExceptionMessage">
+            <summary>
+              Looks up a localized string similar to A value of type &apos;{0}&apos; was expected but a value of type &apos;{1}&apos; was provided instead..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Properties.Strings.UnsupportedEncodingExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The following encoding is not supported in the current context: &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Properties.Strings.UnsupportedEncodingSupportedEncodingsMessage">
+            <summary>
+              Looks up a localized string similar to Supported encodings are: {0}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Serialization.Core.Net.Properties.Strings.UnsupportedMediaTypeExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Objects of type {0} can currently not be (de)serialized to/from {1}..
+            </summary>
+        </member>
+    </members>
+</doc>

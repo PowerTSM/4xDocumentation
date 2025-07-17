@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Persistence.Sql.Oracle.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Persistence.Sql.Oracle.Net.Api.Exceptions.ClientAuthenticationProtocolNotSupportedException">
+            <summary>
+            This error occurs when attempting to connect to an Oracle database that does not support the current authentication protocol version.
+            </summary>
+            <remarks>
+            <para>
+            	This may be the case if the database is substantially older than the current Oracle client driver being used to connect to it. It can also occur when connecting to a current version of an Oracle database that has outdated authentication settings configured.
+            </para>
+            <para>
+            In order to specify the version of the authentication protocol that the database supports, configure the 'SqlNetAllowedLogonVersionClient' setting in the storage provider settings.
+            </para>
+            <para>
+            This error can be identified by its code HK12044.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Oracle.Net.Api.Exceptions.ClientAuthenticationProtocolNotSupportedException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs during an HTTP request, the request should return an HTTP response with status code 500 (internal server error) since the client making the HTTP request will have no way to solve this problem. This will have to be corrected in the HTTP services configuration.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.Oracle.Net.Api.Exceptions.DBColumnValueIsNeitherIntNorStringException">
+            <summary>
+            Thrown when the read database column is neither string nor int.
+            </summary>
+            <remarks>
+            <para>
+            When using <see cref="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.ReadBool(`3,System.Int32,System.Nullable{System.Boolean},System.Boolean)"/> with the <see cref="T:HAKOM.Persistence.Sql.Oracle.Net.Api.IOracleStorageProvider"/> the column to read must be either int or string, where "0" is false and everything except "0" is true.
+            </para>
+            <para>
+            This exception is identified by error code HK12023.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Oracle.Net.Api.Exceptions.DBColumnValueIsNeitherIntNorStringException.ColumnName">
+            <summary>
+            The name of the column, which raised the error.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Oracle.Net.Api.Exceptions.DBColumnValueIsNeitherIntNorStringException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.Oracle.Net.Api.Exceptions.InvalidValueForSqlNetAllowedLogonVersionClientException">
+            <summary>
+            This error occurs when the storage provider setting 'SqlNetAllowedLogonVersionClient' has an incorrect value.
+            </summary>
+            <remarks>
+            <para>
+            For possible values, refer to the <see href="https://docs.oracle.com/en/database/oracle/oracle-database/23/odpnt/OracleAllowedLogonVersionClientEnumeration.html#GUID-556860B6-E38A-41AD-8E5D-4944C683A059">official Oracle documentation for the <see cref="T:Oracle.ManagedDataAccess.Client.OracleAllowedLogonVersionClient"/> enumeration.</see>
+            </para>
+            <para>
+            This error can be identified by its code HK12043.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Oracle.Net.Api.Exceptions.InvalidValueForSqlNetAllowedLogonVersionClientException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs during an HTTP request, the request should return an HTTP response with status code 500 (internal server error) since the client making the HTTP request will have no way to solve this problem. This will have to be corrected in the HTTP services configuration.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.Oracle.Net.Api.Exceptions.OracleException">
+            <summary>
+            Base class for all Oracle related exceptions.
+            </summary>
+            <remarks>
+            Derived exceptions should not be thrown by code outside this module.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.Oracle.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Oracle.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Oracle.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Oracle.Net.Properties.Strings.ClientAuthenticationProtocolNotSupportedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Unable to connect to repository &apos;{0}&apos; with the currently configured client logon version: &apos;{1}&apos;. Please make sure to configure the storage provider setting for &apos;Persistence:Repositories:{0}:Provider:Settings:Setting:SqlNetAllowedLogonVersionClient&apos; to one supported by the database. Possible values: {2}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Oracle.Net.Properties.Strings.DBColumnValueIsNeitherIntNorStringExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Expected the value in the requested database column to be either an integer or a string. Got neither..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Oracle.Net.Properties.Strings.InvalidValueForSqlNetAllowedLogonVersionClientExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Invalid value in setting: &apos;Persistence:Repositories:{0}:Provider:Settings:Setting:SqlNetAllowedLogonVersionClient&apos;: &apos;{1}&apos;. Possible values: {2}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Oracle.Net.Properties.Strings.PropertyIsMissingInSerializationInfoMessage">
+            <summary>
+              Looks up a localized string similar to Cannot deserialize &apos;{0}&apos; because property &apos;{1}&apos; is null or missing in serialization info..
+            </summary>
+        </member>
+    </members>
+</doc>

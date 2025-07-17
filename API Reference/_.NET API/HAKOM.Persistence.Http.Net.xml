@@ -1,0 +1,314 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Persistence.Http.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Persistence.Http.Net.Api.Extensions.ContainerExtensions">
+            <summary>
+            Provides extension methods for adding services related to using types from the persistence module in HTTP APIs.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Persistence.Http.Net.Api.Extensions.ContainerExtensions.UseOrderModelBinder``1(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Collections.Generic.Dictionary{System.String,HAKOM.Persistence.Core.Net.Api.Ordering.Order{``0}})">
+            <summary>
+            Registers a <see cref="T:HAKOM.Serialization.Http.Net.Api.ICustomModelBinder"/> with the <paramref name="container"/> so that <see cref="T:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1"/> items can be passed to controller actions as query parameters.
+            </summary>
+            <typeparam name="TResult">The type of data for which orderings should be passable as query parameters.</typeparam>
+            <param name="container">The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to register the services with.</param>
+            <param name="expressionMappings">A collection of mappings from expression strings to <see cref="T:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1"/></param> items.
+            <returns>The <paramref name="container"/> for chaining of additional service registrations.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Http.Net.Api.Extensions.ContainerExtensions.UseRangeModelBinder``1(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers an implementation of <see cref="T:System.ICustomFormatter"/> with the <paramref name="container"/> so that <see cref="T:HAKOM.Persistence.Core.Net.Api.Paging.Range`1"/> parameters can be passed to controller actions as range headers.
+            </summary>
+            <typeparam name="TResult">The type of data for which range parameters should be supported.</typeparam>
+            <param name="container">THe <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to register the model binder with.</param>
+            <returns>The <paramref name="container"/> for chaining of additional service registrations.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Http.Net.Api.Extensions.ContainerExtensions.UseReferenceSchemaFilter(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers an implementation of <see cref="T:Swashbuckle.AspNetCore.SwaggerGen.ISchemaFilter"/> that handles return types derived from <see cref="T:HAKOM.Persistence.Core.Net.Api.References.IReference"/>.
+            </summary>
+            <param name="container">The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to register the filter with.</param>
+            <returns>The <paramref name="container"/> for chaining of additional service registrations.</returns>
+        </member>
+        <member name="T:HAKOM.Persistence.Http.Net.Api.Extensions.HttpResponseExtensions">
+            <summary>
+            Provides extension methods for modifying a controller action response with data relating to types from the persistence module.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Persistence.Http.Net.Api.Extensions.HttpResponseExtensions.TrySetRange``1(Microsoft.AspNetCore.Http.HttpResponse,HAKOM.Persistence.Core.Net.Api.Paging.Range{``0},System.Nullable{System.Int32})">
+            <summary>
+            Sets the range of the result.
+            </summary>
+            <remarks>
+            <para>
+            This should be called from within a controller action whenever a <see cref="T:HAKOM.Persistence.Core.Net.Api.Paging.Range`1"/> parameter is being processed from range headers.
+            </para>
+            <para>
+            When processing range request headers, the response should include information about the range returned, such as setting the response status code to 206 (Partial Content) and setting the Content-Range header. Calling this does all of that.
+            </para>
+            <para>
+            Note that this must be called <i>before</i> any content is returned, i.e. before any <see langword="return"/> or <see langword="yield return"/> statements. Otherwise it may fail with a <see cref="T:HAKOM.Persistence.Http.Net.Api.Paging.Exceptions.RangeCannotBeSetAfterResponseHasAlreadyStartedException"/>.
+            </para>
+            </remarks>
+            <typeparam name="TResult">The type of data for which a partial range is returned.</typeparam>
+            <param name="response">The <see cref="T:Microsoft.AspNetCore.Http.HttpResponse"/> to modify.</param>
+            <param name="range">The range that has been processed.</param>
+            <param name="total">When available the total number of available results that are not being included in the partial result.</param>
+            <returns>A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> indicating wether the response was successfully modified.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Http.Net.Api.Extensions.HttpResponseExtensions.TryUpdateRange``1(Microsoft.AspNetCore.Http.HttpResponse,System.Int32,System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Attempts to update the content range header if the response has not started yet.
+            </summary>
+            <remarks>
+            <para>
+            <see cref="M:HAKOM.Persistence.Http.Net.Api.Extensions.HttpResponseExtensions.TrySetRange``1(Microsoft.AspNetCore.Http.HttpResponse,HAKOM.Persistence.Core.Net.Api.Paging.Range{``0},System.Nullable{System.Int32})"/> should always be called when limiting results. However, when data is streamed (i.e. from a repository), the final range may not be known at this point in time, resulting in an incorrect Content-Range header. For this reason, this method should always be called after streaming. This ensures that - for small ranges where the service buffers the entire result before starting to send response headers, the Content-Range header will be set properly.
+            </para>
+            </remarks>
+            <typeparam name="TResult">The type of data for which a partial range is returned.</typeparam>
+            <param name="response">The <see cref="T:Microsoft.AspNetCore.Http.HttpResponse"/> to modify.</param>
+            <param name="start">The actual start of the range returned.</param>
+            <param name="count">The number of items returned.</param>
+            <param name="total">When available the total number of available results that are not being included in the partial result.</param>
+            <returns>A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> indicating wether the response was successfully update.</returns>
+        </member>
+        <member name="T:HAKOM.Persistence.Http.Net.Api.Extensions.SwaggerGenOptionsExtensions">
+            <summary>
+            Provides extension methods for the generation of OpenAPI documentation about types in this module.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Persistence.Http.Net.Api.Extensions.SwaggerGenOptionsExtensions.AddOrderFilter``1(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+            <summary>
+            Adds a <see cref="T:Swashbuckle.AspNetCore.SwaggerGen.IOperationFilter"/> that properly documents query parameters of type <see cref="T:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1"/>.
+            </summary>
+            <typeparam name="TResult">The type of data for which <see cref="T:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1"/> parameters should be documented.</typeparam>
+            <param name="options"></param>
+            <returns>The <paramref name="options"/> for chaining of additional configuration.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Http.Net.Api.Extensions.SwaggerGenOptionsExtensions.AddRangeFilter``1(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+            <summary>
+            Adds a <see cref="T:Swashbuckle.AspNetCore.SwaggerGen.IOperationFilter"/> that properly documents range headers.
+            </summary>
+            <typeparam name="TResult">The type of data for which <see cref="T:HAKOM.Persistence.Core.Net.Api.Paging.Range`1"/> parameters should be documented.</typeparam>
+            <param name="options"></param>
+            <returns>The <paramref name="options"/> for chaining of additional configuration.</returns>
+        </member>
+        <member name="T:HAKOM.Persistence.Http.Net.Api.Ordering.IOrderFromQueryBinder`1">
+            <summary>
+            Interface for query binder used to bind <see cref="T:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1"/> items from queries.
+            </summary>
+            <remarks>
+            Used as a dependency by the <see cref="T:Swashbuckle.AspNetCore.SwaggerGen.IOperationFilter"/> responsible for generating proper OpenAPI documentation for such paramters.
+            </remarks>
+            <typeparam name="TResult"></typeparam>
+        </member>
+        <member name="P:HAKOM.Persistence.Http.Net.Api.Ordering.IOrderFromQueryBinder`1.SupportedOrderings">
+            <summary>
+            A mapping between expressions supported for ordering <typeparamref name="TResult"/> and their respective <see cref="T:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1"/> implementations.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Http.Net.Api.Paging.Exceptions.InvalidRangeRequestException">
+            <summary>
+            Indicates that the 'Range' header included in the request contains malformed data.
+            </summary>
+            <remarks>
+            <para>
+            Make sure that the 'Range' header includes valid data only.
+            </para>
+            <para>This error may be identified by code HK12034.</para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Http.Net.Api.Paging.Exceptions.InvalidRangeRequestException.EquivalentHttpStatusCode">
+            <summary>
+            When this error occurs during processing of an HTTP request, the response should be returned with a status code 415 (Requested Range Not Satisfiable).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Http.Net.Api.Paging.Exceptions.InvalidRangeUnitException">
+            <summary>
+            Indicates that the 'Range' headers unit is not supported by the accessed endpoint.
+            </summary>
+            <remarks>
+            <para>
+            Make sure that the 'Range' header refers to a unit acceptable by this endpoint. Inspect the 'Accept-Ranges' header for information about which units are supported
+            </para>
+            <para>This error may be identified by code HK12035.</para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Http.Net.Api.Paging.Exceptions.InvalidRangeUnitException.EquivalentHttpStatusCode">
+            <summary>
+            When this error occurs during processing of an HTTP request, the response should be returned with a status code 415 (Requested Range Not Satisfiable).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Http.Net.Api.Paging.Exceptions.MultiRangeRequestsNotSupportedException">
+            <summary>
+            Indicates that the 'Range' header contained multiple ranges.
+            </summary>
+            <remarks>
+            <para>
+            Multi-Range requests, i.e. requests that should return more than one continuous range, are currently not supported. Please make sure to only specify a single range.
+            </para>
+            <para>This error may be identified by code HK12036.</para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Http.Net.Api.Paging.Exceptions.MultiRangeRequestsNotSupportedException.EquivalentHttpStatusCode">
+            <summary>
+            When this error occurs during processing of an HTTP request, the response should be returned with a status code 415 (Requested Range Not Satisfiable).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Http.Net.Api.Paging.Exceptions.RangeCannotBeSetAfterResponseHasAlreadyStartedException">
+            <summary>
+            Indicates that an attempt was made to modify the response status code or set range related headers after headers (and possibly data) has already been sent to the client.
+            </summary>
+            <remarks>
+            <para>
+            Make sure to call <see cref="M:HAKOM.Persistence.Http.Net.Api.Extensions.HttpResponseExtensions.TrySetRange``1(Microsoft.AspNetCore.Http.HttpResponse,HAKOM.Persistence.Core.Net.Api.Paging.Range{``0},System.Nullable{System.Int32})"/> <b>before</b> any calls to <see langword="return"/> or <see langword="yield return"/>.
+            </para>
+            <para>
+            This error can be identified by code HK12037.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Http.Net.Api.Paging.Exceptions.RangeCannotBeSetAfterResponseHasAlreadyStartedException.EquivalentHttpStatusCode">
+            <summary>
+            When this exception is thrown while processing an HTTP request, the response should be returned with status code 500 (Internal Server Error). This error is most likely due to an implementation issue and will require code changes to be fixed. Report any occurrence of this error to the developers.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Http.Net.Api.Paging.Exceptions.RangeRequestParameterOutOfBoundsException">
+            <summary>
+            Indicates that the 'Range' headers parameters are outside of the bounds permitted.
+            </summary>
+            <remarks>
+            <para>
+            Make sure the range parameters (start/end) are not outside the range from 0 to <see cref="F:System.Int32.MaxValue"/> and that the 'end' is greater than the 'start' of the range.
+            </para>
+            <para>This error may be identified by code HK12038.</para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Http.Net.Api.Paging.Exceptions.RangeRequestParameterOutOfBoundsException.EquivalentHttpStatusCode">
+            <summary>
+            When this error occurs during processing of an HTTP request, the response should be returned with a status code 415 (Requested Range Not Satisfiable).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Http.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Http.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Http.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Http.Net.Properties.Strings.InvalidRangeRequestExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The requested range is not properly formatted or contains invalid values: &apos;{0}&apos;. .
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Http.Net.Properties.Strings.InvalidRangeUnitExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The given unit &apos;{1}&apos; is not acceptable for this request. Please refer to the &apos;Accept-Ranges&apos; header for valid units. This endpoint only supports &apos;{0}&apos; as a unit..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Http.Net.Properties.Strings.MultiRangeRequestsNotSupportedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Multipart ranges are not supported at the moment. Please specify a single range..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Http.Net.Properties.Strings.RangeCannotBeSetAfterResponseHasAlreadyStartedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Attempted to set range response properties (Content-Range headers, 206 status code) after response headers have already been sent..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Http.Net.Properties.Strings.RangeRequestParameterOutOfBoundsExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Requested range contains invalid value &apos;{0}&apos;. Values must be in the range of {1}-{2}..
+            </summary>
+        </member>
+        <member name="T:HAKOM.Serialization.Http.Net.Api.CustomReferenceFromRouteBinder`2">
+            <summary>
+            Base class for model binders that bind route/path parameters to complex types implementing <see cref="T:HAKOM.Persistence.Core.Net.Api.References.IReference"/>, i.e. objects that refer to items stored in a repository.
+            </summary>
+            <remarks>
+            <para>
+            Instead of having every controller action parse string parameters from path parameters that should resolve to an item stored in the database, a custom model binder can be used to do this in one central place.
+            </para>
+            <para>
+            Deriving from this abstract class means less boiler-plate code has to be written in the specific binder. This also ensures that error handling, etc. is done in a consistent way.
+            </para>
+            </remarks>
+            <typeparam name="TReference">The specific implementation type the binder can handle.</typeparam>
+            <typeparam name="TStore">The store used to look up the reference.</typeparam>
+        </member>
+        <member name="M:HAKOM.Serialization.Http.Net.Api.CustomReferenceFromRouteBinder`2.GetRequiredStore(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext,System.Threading.CancellationToken)">
+            <summary>
+            Override this and return an instance of <typeparamref name="TStore"/> in the result.
+            </summary>
+            <remarks>
+            <para>
+            When the implementation returns successfully, the store will be passed to either <see cref="M:HAKOM.Serialization.Http.Net.Api.CustomReferenceFromRouteBinder`2.TryCreateReferenceFromId(System.String,`1,Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext,System.Threading.CancellationToken)"/> or <see cref="M:HAKOM.Serialization.Http.Net.Api.CustomReferenceFromRouteBinder`2.TryCreateReferenceFromName(System.String,`1,Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext,System.Threading.CancellationToken)"/> depending on the format of the path value (i.e. depending if it is prefixed with "id:").
+            </para>
+            <para>
+            When the implementation returns with a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/>, the request will be terminated with an appropriate error message.
+            </para>
+            </remarks>
+            <param name="bindingContext">The context in which the model is being bound, i.e. the current request and information about it and its parameters.</param>
+            <param name="cancellationToken">A token that may be used by the method to cancel the ongoing operation. This should be used to prevent unneccessary work when the underlying request has been aborted for some reason.</param>
+            <returns>A task that completes with an instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> which indicates either successful initialization of the store, or a failure that occurred when initialization was attempted.</returns>
+        </member>
+        <member name="M:HAKOM.Serialization.Http.Net.Api.CustomReferenceFromRouteBinder`2.TryCreateReferenceFromName(System.String,`1,Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext,System.Threading.CancellationToken)">
+            <summary>
+            Override this and return the instance of <typeparamref name="TReference"/> that should be bound to the parameter value.
+            </summary>
+            <remarks>
+            <para>
+            It is up to the implementation to decide wether or not to return an already resolved reference, allowing the implementation to defer error handling to the controller action, for example if the store does not contain an item with that name. This is to reduce overhead in actions that do not actually require the item to be loaded.
+            </para>
+            </remarks>
+            <param name="name">The name the item is identified by within the <paramref name="store"/>.</param>
+            <param name="store">The store in which the item resides.</param>
+            <param name="bindingContext">The context in which the model is being bound, i.e. the current request and information about it and its parameters.</param>
+            <param name="cancellationToken">A token that may be used by the method to cancel the ongoing operation. This should be used to prevent unneccessary work when the underlying request has been aborted for some reason.</param>
+            <returns>A task that completes with an instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> which indicates either successful creation of the reference, or a failure that occurred when creation was attempted.</returns>
+        </member>
+        <member name="M:HAKOM.Serialization.Http.Net.Api.CustomReferenceFromRouteBinder`2.TryCreateReferenceFromId(System.String,`1,Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext,System.Threading.CancellationToken)">
+            <summary>
+            Override this and return the instance of <typeparamref name="TReference"/> that should be bound to the parameter value.
+            </summary>
+            <remarks>
+            <para>
+            It is up to the implementation to decide wether or not to return an already resolved reference, allowing the implementation to defer error handling to the controller action, for example if the store does not contain an item with that identifier. This is to reduce overhead in actions that do not actually require the item to be loaded.
+            </para>
+            </remarks>
+            <param name="id">The identifier of the item within the <paramref name="store"/>.</param>
+            <param name="store">The store in which the item resides.</param>
+            <param name="bindingContext">The context in which the model is being bound, i.e. the current request and information about it and its parameters.</param>
+            <param name="cancellationToken">A token that may be used by the method to cancel the ongoing operation. This should be used to prevent unneccessary work when the underlying request has been aborted for some reason.</param>
+            <returns>A task that completes with an instance of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> which indicates either successful creation of the reference, or a failure that occurred when creation was attempted.</returns>
+        </member>
+        <member name="M:HAKOM.Serialization.Http.Net.Api.CustomReferenceFromRouteBinder`2.BindModel(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext,System.Threading.CancellationToken)">
+            <summary>
+            Virtual implementation of the actual binding.
+            </summary>
+            <remarks>
+            <para>
+            This method takes care of calling the other abstract methods and producing appropriate (and consistent) error handling accross implementations.
+            </para>
+            <para>
+            Implementations should probably not override this.
+            </para>
+            </remarks>
+            <param name="bindingContext">The context in which the model is being bound, i.e. the current request and information about it and its parameters.</param>
+            <param name="cancellationToken">A token that may be used by the method to cancel the ongoing operation. This should be used to prevent unneccessary work when the underlying request has been aborted for some reason.</param>
+            <returns>A task that completes when binding has completed. This does not indicate success. Instead, the <see cref="P:Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext.Result"/> property of <paramref name="bindingContext"/> will be set accordingly.</returns>
+        </member>
+    </members>
+</doc>
