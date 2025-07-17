@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Documentation.Http</name>
+    </assembly>
+    <members>
+        <member name="P:HAKOM.Documentation.Http.Api.Exceptions.MissingRootConfigurationException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Api.Exceptions.RootIsNotAnAbsolutePathException">
+            <summary>
+            Thrown when a configured root is not set as an absolute path.
+            </summary>
+            <remarks>
+            The exception indicates a configuration error.
+            </remarks>
+            <para>
+            This exception is identified by error code HK16002.
+            </para>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Api.Exceptions.RootIsNotAnAbsolutePathException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.FolderContentVersionProvider">
+            <summary>
+            Provides versions based on the subfolders of a configured folder.
+            </summary>
+            <remarks>
+            This service watches the location given in <see cref="P:HAKOM.Documentation.Http.Api.DocumentationServiceSettings.VersionsPath"/> and when <see cref="M:HAKOM.Documentation.Http.FolderContentVersionProvider.GetVersions"/> is called, it returns a version for each folder that have a name that can be parsed to a <see cref="T:HAKOM.Versioning.Core.Net.Api.IVersion"/> by the given <see cref="T:HAKOM.Versioning.Core.Net.Api.IVersionFactory"/>.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Program">
+            <summary>
+            Hosts the API documentation.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.Program.Main(System.String[])">
+            <summary>
+            Runs the service that hosts the API documentation.
+            </summary>
+            <param name="args">Command line arguments.</param>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Properties.Strings.MissingRootConfigurationMessage">
+            <summary>
+              Looks up a localized string similar to There is no root directory configured. Make sure to have Documentation:Http:Root set to an absolute path that contains one or more folders each containing a version of the documentation.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Properties.Strings.RootIsNotAnAbsolutePathMessage">
+            <summary>
+              Looks up a localized string similar to The value configured for the root directory is not an absolute path. Please adjust the configuration accordingly..
+            </summary>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.RequestVersionMiddleware">
+            <summary>
+            Looks at the request path to see what version is being accessed
+            </summary>
+            <remarks>
+            If there _is_ a version, it parses it, and then checks if it exists.
+            If it doesnt exist, it redirects to 404 
+            If it _does_ exist, it adds the parsed version to HttpContext.Items (for other parts of the pipeline to use)
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.RequestVersionMiddleware.TryParseAndMatchVersion(System.String,HAKOM.Versioning.Core.Net.Api.IVersionFactory,HAKOM.Versioning.Core.Net.Api.IVersionProvider,HAKOM.Versioning.Core.Net.Api.IVersion@,System.String@,System.Boolean@)">
+            <summary>
+            Does the actual parsing
+            </summary>
+            <param name="requestedPath"></param>
+            <param name="versionFactory"></param>
+            <param name="versionProvider"></param>
+            <param name="version"></param>
+            <param name="requestedPathWithMatchedVersion"></param>
+            <param name="isVersionRootWithoutTrailingSlash"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

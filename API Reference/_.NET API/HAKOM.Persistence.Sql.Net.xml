@@ -1,0 +1,560 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Persistence.Sql.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Persistence.Sql.Net.Api.Exceptions.AttemptingToConnectToSqlDatabaseFailedException">
+            <summary>
+            The exception that is thrown when no connection to the SQL data base has been established.
+            </summary>
+            <remarks>
+            <para>
+            When using <see cref="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.PrepareConnection(System.Threading.CancellationToken)"/> and no connection could be established to the database this exception is thrown.
+            Check the repository settings and whether these settings can be used to connect to the database from the computer running the code.
+            </para>
+            <para>
+            This exception is identified by error code HK12028.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Api.Exceptions.AttemptingToConnectToSqlDatabaseFailedException.Settings">
+            <summary>
+            The configuration settings that contain information about the connection to which no connection could be established.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Api.Exceptions.AttemptingToConnectToSqlDatabaseFailedException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.Net.Api.Exceptions.ColumnIsNullException">
+            <summary>
+            Thrown when attempting to read null values with not-nullable return types.
+            </summary>
+            <remarks>
+            <para>
+            When using any Read* method in <see cref="T:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6"/> without the "nullValue" parameter and an expected not-nullable return value, this exception is thrown if the read value is null. 
+            Either change the expected return value to a nullable type, provide the "nullValue" parameter to return a default not-nullable value if the read column is null, or ensure that the column will not return a null value when read.
+            </para>
+            <para>
+            This exception is identified by error code HK12025.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Api.Exceptions.ColumnIsNullException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.Net.Api.Exceptions.ConnectionDidNotReturnTheProperCommandTypeException">
+            <summary>
+            <see cref="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.TryCreateCommand(`0)"/> is not able to create a command object.
+            </summary>
+            <remarks>
+            <para>
+            When using <see cref="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.TryCreateCommand(`0)"/> the CreateCommand method of TConnection may not return null.
+            </para>
+            <para>
+            This exception is identified by error code HK12018.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Api.Exceptions.ConnectionDidNotReturnTheProperCommandTypeException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.Net.Api.Exceptions.InvalidColumnTypeException">
+             <summary>
+             Thrown if the column type does not match the expected type.
+             </summary>
+             <remarks>
+             <para>
+             When using any Read* method in <see cref="T:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6"/> the column type must match the expected type of the read method. 
+             Following table shows which method expects which c# type. If a database does not support this type an overload for that method must be provided for that storage provider.
+             </para>
+             <list type="table">
+            <listheader>
+            <term>Method name</term>
+            <term>Expected type</term>
+            </listheader>
+            <item>
+            <term>ReadBool</term>
+            <term>bool</term>
+            </item>
+            <item>
+            <term>ReadByte</term>
+            <term>byte</term>
+            </item>
+            <item>
+            <term>ReadShort</term>
+            <term>Int16</term>
+            </item>
+            <item>
+            <term>ReadInt</term>
+            <term>Int32</term>
+            </item>
+            <item>
+            <term>ReadLong</term>
+            <term>long</term>
+            </item>
+            <item>
+            <term>ReadString</term>
+            <term>string</term>
+            </item>
+            <item>
+            <term>ReadDateTimeOffset</term>
+            <term>DateTime</term>
+            </item>
+            <item>
+            <term>ReadDecimal</term>
+            <term>decimal</term>
+            </item>
+             </list>
+             <para>
+             This exception is identified by error code HK12010.
+             </para>
+             </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Api.Exceptions.InvalidColumnTypeException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.Net.Api.Exceptions.NoParserSuppliedException">
+            <summary>
+            Neither sync nor async parser function was supplied for a select method of: <see cref="T:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6"/>.
+            </summary>
+            <remarks>
+            <para>
+            When using a Select method of <see cref="T:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6"/> a parser has to be provided (either sync or async) as a parameter.
+            </para>
+            <para>
+            This exception is identified by error code HK12019.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Api.Exceptions.NoParserSuppliedException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.Net.Api.Exceptions.ParserThrewAnErrorException">
+            <summary>
+            This exception is thrown when a value from an SQL database (with Select or TrySelect) could not be parsed to the desired object.
+            </summary>
+            <remarks>
+            <para>
+            When using any overload of <see cref="M:HAKOM.Persistence.Sql.Net.Api.ISqlStorageProvider`1.Select``1(System.String,System.Func{`0,System.Threading.Tasks.Task{``0}},System.Threading.CancellationToken)"/> or 
+            <see cref="M:HAKOM.Persistence.Sql.Net.Api.ISqlStorageProvider`1.TrySelect``1(System.String,System.Func{`0,System.Threading.Tasks.Task{``0}},System.Boolean,System.Threading.CancellationToken)"/> and the given parser throws an exception
+            this exception is thrown as a wrapper exception with the exception of the parser as inner exception.
+            </para>
+            <para>
+            This exception is identified by error code HK12032.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Api.Exceptions.ParserThrewAnErrorException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.Net.Api.Exceptions.ProviderFactoryDidNotReturnTheProperConnectionTypeException">
+            <summary>
+            Thrown if the <see cref="T:System.Data.Common.DbProviderFactory"/> returns a connection type which does not match TConnection of <see cref="T:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6"/>.
+            </summary>
+            <remarks>
+            <para>
+            The <see cref="T:System.Data.Common.DbProviderFactory"/> provided for <see cref="T:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6"/> initialization must return for <see cref="M:System.Data.Common.DbProviderFactory.CreateConnection"/> the same type for TConnection as given in the storage provider.
+            </para>
+            <para>
+            This exception is identified by error code HK12016.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Api.Exceptions.ProviderFactoryDidNotReturnTheProperConnectionTypeException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.Net.Api.Exceptions.SelectQueryDidNotReturnAnyRowsException">
+            <summary>
+            Thrown when a call to <see cref="M:HAKOM.Persistence.Sql.Net.Api.ISqlStorageProvider`1.SelectFirst``1(System.String,System.Func{`0,System.Threading.Tasks.Task{``0}},System.Threading.CancellationToken)"/> or similar returned no results.
+            </summary>
+            <remarks>
+            <para>
+            Either modify the query to return a result or insert data that matches the query before calling the method again.
+            </para>
+            <para>
+            This error is identified by error code HK12029.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Api.Exceptions.SelectQueryDidNotReturnAnyRowsException.Query">
+            <summary>
+            The query, which caused the problem.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Api.Exceptions.SelectQueryDidNotReturnAnyRowsException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 404 (Not Found).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.Net.Api.Exceptions.UnexpectedErrorDuringQueryException">
+            <summary>
+            Thrown when an unexpected error occurred during an SQL query.
+            </summary>
+            <remarks>
+            <para>
+            This may be due to an error with the database connection or an incorrect query.
+            Inspect the <see cref="P:HAKOM.Persistence.Sql.Net.Api.Exceptions.UnexpectedErrorDuringQueryException.Query"/> and make sure a stable connection can be maintained with the underlying database.
+            </para>
+            <para>
+            This error is identified by error code HK12030.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Api.Exceptions.UnexpectedErrorDuringQueryException.Query">
+            <summary>
+            The query, which caused the problem.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Api.Exceptions.UnexpectedErrorDuringQueryException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Api.ISqlStorageProvider`3.OrderCollation">
+            <summary>
+            The collation that's configured to be used when explicitly ordering results by individual columns.
+            </summary>
+            <remarks>
+            <para>
+            May be null indicating no explicit collation should be used.
+            </para>
+            <para>
+            Note that collation will not be applied by the storage provider. The calling code must modify its queries to add the COLLATE statement to the order by clauses. This property is just to provide access to the configured value (or a sensible default if none is configured).
+            </para>
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6">
+            <summary>
+            Base class for SQL-based storage providers.
+            </summary>
+            <typeparam name="TConnection"></typeparam>
+            <typeparam name="TCommand"></typeparam>
+            <typeparam name="TNativeParameter"></typeparam>
+            <typeparam name="TReader"></typeparam>
+            <typeparam name="TParameter"></typeparam>
+            <typeparam name="TParameterFactory"></typeparam>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.MultipleCharacterRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>%</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match '%'.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.SingleCharacterRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>_</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match '_'.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.FindAsteriskRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>(?&lt;!\\\\)\\*(?!/)</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Zero-width negative lookbehind.<br/>
+                ○ Match '\\' right-to-left.<br/>
+            ○ Match '*'.<br/>
+            ○ Zero-width negative lookahead.<br/>
+                ○ Match '/'.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.FindQuestionMarkRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>(?&lt;!\\\\)\\?(?!/)</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Zero-width negative lookbehind.<br/>
+                ○ Match '\\' right-to-left.<br/>
+            ○ Match '?'.<br/>
+            ○ Zero-width negative lookahead.<br/>
+                ○ Match '/'.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.Open(`0,System.Threading.CancellationToken)">
+            <summary>
+            Override this method to perform all operations necessary to
+            establish a connection asynchronously.
+            </summary>
+            <param name="connection">The <see typeref="TConnection"/> that should be opened</param>
+            <param name="cancellationToken">Propagates a notification if the operations should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> that completes when the <see typecref="TConnection"/> has been opened.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.Close(`0,System.Threading.CancellationToken)">
+            <summary>
+            Override this method to perform all operations necessary to
+            close down a connection asynchronously.
+            </summary>
+            <param name="connection">The <see typecref="TConnection"/> that should be closed</param>
+            <param name="cancellationToken">Propagates a notification if the operations should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> that completes when the <see typecref="TConnection"/> has been closed.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.PrepareCommand(`1,System.Threading.CancellationToken)">
+            <summary>
+            Optionally call the provider-specific implementation of Prepare on
+            the <see typecref="TCommand"/> provided. Return a completed <see cref="T:System.Threading.Tasks.Task"/> if
+            no preparation of commands is to be performed.
+            </summary>
+            <param name="command">The <see typecref="TCommand"/> to be prepared.</param>
+            <param name="cancellationToken">Propagates a notification if the operations should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> that completes when the <see typecref="TCommand"/> has been prepared.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.TryExecute(System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.TryExecute(System.String,System.Threading.CancellationToken,`4[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.TrySelectFirst``1(System.String,System.Func{`3,System.Threading.Tasks.Task{``0}},System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.TrySelectFirst``1(System.String,System.Func{`3,``0},System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.TrySelectFirst``1(System.String,System.Collections.Generic.IEnumerable{`4},System.Func{`3,System.Threading.Tasks.Task{``0}},System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.TrySelectFirst``1(System.String,System.Collections.Generic.IEnumerable{`4},System.Func{`3,``0},System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.ApplyProviderSettings(System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
+            <summary>
+            Handles common settings for SQL based storage providers. The following are currently handled:
+            <list type="bullet">
+            	<item>"MaxDbConnections" (integer) - controls how many concurrent connections to the database should be opened at most.</item>
+            </list>
+            If derived classes override this, they should call
+            <code>
+            settings = await base.ApplyProviderSettings(<paramref name="settings"/>).ConfigureAwait(false);
+            </code>
+            first.
+            If a derived implementation wants to take over the handling of one of the aforementioned common settings, it can do so before calling the base implementation and then remove the respective key from the dictionary before passing it to base.ApplyProviderSettings.
+            </summary>
+            <param name="settings">The settings to apply</param>
+            <returns>The remaining settings from <paramref name="settings"/> that could not be applied to the storage provider.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.ThrowColumnIsNullException``1(`3,System.Int32)">
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:HAKOM.Persistence.Sql.Net.Api.Exceptions.ColumnIsNullException"></exception>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Properties.Strings.AttemptingToConnectToSqlDatabaseFailedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Failed attempt to connect to a SQL database..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Properties.Strings.ColumnIsNullExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Value in column {0} is null..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Properties.Strings.ConnectionDidNotReturnTheProperCommandTypeExceptionMessageMessage">
+            <summary>
+              Looks up a localized string similar to Command could not be created for the connection &apos;{0}&apos;.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Properties.Strings.InvalidColumnTypeExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Column {0} is not of type {1} but of type {2}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Properties.Strings.NoParserSuppliedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Select method has been called with neither sync nor async parser function, please make sure either one of them is not null..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Properties.Strings.ParserThrewAnErrorExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Error parsing a database entry into the respective object. See inner exception for more details..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Properties.Strings.PropertyIsMissingInSerializationInfoMessage">
+            <summary>
+              Looks up a localized string similar to Cannot deserialize &apos;{0}&apos; because property &apos;{1}&apos; is null or missing in serialization info..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Properties.Strings.ProviderFactoryDidNotReturnTheProperConnectionTypeExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Provider factory did not return the proper connection type..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Properties.Strings.SelectQueryDidNotReturnAnyRowsExceptionMessage">
+            <summary>
+              Looks up a localized string similar to No results for query..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.Net.Properties.Strings.UnexpectedErrorDuringQueryExceptionMessage">
+            <summary>
+              Looks up a localized string similar to An unexpected error occurred while executing a query..
+            </summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.MultipleCharacterRegex_0">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the MultipleCharacterRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.MultipleCharacterRegex_0.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.MultipleCharacterRegex_0.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.MultipleCharacterRegex_0.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.MultipleCharacterRegex_0.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.MultipleCharacterRegex_0.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.MultipleCharacterRegex_0.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.MultipleCharacterRegex_0.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.SingleCharacterRegex_1">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the SingleCharacterRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.SingleCharacterRegex_1.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SingleCharacterRegex_1.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.SingleCharacterRegex_1.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SingleCharacterRegex_1.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.SingleCharacterRegex_1.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SingleCharacterRegex_1.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SingleCharacterRegex_1.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.FindAsteriskRegex_2">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the FindAsteriskRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.FindAsteriskRegex_2.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.FindAsteriskRegex_2.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.FindAsteriskRegex_2.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.FindAsteriskRegex_2.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.FindAsteriskRegex_2.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.FindAsteriskRegex_2.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.FindAsteriskRegex_2.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.FindAsteriskRegex_2.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.FindQuestionMarkRegex_3">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the FindQuestionMarkRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.FindQuestionMarkRegex_3.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.FindQuestionMarkRegex_3.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.FindQuestionMarkRegex_3.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.FindQuestionMarkRegex_3.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.FindQuestionMarkRegex_3.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.FindQuestionMarkRegex_3.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.FindQuestionMarkRegex_3.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.FindQuestionMarkRegex_3.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.Utilities">
+            <summary>Helper methods used by generated <see cref="T:System.Text.RegularExpressions.Regex"/>-derived implementations.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout">
+            <summary>Default timeout value set in <see cref="T:System.AppContext"/>, or <see cref="F:System.Text.RegularExpressions.Regex.InfiniteMatchTimeout"/> if none was set.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_hasTimeout">
+            <summary>Whether <see cref="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout"/> is non-infinite.</summary>
+        </member>
+    </members>
+</doc>

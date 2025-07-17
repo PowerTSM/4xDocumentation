@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Serialization.Http.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Serialization.Http.Net.Api.Extensions.MvcOptionsExtensions">
+            <summary>
+            Allows using HAKOM formatters with the Microsoft.AspNetCore.Mvc framework.
+            </summary>
+            <remarks>
+            Usage:
+            <code>
+            
+            </code>
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Serialization.Http.Net.Api.Extensions.MvcOptionsExtensions.AddHakomFormatters(Microsoft.AspNetCore.Mvc.MvcOptions,System.Boolean)">
+            <summary>
+            Adds HAKOM input and output formatters to the given <paramref name="mvcOptions"/>.
+            </summary>
+            <param name="mvcOptions">The <see cref="T:Microsoft.AspNetCore.Mvc.MvcOptions"/> to add the formatters to.</param>
+            <param name="clearExistingFormatters">Wether or not to clear previously added Input/OutputFormatters.</param>
+            <returns>The modified <paramref name="mvcOptions"/> for chaining.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="mvcOptions"/> is null.</exception>
+        </member>
+        <member name="M:HAKOM.Serialization.Http.Net.Api.Extensions.MvcOptionsExtensions.AddHakomModelBinders(Microsoft.AspNetCore.Mvc.MvcOptions)">
+            <summary>
+            Adds the ability to use <see cref="T:HAKOM.Serialization.Http.Net.Api.ICustomModelBinder"/> implementations with the MVC framework
+            </summary>
+            <param name="mvcOptions">The <see cref="T:Microsoft.AspNetCore.Mvc.MvcOptions"/> to configure.</param>
+            <returns>The <paramref name="mvcOptions"/> for chaining additional configuration calls.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="mvcOptions"/> is null.</exception>
+        </member>
+        <member name="T:HAKOM.Serialization.Http.Net.SerializerBasedInputFormatter">
+            <summary>
+            Used by the MVC framework to read data from the request body.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Serialization.Http.Net.SerializerBasedOutputFormatter">
+            <summary>
+            Used by the MVC framework to write data to the response.
+            </summary>
+        </member>
+    </members>
+</doc>

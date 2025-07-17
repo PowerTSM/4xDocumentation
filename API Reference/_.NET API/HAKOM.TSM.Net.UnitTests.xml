@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.TSM.Net.UnitTests</name>
+    </assembly>
+    <members>
+        <member name="M:HAKOM.TSM.Net.UnitTests.TimeSeries.Persistence.Sql.SqlTimeSeriesStoreTests`4.GetMockTimeSeriesReferences">
+            <summary>
+            Required because of breaking change in how xUnit handles [MemberData].
+            See https://github.com/xunit/xunit/issues/1976
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

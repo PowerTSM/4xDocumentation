@@ -1,0 +1,321 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Configuration.Core.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Configuration.Core.Net.Api.ConfigurationSourceFactory`1">
+            <summary>
+            Loads referenced configurations of one configuration type (e.g. Xml).
+            </summary>
+            <typeparam name="TOptions">Class containing the properties of the configuration type.</typeparam>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Api.ConfigurationSourceFactory`1.Type">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Configuration.Core.Net.Api.ConfigurationSourceFactory`1.Create(Microsoft.Extensions.Configuration.IConfigurationSection,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:HAKOM.Configuration.Core.Net.Api.Defaults.IDefaultFileName">
+            <summary>
+            The default file name if default configuration should be loaded
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Api.Defaults.IDefaultFileName.Name">
+            <summary>
+            The default file name if default configuration should be loaded
+            </summary>
+        </member>
+        <member name="M:HAKOM.Configuration.Core.Net.Api.Defaults.IDefaultFileName.Default">
+            <summary>
+            Creates a new instance of the default file name.
+            </summary>
+            <returns>a new instance of the default file name.</returns>
+        </member>
+        <member name="T:HAKOM.Configuration.Core.Net.Api.Defaults.IDefaultPrefix">
+            <summary>
+            The default prefix if default configuration should be loaded
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Api.Defaults.IDefaultPrefix.Prefix">
+            <summary>
+            The default prefix if default configuration should be loaded
+            </summary>
+        </member>
+        <member name="M:HAKOM.Configuration.Core.Net.Api.Defaults.IDefaultPrefix.Default">
+            <summary>
+            Creates a new instance of the default prefix.
+            </summary>
+            <returns>a new instance of the default prefix.</returns>
+        </member>
+        <member name="T:HAKOM.Configuration.Core.Net.Api.Exceptions.ConfigurationAlreadyAddedException">
+            <summary>
+            Thrown when an attempt was made to add a configuration, which has already been registered. Indicates the possibility of a circular reference or that the configuration exists multiple times.
+            </summary>
+            <remarks>
+            <para>
+            Ensure, that there are no circular references and that there are no duplicates in the configuration source.
+            </para>
+            <para>
+            This exception is identified by error code HK06007
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Api.Exceptions.ConfigurationAlreadyAddedException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Configuration.Core.Net.Api.Exceptions.ConfigurationFileNotFoundException">
+            <summary>
+            Thrown when the non optional configuration file was not found.
+            </summary>
+            <remarks>
+            <para>
+            Ensure, that all files defined in the configuration options actually exist.
+            </para>
+            <para>
+            This exception is identified by error code HK06008
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Api.Exceptions.ConfigurationFileNotFoundException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Configuration.Core.Net.Api.Exceptions.ConfigurationOptionCannotBeNullException">
+            <summary>
+            Thrown when a non-nullable configuration option is either not provided, empty or null.
+            </summary>
+            <remarks>
+            <para>
+            Ensure that all non-nullable configuration options have a value.
+            </para>
+            <para>
+            This exception is identified by error code HK06009
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Api.Exceptions.ConfigurationOptionCannotBeNullException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Api.Exceptions.InvalidRequiredConfigurationValueException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Api.Exceptions.MissingRequiredConfigurationValueException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Configuration.Core.Net.Api.Exceptions.NoConfigurationSourceFactoryForConfigurationEntryFoundException">
+            <summary>
+            Thrown when there is no registered ConfigurationSourceFactory for a configuration entry.
+            </summary>
+            <remarks>
+            <para>
+            Use one of the extension methods in <see cref="T:HAKOM.Configuration.Core.Net.Api.Extensions.ContainerExtensions"/> to register the necessary factory.
+            </para>
+            <para>
+            This exception is identified by error code HK06010
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Api.Exceptions.NoConfigurationSourceFactoryForConfigurationEntryFoundException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Configuration.Core.Net.Api.Exceptions.NoConfigurationSourceSpecifiedException">
+            <summary>
+            Thrown when there was no configuration source specified.
+            </summary>
+            <remarks>
+            <para>
+            Ensure that there is a configuration source or that "includeExisting" is true in the call to
+            <see cref="M:HAKOM.Configuration.Core.Net.Api.Extensions.ContainerExtensions.UseConfiguration(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Action{Microsoft.Extensions.Configuration.IConfigurationBuilder},System.Boolean)"/>
+            or any of its overloads.
+            </para>
+            <para>
+            This exception is identified by error code HK06004
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Api.Exceptions.NoConfigurationSourceSpecifiedException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Configuration.Core.Net.Api.Extensions.ConfigurationBuilderExtensions">
+            <summary>
+            Extends <see cref="T:Microsoft.Extensions.Configuration.IConfigurationBuilder"/> to allow adding common configuration
+            sources specific to HAKOM.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Configuration.Core.Net.Api.Extensions.ConfigurationBuilderExtensions.AddHakomCommandLine(Microsoft.Extensions.Configuration.IConfigurationBuilder,System.Collections.Generic.IList{System.String},System.String,System.Boolean)">
+            <summary>
+            Adds configuration from a list of strings (usually command line
+            arguments). Configuration should be passed in the form
+            --{<paramref name="parameterPrefix"/>}:{key}={value}
+            </summary>
+            <param name="configurationBuilder">The <see cref="T:Microsoft.Extensions.Configuration.IConfigurationBuilder"/> to add command line arguments to.</param>
+            <param name="arguments">The list of arguments that should be parsed.</param>
+            <param name="parameterPrefix">A string that all configuration arguments should start with (default: HAKOM).</param>
+            <param name="removeFromArguments">Wether or not to remove matched arguments from <paramref name="arguments"/>.
+            This may be useful to prevent other argument parsing logic from trying to interpret configuration arguments.</param>
+            <returns></returns>
+        </member>
+        <member name="M:HAKOM.Configuration.Core.Net.Api.Extensions.ConfigurationBuilderExtensions.AddHakomEnvironmentVariables(Microsoft.Extensions.Configuration.IConfigurationBuilder,System.String)">
+            <summary>
+            Adds environment variables as a source for configuration to the given
+            <see cref="T:Microsoft.Extensions.Configuration.IConfigurationBuilder"/> instance.
+            </summary>
+            <param name="configurationBuilder">The <see cref="T:Microsoft.Extensions.Configuration.IConfigurationBuilder"/>
+            to add environment variables to.</param>
+            <param name="prefix">The prefix by which environment variables used
+            for configuration distinguish themselves from other system variables.</param>
+            <returns>The <see cref="T:Microsoft.Extensions.Configuration.IConfigurationBuilder"/> instance itself
+            for chaining.</returns>
+        </member>
+        <member name="T:HAKOM.Configuration.Core.Net.Api.Extensions.ContainerExtensions">
+            <summary>
+            Extends <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> with methods for setting up
+            configuration which can then be used by individual components by
+            injecting an <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> instance.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Configuration.Core.Net.Api.Extensions.ContainerExtensions.UseConfiguration(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Action{Microsoft.Extensions.Configuration.IConfigurationBuilder},System.Boolean)">
+            <summary>
+            Registers an <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> instance with the given <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/>.
+            </summary>
+            <param name="container">The container to register the configuration with.</param>
+            <param name="configureBuilder">An <see cref="T:System.Action`1"/> that can be
+            used to add configuration sources.</param>
+            <param name="includeExisting">True: includes the already registered configurations.
+            False: overwrites the already registered configurations.</param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> itself for chaining.</returns>
+        </member>
+        <member name="M:HAKOM.Configuration.Core.Net.Api.Extensions.ContainerExtensions.UseDefaultConfigurationSourceFactories(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers the default provided <see cref="T:HAKOM.Configuration.Core.Net.Api.IConfigurationSourceFactory"/>.
+            </summary>
+            <param name="container">The container to register the configuration source factories with.</param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> itself for chaining.</returns>
+            <exception cref="T:System.ArgumentNullException">Occurs if <paramref name="container"/> is null.</exception>
+        </member>
+        <member name="M:HAKOM.Configuration.Core.Net.Api.Extensions.ContainerExtensions.UseConfiguration(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Detects and registers referenced configurations with the given <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/>.
+            </summary>
+            <param name="container">The container to register the referenced configurations with.</param>
+            <param name="includeExisting">True: includes the already registered configurations.
+            False: overwrites the already registered configurations.</param>
+            <param name="includeDefaultSources">includes the default configurations if true.</param>
+            <param name="includeDefaultConfigurationSourceFactories">includes the default configuration source factories if true.</param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> itself for chaining.</returns>
+            <exception cref="T:System.ArgumentNullException">Occurs if <paramref name="container"/> is null.</exception>
+        </member>
+        <member name="M:HAKOM.Configuration.Core.Net.Api.Extensions.ContainerExtensions.UseConfiguration(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Action{Microsoft.Extensions.Configuration.IConfigurationBuilder},Microsoft.Extensions.Configuration.IConfiguration@,System.Boolean)">
+            <summary>
+            Registers an <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> instance with the given <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/>.
+            Outputs the built instance which includes configuration from all provided sources
+            for additional use outside the container.
+            </summary>
+            <param name="container">The container to register the configuration with.</param>
+            <param name="configureBuilder">An <see cref="T:System.Action`1"/> that can be
+            used to add configuration sources.</param>
+            <param name="builtConfiguration">The built <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> instance.</param>
+            <param name="includeExisting">True: includes the already registered configurations.
+            False: overwrites the already registered configurations.</param>
+            <returns></returns>
+        </member>
+        <member name="T:HAKOM.Configuration.Core.Net.Api.IConfigurationSourceFactory">
+            <summary>
+            Loads referenced configurations of one configuration type (e.g. Xml).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Api.IConfigurationSourceFactory.Type">
+            <summary>
+            Returns the name of the configuration source type this factory can create
+            </summary>
+        </member>
+        <member name="M:HAKOM.Configuration.Core.Net.Api.IConfigurationSourceFactory.Create(Microsoft.Extensions.Configuration.IConfigurationSection,System.Threading.CancellationToken)">
+            <summary>
+            Creates a new configuration source based on the settings provided in <paramref name="configurationSection"/>.
+            </summary>
+            <param name="configurationSection">One or multiple configuration references.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> containing the linked configuration.</returns>
+        </member>
+        <member name="T:HAKOM.Configuration.Core.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Properties.Strings.ConfigurationAlreadyAddedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The given configuration of type &apos;{0}&apos; and {1} &apos;{2}&apos; is already added as configuration source. Please make sure the configuration does not include a circular reference..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Properties.Strings.ConfigurationFileNotFoundExceptionMessage">
+            <summary>
+              Looks up a localized string similar to A configuration file was not found..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Properties.Strings.ConfigurationFilesNotFoundExceptionMessage">
+            <summary>
+              Looks up a localized string similar to No configuration file was not found in any of the following locations: {1}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Properties.Strings.ConfigurationOptionCannotBeNullExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The configuration option &apos;{0}&apos; of the configuration type &apos;{1}&apos; cannot be null or empty..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Properties.Strings.ConfigurationSectionNotFoundLogMessage">
+            <summary>
+              Looks up a localized string similar to The {0} configuration section could not be found. The default {0} configuration will be used..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Properties.Strings.InvalidRequiredConfigurationValueMessage">
+            <summary>
+              Looks up a localized string similar to The value for &apos;{0}&apos; configured under &apos;{1}&apos; is missing, empty or invalid..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Properties.Strings.MissingRequiredConfigurationValueMessage">
+            <summary>
+              Looks up a localized string similar to Configuration section &apos;{0}&apos; is missing a required value for &apos;{1}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Properties.Strings.NoConfigurationSourceFactoryForConfigurationEntryFoundExceptionMessage">
+            <summary>
+              Looks up a localized string similar to No IConfigurationSourceFactory implementation for the configuration type &apos;{0}&apos; was found..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Properties.Strings.NoConfigurationSourceSpecifiedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Not a single configuration source has been added to the IConfigurationBuilder. Please add at least one..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Configuration.Core.Net.Properties.Strings.NoImplementedConfigurationSourceFactoryFoundExceptionMessage">
+            <summary>
+              Looks up a localized string similar to There was no implementation for IConfigurationSourceFactory found..
+            </summary>
+        </member>
+    </members>
+</doc>

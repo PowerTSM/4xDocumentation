@@ -1,0 +1,1556 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Security.Core.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.ChallengeBehavior">
+            <summary>
+            Describes whether a challenge will be issued during authentication.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Security.Core.Net.Api.Authentication.ChallengeBehavior.Auto">
+            <summary>
+            Lets the identity provider chose whether to challenge for credentials or not.
+            </summary>
+            <remarks>
+            For example, an identity provider may challenge for new credentials in order to refresh information about the current identity after some time or may only challenge once and cache the provided credentials.
+            </remarks>
+        </member>
+        <member name="F:HAKOM.Security.Core.Net.Api.Authentication.ChallengeBehavior.DoNotChallenge">
+            <summary>
+            Don't challenge for credentials. If authentication requires credentials, it may fail.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Security.Core.Net.Api.Authentication.ChallengeBehavior.ForceChallenge">
+            <summary>
+            Forces the identity provider to issue a challenge for credentials.
+            </summary>
+            <remarks>
+            This can be used to force the identity provider to prompt for new credentials, i.e. if the application wants to allow switching user in a particular case.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.ChallengeHandler">
+            <summary>
+            Used to handle authentication challenge events.
+            </summary>
+            <param name="sender">The object where the challenge was issued.</param>
+            <param name="challengeContext">The <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IChallengeContext"/> containing additional data about the challenge.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> that may be used to interrupt the challenge event.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> indicating the completion of the challenge.</returns>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation">
+            <summary>
+            Represents a transformation that should be applied to a claim issued by an identity provider.
+            </summary>
+            <remarks>
+            <para>
+            Claim transformations may be necessary if specific claim values are required that are not directly issued by an identity provider.
+            </para>
+            <para>
+            An example of this would be mapping opaque group ids assigned by an identity provider to friendly named groups used by an authorization service. So for example, if the authorization service requires the identity to have a 'role' claim with a value 'administrator', but the identity provider only issues a 'group' claim with some GUID to identities within the 'Administrators' group, the application can use a <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation"/> to map that claim accordingly:
+            </para>
+            <code>
+            ClaimTransformation administratorClaimTranformation = new() {
+            	RetainOriginal = false,
+            	FromType = "group",
+            	FromValue = "&lt;some-guid&gt;",
+            	ToType = "role",
+            	ToValue = "administrator"
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation.RetainOriginal">
+            <summary>
+            Specifies whether the claim should be retained as part of the final identity after the transformation has been applied.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation.Order">
+            <summary>
+            When multiple claim transformations are applied, order matters as they are applied sequentially to an identity. The order may depend on registration or configuration order of the claim transformations. This property can be used to explicitly specify a relative order.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation.FromType">
+            <summary>
+            The string to match a claim type by.
+            </summary>
+            <remarks>
+            Only claims of this type should be transformed by this rule.
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation.ToType">
+            <summary>
+            The type of the claim after transformation.
+            </summary>
+            <remarks>
+            If <see langword="null"/>, the type will not be changed.
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation.FromValue">
+            <summary>
+            The string to match a claim value by.
+            </summary>
+            <remarks>
+            If <see langword="null"/>, any claim value with <see cref="P:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation.FromType"/> will be transformed. If not <see langword="null"/>, only claims that match this value will be transformed.
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation.ToValue">
+            <summary>
+            The value of the claim after transformation.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation.Equals(HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation.TryApply(System.Security.Claims.Claim,System.Security.Claims.Claim@)">
+            <summary>
+            Tries to apply this transformation to the given <paramref name="claim"/>.
+            </summary>
+            <param name="claim">The claim to try to apply the transformation to.</param>
+            <param name="transformed">The transformed claim. If this is <see langword="null"/> when the method returns <see langword="true"/>, the claim should be removed from the identity.</param>
+            <returns><see langword="true"/> if the transformation has been applied, <see langword="false"/> otherwise.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation.op_Equality(HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation,HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation.op_Inequality(HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation,HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation)">
+            <inheritdoc/>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider">
+            <summary>
+            Base class to be used for custom identity providers that can be used by configuration
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.Name">
+            <summary>
+            Gets the <see cref="T:System.String"/> name of this <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.Type">
+            <summary>
+            Gets the <see cref="T:System.String"/> type of this <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.ClaimTransformations">
+            <summary>
+            A list of <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation"/>s that should be applied to the identity after authentication takes place.
+            </summary>
+            <remarks>
+            <para>
+            Implementations derived from <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider"/> do not need to worry about supporting claim transformations.
+            </para>
+            <para>
+            Instead, they should simply produce an authenticated identity in their implementation of the <see cref="M:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.TryAuthenticate(System.Threading.CancellationToken)"/> and <see cref="M:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.TryAuthenticate(System.Collections.Generic.IReadOnlyList{System.Security.Claims.ClaimsIdentity},System.Threading.CancellationToken)"/> methods. This identity will then have its claims transformed using the configured claim transformations.
+            </para>
+            <para>
+            IMPORTANT: Note that when overriding the <see cref="M:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.TryAuthenticate(HAKOM.Security.Core.Net.Api.Authentication.ChallengeBehavior,System.Threading.CancellationToken)"/> method, this is no longer the case and derived implementations must then handle/support configured claims transformations themselves.
+            </para>
+            </remarks>
+        </member>
+        <member name="E:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.Challenged">
+            <summary>
+            This event will be invoked during authentication, if a challenge is required.
+            </summary>
+            <remarks>
+            Implementations should properly document what is required of any handler for a successful challenge.
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.#ctor(HAKOM.Security.Core.Net.Api.Authentication.IChallengeContextFactory)">
+            <summary>
+            Base constructor that should be called by any implementations of this class.
+            </summary>
+            <param name="challengeContextFactory">The factory used to create the <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IChallengeContext"/> passed to challenge handlers.</param>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.Configure(HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings)">
+            <summary>
+            Configures this instance with the provided <paramref name="settings"/>.
+            </summary>
+            <remarks>
+            It is strongly recommended not to override this method since its default implementation already makes sure that there is consistent naming accross different implementations and that claim transformations are handled properly.
+            <para>
+            Instead, override <see cref="M:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.TryApplyConfiguration(Microsoft.Extensions.Configuration.IConfigurationSection)"/> to extract and apply any additional configuration.
+            </para>
+            </remarks>
+            <param name="settings">The settings to configure the identity provider with.</param>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.TryApplyConfiguration(Microsoft.Extensions.Configuration.IConfigurationSection)">
+            <summary>
+            May be used to read and interpret specific values from the identity providers configuration section.
+            </summary>
+            <param name="configurationSection">The configuration section that contains all the settings applicable to this identity provider.</param>
+            <returns>A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> indicating either success or failure of the operation.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.TryAuthenticate(HAKOM.Security.Core.Net.Api.Authentication.ChallengeBehavior,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to authenticate the user.
+            </summary>
+            <param name="challengeBehavior">The <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.ChallengeBehavior"/> which decides if a challenge is issued.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/>which </param>
+            <returns>
+            An awaitable <see cref="T:System.Threading.Tasks.Task`1"/> containing a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/>. If the authentication was successful, the result will contain
+            a <see cref="T:System.Security.Claims.ClaimsIdentity"/>. If not, it will contain an error.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.RequiresChallenge">
+            <summary>
+            Returns whether any current authentication attempt requires a challenge.
+            </summary>
+            <remarks>
+            <para>This method is used by <see cref="M:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.TryAuthenticate(HAKOM.Security.Core.Net.Api.Authentication.ChallengeBehavior,System.Threading.CancellationToken)"/> when called with <see cref="F:HAKOM.Security.Core.Net.Api.Authentication.ChallengeBehavior.Auto"/> to determine if a challenge is required.</para>
+            <para>Challenges may be required to prompt for additional credentials, refresh information from third parties, etc.</para>
+            <para>For example: When the derived class requires credentials to be validated periodically against a database, this method may check if the credentials are up to date and if so return <see langword="false"/>, or <see langword="true"/> otherwise.</para>
+            <para>When this method returns <see langword="true"/>, the <see cref="E:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.Challenged"/> event is fired. Handlers can add <see cref="T:System.Security.Claims.ClaimsIdentity"/> intances to its <see cref="T:HAKOM.Security.Core.Net.Authentication.ChallengeContext"/> which will then get passed to <see cref="M:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.TryAuthenticate(System.Collections.Generic.IReadOnlyList{System.Security.Claims.ClaimsIdentity},System.Threading.CancellationToken)"/> which the derived class should implement to handle the challenge responses.</para>
+            </remarks>
+            <returns>True, if a challenge is required, otherwise false.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.TryAuthenticate(System.Threading.CancellationToken)">
+            <summary>
+            Attempts to authenticate the current user/application.
+            </summary>
+            <remarks>
+            <para>
+            Called by <see cref="M:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.TryAuthenticate(HAKOM.Security.Core.Net.Api.Authentication.ChallengeBehavior,System.Threading.CancellationToken)"/> if no challenge has been performed.
+            </para>
+            <para>This is the primary method for derived implementations to implement in order to define their authentication procedure.</para>
+            </remarks>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> that may be used to abort the authentication process.</param>
+            <returns>
+            An awaitable <see cref="T:System.Threading.Tasks.Task`1"/> containing a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> indicating success or failure of the operation. When successful, the result should contain a <see cref="T:System.Security.Claims.ClaimsIdentity"/> that contains all the claims pertaining to the authenticated user/application.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.TryAuthenticate(System.Collections.Generic.IReadOnlyList{System.Security.Claims.ClaimsIdentity},System.Threading.CancellationToken)">
+            <summary>
+            Attempts to authenticate the current user/application based on the results returned by any challenge handlers.
+            </summary>
+            <param name="challengeResults">Any identities provided by event handlers invoked by the <see cref="E:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider.Challenged"/> event (in order of their registration).</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> that may be used to abort the authentication process.</param>
+            <returns>
+            An awaitable <see cref="T:System.Threading.Tasks.Task`1"/> containing a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> indicating success or failure of the operation. When successful, the result should contain a <see cref="T:System.Security.Claims.ClaimsIdentity"/> that contains all the claims pertaining to the authenticated user/application.
+            </returns>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.AuthenticationSectionDoesNotContainAnyIdentityProvidersException">
+            <summary>
+            Indicates that an attempt was made to use a authentication section without a identity provider in the configuration.
+            </summary>
+            <remarks>
+            <para>
+            This exception is thrown when a configuration is used where the authentication section does not contain any identity providers.
+            </para>
+            <para>
+            This exception is identified by error code HK14004.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.AuthenticationSectionDoesNotContainAnyIdentityProvidersException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (InternalServerError).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.ChallengeFailedException">
+            <summary>
+            Indicates that the current <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/> issued a challenge and one or more challenge handler returned an error.
+            </summary>
+            <remarks>
+            <para>The cause for this exception depends entirely on the identity provider currently in use and the challenge performed.</para>
+            <para>This error is identified by its code HK14020.</para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.ChallengeFailedException.EquivalentHttpStatusCode">
+            <summary>
+            When this exception is raised while processing an HTTP request it indicates that the challenge required to successfully authenticate the current user has failed, causing authentication to fail altogether. This may or may not be resolved by the client depending on the authentication method used and wether or not the challenge depends on data provided by the client.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.ConfigurationDoesNotContainAnAuthenticationSectionException">
+            <summary>
+            Indicates that an attempt was made to use a configuration without an authentication section.
+            </summary>
+            <remarks>
+            <para>
+            Make sure that the currently used configuration contains an 'Authentication' section underneath a 'Security' section.
+            </para>
+            <para>
+            This exception is identified by error code HK14003.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.ConfigurationDoesNotContainAnAuthenticationSectionException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (InternalServerError).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.CouldNotInitializeIdentityProviderException">
+            <summary>
+            This error occurs when a configured identityProvider could not be initialized.
+            </summary>
+            <remarks>
+            <para>Make sure the type of the configured identity provider is correct and a corresponding implementation has been registered using <see cref="M:HAKOM.Security.Core.Net.Api.Authentication.Extensions.ContainerExtensions.UseConfigurableIdentityProvider``1(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.String)"/>.</para>
+            <para>This error can be identified by its code HK14034.</para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.CouldNotInitializeIdentityProviderException.EquivalentHttpStatusCode">
+            <summary>
+            When this error occurs while handling an HTTP request, a response should be returned with HTTP status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.CurrentWindowsIdentityDoesNotHaveANameException">
+            <summary>
+            Indicates that the identity returned by Windows as the currently authenticated user does not have a claim representing the users name.
+            </summary>
+            <remarks>
+            <para>This may indicate an issue with the account that the current process is running under.</para>
+            <para>When configuring an application to use the current Windows identity for authentication, make sure that the process is run under a valid user account.</para>
+            <para>This error can be identified by its code HK14019.</para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.CurrentWindowsIdentityDoesNotHaveANameException.EquivalentHttpStatusCode">
+            <summary>
+            When this exception is thrown while handling an HTTP request, the request should be terminated with a response status 500 (Internal Server Error). This issue is unlikely to be resolved by modifying the original request but instead will require a change in how the handling service has its authentication configured.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.EmptyOrMalformedClaimTransformationSectionException">
+            <summary>
+            Indicates that an attempt was made to use a configuration with an empty or malformed claim transformation section.
+            </summary>
+            <remarks>
+            <para>
+            This exception is thrown when the claim transformation section of the configuration is malformed or empty.
+            </para>
+            <para>
+            This exception is identified by error code HK14006.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.EmptyOrMalformedClaimTransformationSectionException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (InternalServerError).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.IdentityHasNoMatchingClaimTypeException">
+            <summary>
+            Indicates an attempt was made to retrieve a claim of an identity that lacks a corresponding claim of the specified type.
+            </summary>
+            <remarks>
+            <para>
+            Thrown when a <see cref="T:System.Security.Claims.ClaimsIdentity"/> doesn't have a claim of the specified type.
+            </para>
+            <para>
+            This exception is identified by error code HK14017.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.IdentityHasNoMatchingClaimTypeException.Identity">
+            <summary>
+            Gets the <see cref="T:System.Security.Claims.ClaimsIdentity"/> this exception was thrown for.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.IdentityHasNoMatchingClaimTypeException.EquivalentHttpStatusCode">
+            <inheritdoc/>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.IdentityProviderNameNotSpecifiedException">
+            <summary>
+            Indicates that an attempt was made to get the name of an identity provider but the name was not specified.
+            </summary>
+            <remarks>
+            <para>
+            This exception is thrown when the name of an identity provider is not specified.
+            </para>
+            <para>
+            This exception is identified by error code HK14035.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.IdentityProviderNameNotSpecifiedException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.IdentityProviderNotConfiguredException">
+            <summary>
+            Indicates that an attempt was made to create a identity provider but it is not configured.
+            </summary>
+            <remarks>
+            <para>
+            This exception is thrown when a identity provider is being created but the settings for this identity provider are not configured.
+            </para>
+            <para>
+            This exception is identified by error code HK14009.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.IdentityProviderNotConfiguredException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (InternalServerError).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.IdentityProviderTypeNotSpecifiedException">
+            <summary>
+            Indicates that an attempt was made to get the type of an identity provider but the type was not specified.
+            </summary>
+            <remarks>
+            <para>
+            This exception is thrown when the type of an identity provider is not specified.
+            </para>
+            <para>
+            This exception is identified by error code HK14005.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.IdentityProviderTypeNotSpecifiedException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.InvalidStaticIdentityProviderConfigurationException">
+            <summary>
+            Indicates that an attempt was made to configure a static identity provider with an invalid identity configuration.
+            </summary>
+            <remarks>
+            <para>
+            This exception is thrown when the <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings"/> passed to the <see cref="M:HAKOM.Security.Core.Net.Api.Authentication.IConfigurableIdentityProvider.Configure(HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings)"/>
+            method either don't contain an "Identity" section, or it is invalid.
+            </para>
+            <para>
+            This exception is identified by error code HK14018.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.InvalidStaticIdentityProviderConfigurationException.EquivalentHttpStatusCode">
+            <inheritdoc/>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.InvalidStaticIdentityProviderConfigurationException.Name">
+            <summary>
+            The name of the configuration entry in the `Authentication:IdentityProviders` section
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.InvalidStaticIdentityProviderConfigurationException.Details">
+            <summary>
+            When available, contains additional information about what settings are missing or invalid. Contains an empty string otherwise.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.MultipleIdentityProvidersConfiguredWithoutDefaultException">
+            <summary>
+            Indicates that an attempt was made to retrieve the default identity provider among the several given identity providers, but no default was specified.
+            </summary>
+            <remarks>
+            <para>
+            This exception is thrown when multiple identity providers are given but no default identity provider is specified.
+            </para>
+            <para>
+            This exception is identified by error code HK14007.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.MultipleIdentityProvidersConfiguredWithoutDefaultException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (InternalServerError).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.NotAuthenticatedException">
+            <summary>
+            This error indicates that authentication is required for the current action.
+            </summary>
+            <remarks>
+            <para>
+            Make sure the `Authentication` section of the application configuration is properly set up so that authentication can be performed properly.
+            </para>
+            <para>
+            This error can be identified by its code HK14010.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.NotAuthenticatedException.EquivalentHttpStatusCode">
+            <summary>
+            When this error is encountered while processing an HTTP request, the request should be terminated and a response with status code 401 (Unauthorized) should be returned to the client.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.SpecifiedDefaultIdentityProviderIsNotConfiguredException">
+            <summary>
+            Indicates that an attempt was made to retrieve the default identity provider but it specified.
+            </summary>
+            <remarks>
+            <para>
+            This exception is thrown when the default identity provider is not specified.
+            </para>
+            <para>
+            This exception is identified by error code HK14008.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.SpecifiedDefaultIdentityProviderIsNotConfiguredException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (InternalServerError).
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.SpecifiedDefaultIdentityProviderIsNotConfiguredException.#ctor(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Extensions.ClaimsIdentityExtensions">
+            <summary>
+            Provides extension methods for <see cref="T:System.Security.Claims.ClaimsIdentity"/>.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Security.Core.Net.Api.Authentication.Extensions.ClaimsIdentityExtensions.DEFAULT_IDENTIFIER_CLAIM_TYPE">
+            <summary>
+            Gets the default <see cref="T:System.String"/> claim type used as an identifier.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.Extensions.ClaimsIdentityExtensions.GetIdentifier(System.Security.Claims.ClaimsIdentity,System.String)">
+            <summary>
+            Retrieves the first <see cref="T:System.Security.Claims.Claim"/> of the specified type <paramref name="identifierClaimType"/> for the given <paramref name="identity"/>.
+            </summary>
+            <param name="identity">The <see cref="T:System.Security.Claims.ClaimsIdentity"/> whose identifier will be retrieved.</param>
+            <param name="identifierClaimType">The type that will be used to find a claim in the identity. If not set the <see cref="F:HAKOM.Security.Core.Net.Api.Authentication.Extensions.ClaimsIdentityExtensions.DEFAULT_IDENTIFIER_CLAIM_TYPE"/> will be used.</param>
+            <returns>The <see cref="T:System.Security.Claims.Claim"/> used as an identifier for this <see cref="T:System.Security.Claims.ClaimsIdentity"/>.</returns>
+            <exception cref="T:HAKOM.Security.Core.Net.Api.Authentication.Exceptions.IdentityHasNoMatchingClaimTypeException">Thrown when there is no claim of the specified 
+            type <paramref name="identifierClaimType"/> for the given <paramref name="identity"/>.</exception>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.Extensions.ClaimsIdentityExtensions.TryGetIdentifier(System.Security.Claims.ClaimsIdentity,System.String)">
+            <summary>
+            Tries to retrieve the first <see cref="T:System.Security.Claims.Claim"/> of the specified type <paramref name="identifierClaimType"/> for the given <paramref name="identity"/>.
+            </summary>
+            <param name="identity">The <see cref="T:System.Security.Claims.ClaimsIdentity"/> whose identifier will be retrieved.</param>
+            <param name="identifierClaimType">The type that will be used to find a claim in the identity. If not set the <see cref="F:HAKOM.Security.Core.Net.Api.Authentication.Extensions.ClaimsIdentityExtensions.DEFAULT_IDENTIFIER_CLAIM_TYPE"/> will be used.</param>
+            <returns>A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> holding the <see cref="T:System.Security.Claims.Claim"/> used as an identifier for this <see cref="T:System.Security.Claims.ClaimsIdentity"/>
+            or an exception that occurred while attempting to retrieve it.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.Extensions.ClaimsIdentityExtensions.Transform(System.Security.Claims.ClaimsIdentity,System.Collections.Generic.IEnumerable{HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation},System.Boolean)">
+            <summary>
+            Transforms the given <paramref name="identity"/> according to the given <paramref name="claimTransformations"/>.
+            </summary>
+            <param name="identity">The <see cref="T:System.Security.Claims.ClaimsIdentity"/> which will be transformed.</param>
+            <param name="claimTransformations">An <see cref="T:System.Collections.Generic.IEnumerable`1"/> used for the transformation.</param>
+            <param name="removeUntransformed">An optional <see cref="T:System.Boolean"/> indicating if untransformed claims should be removed (false by default).</param>
+            <returns>The transformed <see cref="T:System.Security.Claims.ClaimsIdentity"/>.</returns>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.Extensions.ContainerExtensions">
+            <summary>
+            Provides extension methods for registering security related services with a container.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.Extensions.ContainerExtensions.UseConfigurableIdentityProvider``1(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.String)">
+            <summary>
+            Registers an identity provider implementation that can be used by enabling it in configuration.
+            </summary>
+            <typeparam name="TIdentityProvider"></typeparam>
+            <param name="container"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.Extensions.ContainerExtensions.UseConfiguredIdentityProvider(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Uses one of the identity providers registered with <see cref="M:HAKOM.Security.Core.Net.Api.Authentication.Extensions.ContainerExtensions.UseConfigurableIdentityProvider``1(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.String)"/>.
+            </summary>
+            <remarks>
+            TODO-R: proper documentation that someone else understands.
+            Which one depends on the "DefaultIdentityProvider" setting under "Authentication", or the only one if no default is configured
+            If more than one is configured without a default being specified, an error will be produced.
+            </remarks>
+            <param name="container"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.Extensions.ContainerExtensions.UseClaimsIdentitySerializers(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer"/>s for handling the serialization of <see cref="T:System.Security.Claims.ClaimsIdentity"/> instances.
+            </summary>
+            <param name="container">The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to register the serialzier with.</param>
+            <returns>The <paramref name="container"/> for chaining of additional service registrations.</returns>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.IAuthenticationSettings">
+            <summary>
+            Contains settings necessary for the correct operation of <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.ConfigurableIdentityProvider"/>s.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Security.Core.Net.Api.Authentication.IAuthenticationSettings.AUTHENTICATION_SECTION">
+            <summary>
+            Gets the configuration section for the authentication settings.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Security.Core.Net.Api.Authentication.IAuthenticationSettings.IDENTITY_PROVIDERS_SECTION">
+            <summary>
+            Gets the configuration section for the identity providers.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.IAuthenticationSettings.DefaultIdentityProvider">
+            <summary>
+            Gets a <see cref="T:System.String"/> name of the default <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.IAuthenticationSettings.IdentifierClaimType">
+            <summary>
+            Gets the type of the claim used to uniquely identify an authenticated entity. If not specified a default will be used.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.IAuthenticationSettings.IdentityProviders">
+            <summary>
+            Gets a <see cref="T:System.Collections.Generic.IDictionary`2"/> where the keys are <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/> names
+            and the values are the <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings"/> used to configure them.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.IAuthenticationSettings.Read(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Reads the given <paramref name="configuration"/> and creates new <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IAuthenticationSettings"/> from it.
+            </summary>
+            <param name="configuration">The <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> which will be used to create the <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IAuthenticationSettings"/>.</param>
+            <returns>A new <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IAuthenticationSettings"/> object based on the given <paramref name="configuration"/>.</returns>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.IChallengeContext">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.IChallengeContext.Identities">
+            <summary>
+            A list of all the identities that have been added to this context any challenge handlers.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.IChallengeContext.Errors">
+            <summary>
+            Gets a <see cref="T:System.Collections.Generic.IReadOnlyList`1"/> representing any errors, that may have occurred during the challenge.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.IChallengeContext.AddIdentity(System.Security.Claims.ClaimsIdentity)">
+            <summary>
+            Adds additional information as an instance of <see cref="T:System.Security.Claims.ClaimsIdentity"/> to this challenge context.
+            </summary>
+            <param name="identity">The data returned by the challenge handler.</param>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.IChallengeContext.Fail(System.Exception)">
+            <summary>
+            Adds an error to the <see cref="P:HAKOM.Security.Core.Net.Api.Authentication.IChallengeContext.Errors"/> list, indicating to subsequent challenge handlers as well as the <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/> that triggered the challenge event to be invoked that some part of the challenge process has failed.
+            </summary>
+            <param name="exception">The error that occurred during the challenge.</param>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.IChallengeContextFactory">
+            <summary>
+            Used to create instances of <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IChallengeContext"/> for use in identity providers to handle scenarios where additional information such as credentials need to be provided for authentication.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.IChallengeContextFactory.Create">
+            <summary>
+            Creates an empty <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IChallengeContext"/> that can be passed to challenge handlers.
+            </summary>
+            <returns>The newly created instance of <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IChallengeContext"/>.</returns>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.IConfigurableIdentityProvider">
+            <summary>
+            An <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/> which can be configured with <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings"/>.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.IConfigurableIdentityProvider.Configure(HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings)">
+            <summary>
+            Configures the current <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IConfigurableIdentityProvider"/>.
+            </summary>
+            <param name="settings">The <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings"/> used to configure the identity provider.</param>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider">
+            <summary>
+            Used to authenticate the user and provide <see cref="T:System.Security.Claims.ClaimsIdentity"/> objects.
+            </summary>
+        </member>
+        <member name="E:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider.Challenged">
+            <summary>
+            An event which will be raised, when an identity is challenged.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider.Name">
+            <summary>
+            Gets the name of the <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider.Type">
+            <summary>
+            Gets the type of the <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/>.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider.TryAuthenticate(HAKOM.Security.Core.Net.Api.Authentication.ChallengeBehavior,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to authenticate the user.
+            </summary>
+            <param name="challengeBehavior">A <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.ChallengeBehavior"/> object which determines if a challenge will be issued during the authentication.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> which can be used to interrupt the process.</param>
+            <returns>
+            An awaitable <see cref="T:System.Threading.Tasks.Task"/> containing a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> containing the <see cref="T:System.Security.Claims.ClaimsIdentity"/> of the user if the authentication was successful.
+            If the authentication was unsuccessful, the <see cref="T:System.Threading.Tasks.Task"/> will containa <see cref="M:HAKOM.ErrorHandling.Core.Net.Api.Result.Failure"/>.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider.Authenticate(HAKOM.Security.Core.Net.Api.Authentication.ChallengeBehavior,System.Threading.CancellationToken)">
+            <summary>
+            Authenticates the user
+            </summary>
+            <param name="challengeBehavior">A <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.ChallengeBehavior"/> object which determines if a challenge will be issued during the authentication.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> which can be used to interrupt the process.</param>
+            <returns>An awaitable <see cref="T:System.Threading.Tasks.Task`1"/> containing the <see cref="T:System.Security.Claims.ClaimsIdentity"/> of the user.</returns>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderFactory">
+            <summary>
+            Creates <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/>s.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderFactory.Create(HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings)">
+            <summary>
+            Creates a new <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/> based on given settings.
+            </summary>
+            <param name="settings">The settings to use for creating the new <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/>.</param>
+            <returns>A new <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/> based on the given <paramref name="settings"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderFactory.TryCreate(HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings)">
+            <summary>
+            Attempts to create a new <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/> based on given settings.
+            </summary>
+            <param name="settings">The settings to use for creating the new <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/>.</param>
+            <returns>
+            A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> containing the new <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/>.
+            If the creation was unsuccessful, the <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> will contain a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/> instead.
+            </returns>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings">
+            <summary>
+            Settings used to configure <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/> objects.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings.Name">
+            <summary>
+            Gets the name of the <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings.Type">
+            <summary>
+            Gets the <see cref="T:System.String"/> type of the <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings.ConfigurationSection">
+            <summary>
+            Gets the <see cref="T:Microsoft.Extensions.Configuration.IConfigurationSection"/> of the <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings.NameClaimType">
+            <summary>
+            Specifies the type by which a claim should be selected to represent the identity's primary name.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings.RoleClaimType">
+            <summary>
+            Specifies the type by which a claim should be selected to represent the identity's roles.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings.ClaimTransformations">
+            <summary>
+            Gets an <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing the configured <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.ClaimTransformation"/>s for this <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProviderSettings.RemoveUntransformedClaims">
+            <summary>
+            Gets a <see cref="T:System.Boolean"/> which decides, if untransformed claims should be removed.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult">
+            <summary>
+            Represents the result of an authorization request and provides information as to what permissions have been granted and why.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult.Claims">
+            <summary>
+            The claims that were used in determining the permissions.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult.Permissions">
+            <summary>
+            The permissions granted.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult.Equals(HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult.op_Equality(HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult,HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult.op_Inequality(HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult,HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult)">
+            <inheritdoc/>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule">
+            <summary>
+            Represents a rule used to determine what permissions to grant on a resource based on a specific claim.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule.Permissions">
+            <summary>
+            The permissions this rule grants.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule.Claim">
+            <summary>
+            The claim this rule applies to.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule.Owner">
+            <summary>
+            A claim identifying the owner of the rule.
+            </summary>
+            <remarks>
+            <para>
+            Any identity with that claim should be allowed to alter/invalidate the rule.
+            </para>
+            <para>
+            If <see langword="null"/>, the rule is not owned by anyone and cannot be changed/invalidated.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule.Equals(HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule)">
+            <inheritdoc/>
+            <remarks>
+            A <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule"/> with a null Claim is a default rule, which applies to everyone. Concequently two Authorization rules with null
+            Claims and matching Permissions are equal.
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule.op_Equality(HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule,HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule.op_Inequality(HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule,HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule)">
+            <inheritdoc/>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationService">
+            <summary>
+            Base class for authorizations. Nees to be implemented for every module which requires authorization.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationService.Resources">
+            <summary>
+            Gets a <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResourceFactory"/> which can be used to create new <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> objects.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationService.Name">
+            <summary>
+            The name of the authorization service.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationService.Type">
+            <summary>
+            The type of the authorization service.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationService.#ctor(HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider,HAKOM.Security.Core.Net.Api.Authorization.IResourceFactory)">
+            <summary>
+            Base constructor. Forces implementing classes to provide an <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/> and <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResourceFactory"/>.
+            </summary>
+            <param name="identityProvider">The <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/> used to identify the user during authorization, when no <see cref="T:System.Security.Claims.ClaimsIdentity"/> was provided.</param>
+            <param name="resourceFactory">A <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResourceFactory"/> used to create new <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> objects. Added for ease of use.</param>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationService.TryGetAuthorizationRules(HAKOM.Security.Core.Net.Api.Authorization.IResource,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to return rules for this specific rule as well as any default rules for the given <paramref name="resource"/> type.
+            </summary>
+            <param name="resource">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> used to determine which rules should be returned.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> which can be used to interupt the process.</param>
+            <returns>
+            An <see cref="T:System.Collections.Generic.IAsyncEnumerable`1"/> containing the rules for this specific rule as well as any default rules for the given <paramref name="resource"/> type.
+            Each <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> contains either the rule itself or an error.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationService.TryGetAuthorization(System.Security.Claims.ClaimsIdentity,HAKOM.Security.Core.Net.Api.Authorization.IResource,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to get the authorization of the given <paramref name="identity"/> for the given <paramref name="resource"/>.
+            </summary>
+            <param name="identity">The <see cref="T:System.Security.Claims.ClaimsIdentity"/> whose authorization will be retrieved.</param>
+            <param name="resource">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> for which the authorization will be retrieved.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> which can be used to interrupt the process.</param>
+            <returns>
+            An awaitable <see cref="T:System.Threading.Tasks.Task`1"/> containing a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/>. If successful, the <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/>
+            will contain an <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult"/>, otherwise a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/>.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationService.TryAuthorize(HAKOM.Security.Core.Net.Api.Authorization.IResource,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationService.TryAuthorize(System.Security.Claims.ClaimsIdentity,HAKOM.Security.Core.Net.Api.Authorization.IResource,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationService.TryAuthorize(HAKOM.Security.Core.Net.Api.Authorization.Permissions,HAKOM.Security.Core.Net.Api.Authorization.IResource,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationService.TryAuthorize(System.Security.Claims.ClaimsIdentity,HAKOM.Security.Core.Net.Api.Authorization.Permissions,HAKOM.Security.Core.Net.Api.Authorization.IResource,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.ConfigurableAuthorizationService">
+            <summary>
+            Base class for authorization services that can be enabled/used by configuration.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.ConfigurableAuthorizationService.Name">
+            <summary>
+            The name of the authorization service as configured.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.ConfigurableAuthorizationService.Type">
+            <summary>
+            The type of authorization service.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.ConfigurableAuthorizationService.Configure(HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationServiceSettings)">
+            <summary>
+            Configures the current instance with the given <paramref name="settings"/>.
+            </summary>
+            <param name="settings">The settings to configure the service with.</param>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.ConfigurableAuthorizationService.TryApplyConfiguration(Microsoft.Extensions.Configuration.IConfigurationSection)">
+            <summary>
+            Should be overriden by derived types to read and apply any specific settings from the services configuration.
+            </summary>
+            <param name="configurationSection">The configuration section that contains settings for this instance.</param>
+            <returns>A result indicating wether configuration could successfully be applied or not.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.ConfigurableAuthorizationService.#ctor(HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider,HAKOM.Security.Core.Net.Api.Authorization.IResourceFactory)">
+            <summary>
+            Creates a new instance of the authorization service.
+            </summary>
+            <param name="identityProvider">The identity provider that should be used for implicit authentication during authorization.</param>
+            <param name="resourceFactory">A factory used to create instances of <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> against which identities will be authorized.</param>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.AuthorizationServiceTypeNotSpecifiedException">
+            <summary>
+            This error occurs when an authorization service is configured without specifying a type.
+            </summary>
+            <remarks>
+            <para>Make sure all authorization services configured specify a type.</para>
+            <para>This error can be identified by its code HK14...?</para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.AuthorizationServiceTypeNotSpecifiedException.EquivalentHttpStatusCode">
+            <summary>
+            When this error occurs while processing an HTTP request a response with a status code 500 (Internal Server Error) should be returned.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.AuthorizationServiceTypeNotSpecifiedException.AuthorizationServiceName">
+            <summary>
+            The name of the authorization service that has no type configured.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.CouldNotInitializeAuthorizationServiceException">
+            <summary>
+            This error occurs when a configured authorization service could not be initialized.
+            </summary>
+            <remarks>
+            <para>Make sure the type of the configured authorization service is correct and a corresponding implementation has been registered using <see cref="M:HAKOM.Security.Core.Net.Api.Authorization.Extensions.ContainerExtensions.UseConfigurableAuthorizationService``1(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.String)"/>.</para>
+            <para>This error can be identified by its code HK14033.</para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.CouldNotInitializeAuthorizationServiceException.EquivalentHttpStatusCode">
+            <summary>
+            When this error occurs while handling an HTTP request, a response should be returned with HTTP status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.CouldNotParsePermissionException">
+            <summary>
+            This error occurs when the configuration of static permissions contains invalid values.
+            </summary>
+            <remarks>
+            <para>
+            Make sure the configuration for static authorization services contains a 'Permissions' value that is a comma separated list of <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.Permissions"/> names.
+            </para>
+            <para>
+            This error can be identified by its error code: HK14????.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.CouldNotParsePermissionException.EquivalentHttpStatusCode">
+            <summary>
+            When this error is encountered while processing an HTTP request, the service should respond with a status code 500 (Internal Server Error) as this is not something the client can fix.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.CouldNotParsePermissionException.UnparseablePermission">
+            <summary>
+            The string that could not be parsed as a valid <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.Permissions"/> value.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.MultipleAuthorizationServicesConfiguredWithoutDefaultException">
+            <summary>
+            This error indicates that multiple authorization services are configured, but none of them is configured as default.
+            </summary>
+            <remarks>
+            <para>
+            When configuring multiple authorization services, make sure one of them is also configured as the default.
+            </para>
+            <para>
+            This error can be identified by its code: HK14????.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.MultipleAuthorizationServicesConfiguredWithoutDefaultException.EquivalentHttpStatusCode">
+            <summary>
+            When encountered while handling an HTTP request, a service should respond with an HTTP status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.SpecifiedDefaultAuthorizationServiceIsNotConfiguredException">
+            <summary>
+            This error indicates that multiple authorization services are configured, yet the one configured as default is not.
+            </summary>
+            <remarks>
+            <para>
+            Make sure the authorization service configured as default also has a valid configuration.
+            </para>
+            <para>
+            This error can be identified by its code: HK14????.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.SpecifiedDefaultAuthorizationServiceIsNotConfiguredException.EquivalentHttpStatusCode">
+            <summary>
+            When encountered while handling an HTTP request, a service should respond with an HTTP status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.SpecifiedDefaultAuthorizationServiceIsNotConfiguredException.ConfiguredDefault">
+            <summary>
+            The configured default authorization service that's missing a configuration entry.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.UnauthorizedException">
+            <summary>
+            Indicates that an attempt was made to perform an action while being unauthorized to do so.
+            </summary>
+            <remarks>
+            <para>
+            This exception is thrown when the actor of the action is unauthorized to do so.
+            </para>
+            <para>
+            This exception is identified by error code HK14002.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.UnauthorizedException.ObjectType">
+            <summary>
+            Gets the <see cref="T:System.String"/> type of the object for which the actor doesn't have authorization.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.UnauthorizedException.ObjectIdentifier">
+            <summary>
+            Gets the <see cref="T:System.String"/> identifier of the object for which the actor doesn't have authrization.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.UnauthorizedException.RequestedPermissions">
+            <summary>
+            Gets the permissions which the actor doesn't have.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.Exceptions.UnauthorizedException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 403 (Forbidden).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.Extensions.ClaimExtensions">
+            <summary>
+            Provides extension methods for <see cref="T:System.Security.Claims.Claim"/> objects.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.Extensions.ClaimExtensions.Matches(System.Security.Claims.Claim,System.Security.Claims.Claim)">
+            <summary>
+            Performs simple comparison of two claims based only on case insensitive comparison of <see cref="P:System.Security.Claims.Claim.Type"/> and <see cref="P:System.Security.Claims.Claim.Value"/>.
+            </summary>
+            <param name="thisClaim">The claim to compare.</param>
+            <param name="otherClaim">The claim to compare with.</param>
+            <returns><see langword="true"/> if type and value are the same, <see langword="false"/> otherwise. Will return <see langword="false"/> if either <paramref name="thisClaim"/> or <paramref name="otherClaim"/> is <see langword="null"/>.</returns>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.Extensions.ContainerExtensions">
+            <summary>
+            Provides extension methods for registering implementations of interfaces used for authorization with the container.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.Extensions.ContainerExtensions.UseConfiguredAuthorization(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers the default implementations for all interfaces in the Authorization namespace.
+            </summary>
+            <param name="container">The container to register the default implementations with.</param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> itself.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.Extensions.ContainerExtensions.UseConfigurableAuthorizationService``1(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.String)">
+            <summary>
+            Registers an authorization service implementation that can be used by enabling it in configuration.
+            </summary>
+            <typeparam name="TAuthorizationService"></typeparam>
+            <param name="container"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService">
+            <summary>
+            Used to check if a user has permissions to access or modify specific resources.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService.Name">
+            <summary>
+            The name of the authorization service.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService.Type">
+            <summary>
+            The type of the authorization service
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService.Resources">
+            <summary>
+            Gets an <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResourceFactory"/>. Added for ease of use.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService.TryAuthorize(System.Security.Claims.ClaimsIdentity,HAKOM.Security.Core.Net.Api.Authorization.IResource,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to authorise the given <paramref name="identity"/> for the given <paramref name="resource"/>.
+            </summary>
+            <param name="identity">The <see cref="T:System.Security.Claims.ClaimsIdentity"/> which will be authorised.</param>
+            <param name="resource">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> for which permissions will be checked.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> which can be used to interrupt the process.</param>
+            <returns>A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> containing an <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult"/> which contains
+            all permissions the given <paramref name="identity"/> has for the given <paramref name="resource"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService.Authorize(System.Security.Claims.ClaimsIdentity,HAKOM.Security.Core.Net.Api.Authorization.IResource,System.Threading.CancellationToken)">
+            <summary>
+            Authorizes the given <paramref name="identity"/> for the given <paramref name="resource"/>.
+            </summary>
+            <param name="identity">The <see cref="T:System.Security.Claims.ClaimsIdentity"/> which will be authorised.</param>
+            <param name="resource">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> for which permissions will be checked.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> which can be used to interrupt the process.</param>
+            <returns>
+            An awaitable <see cref="T:System.Threading.Tasks.Task`1"/> containing a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> which indicates,
+            if the given <paramref name="identity"/> is authorized for the given <paramref name="resource"/>.
+            Returns a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success"/> if it does and <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure"/> if it doesn't.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService.TryAuthorize(System.Security.Claims.ClaimsIdentity,HAKOM.Security.Core.Net.Api.Authorization.Permissions,HAKOM.Security.Core.Net.Api.Authorization.IResource,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to authorize the given <paramref name="identity"/> for the given <paramref name="resource"/> and checks if it has the desired <paramref name="permissions"/>.
+            </summary>
+            <param name="identity">The <see cref="T:System.Security.Claims.ClaimsIdentity"/> which will be authorised.</param>
+            <param name="permissions">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.Permissions"/> used for the check.</param>
+            <param name="resource">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> for which permissions will be checked.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> which can be used to interrupt the process.</param>
+            <returns>
+            A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> indicating, if  the given <paramref name="identity"/> has the desired <paramref name="permissions"/> for the given <paramref name="resource"/>.
+            Returns a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success"/> if it does and <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure"/> if it doesn't.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService.Authorize(System.Security.Claims.ClaimsIdentity,HAKOM.Security.Core.Net.Api.Authorization.Permissions,HAKOM.Security.Core.Net.Api.Authorization.IResource,System.Threading.CancellationToken)">
+            <summary>
+            Authorizes the given <paramref name="identity"/> for the given <paramref name="resource"/> and checks if it has the desired <paramref name="permissions"/>.
+            </summary>
+            <param name = "identity" > The <see cref="T:System.Security.Claims.ClaimsIdentity"/> which will be authorised.</param>
+            <param name="permissions">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.Permissions"/> used for the check.</param>
+            <param name="resource">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> for which permissions will be checked.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> which can be used to interrupt the process.</param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> indicating, that the process was completed. If authorization was unsuccessful or the <paramref name="identity"/> doesn't have the desired
+            <paramref name="permissions"/>, an exception will be thrown.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService.TryAuthorize(HAKOM.Security.Core.Net.Api.Authorization.IResource,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to authorize the user for the given <paramref name="resource"/>.
+            </summary>
+            <param name="resource">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> for which permissions will be checked.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> which can be used to interrupt the process.</param>
+            <returns>
+            An awaitable <see cref="T:System.Threading.Tasks.Task`1"/> containing a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/>. If the authorization was successful the <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/>
+            will contain an <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult"/>, otherwise a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/>.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService.Authorize(HAKOM.Security.Core.Net.Api.Authorization.IResource,System.Threading.CancellationToken)">
+            <summary>
+            Authorizes the user for the given <paramref name="resource"/>.
+            </summary>
+            <param name="resource">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> for which permissions will be checked.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> which can be used to interrupt the process.</param>
+            <returns>
+            An awaitable <see cref="T:System.Threading.Tasks.Task`1"/> containing an <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationResult"/> which describes all permissions the user has for the given <paramref name="resource"/>.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService.TryAuthorize(HAKOM.Security.Core.Net.Api.Authorization.Permissions,HAKOM.Security.Core.Net.Api.Authorization.IResource,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to authorize the user for the given <paramref name="resource"/> and checks if it has the desired <paramref name="permissions"/>.
+            </summary>
+            <param name="permissions">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.Permissions"/> used for the check.</param>
+            <param name="resource">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> for which permissions will be checked.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> which can be used to interrupt the process.</param>
+            <returns>
+            An awaitable <see cref="T:System.Threading.Tasks.Task`1"/> containing a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> which indicates,
+            if the user has the desired <paramref name="permissions"/> for the given <paramref name="resource"/>.
+            Returns a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success"/> if it does and <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure"/> if it doesn't.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService.Authorize(HAKOM.Security.Core.Net.Api.Authorization.Permissions,HAKOM.Security.Core.Net.Api.Authorization.IResource,System.Threading.CancellationToken)">
+            <summary>
+            Authorizes the user for the given <paramref name="resource"/> and checks if it has the desired <paramref name="permissions"/>.
+            </summary>
+            <param name="permissions">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.Permissions"/> used for the check.</param>
+            <param name="resource">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> for which permissions will be checked.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> which can be used to interrupt the process.</param>
+            <returns>
+            An awaitable <see cref="T:System.Threading.Tasks.Task"/> indicating, that the authorization is complete. If the user doesn't have the required permissions,
+            a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/> will be thrown.
+            </returns>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationServiceFactory">
+            <summary>
+            Used to create authorization services for controlling access to resources.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationServiceFactory.Create(HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationServiceSettings)">
+            <summary>
+            Creates a new <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService"/> based on given settings.
+            </summary>
+            <param name="settings">The settings to use for creating the new <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService"/>.</param>
+            <returns>A new <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService"/> based on the given <paramref name="settings"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationServiceFactory.TryCreate(HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationServiceSettings)">
+            <summary>
+            Attempts to create a new <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService"/> based on given settings.
+            </summary>
+            <param name="settings">The settings to use for creating the new <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService"/>.</param>
+            <returns>
+            A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> containing the new <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationService"/>.
+            If the creation was unsuccessful, the <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> will contain a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/> instead.
+            </returns>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationServiceSettings">
+            <summary>
+            Contains onfiguration for a configured authorization service.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationServiceSettings.Name">
+            <summary>
+            The name of the configured authorization service.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationServiceSettings.Type">
+            <summary>
+            The type of the configured authorization service.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationServiceSettings.ConfigurationSection">
+            <summary>
+            The configuration section holding additional configuration values.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationSettings">
+            <summary>
+            Contains configuration about how access to resources should be controlled.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationSettings.AUTHORIZATION_SECTION">
+            <summary>
+            The root key under which authorization should be configured.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationSettings.AUTHORIZATION_SERVICE_SECTION">
+            <summary>
+            The section underneath <see cref="F:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationSettings.AUTHORIZATION_SECTION"/> that should contain configuration for one or more authorization services.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationSettings.DefaultAuthorizationService">
+            <summary>
+            The name of the authorization service to use by default.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationSettings.AuthorizationServices">
+            <summary>
+            Configuration for one or more authorization services.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationSettings.Read(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Reads authorization settings from the given <paramref name="configuration"/>.
+            </summary>
+            <param name="configuration">The configuration from which the settings should be read.</param>
+            <returns>A new instance of <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationSettings"/> based on the given <paramref name="configuration"/>.</returns>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.IConfigurableAuthorizationService">
+            <summary>
+            Base interfaces for authorization services that support initialization from configuration.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.IConfigurableAuthorizationService.Configure(HAKOM.Security.Core.Net.Api.Authorization.IAuthorizationServiceSettings)">
+            <summary>
+            Initializes the authorization service from the given <paramref name="settings"/>.
+            </summary>
+            <param name="settings">The settings to use to configure and initialize the authorization service.</param>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.IResource">
+            <summary>
+            During authorization it will be checked, if the user has <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.Permissions"/> to a <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/>. This will be a specific part of a repository.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.IResource.Parent">
+            <summary>
+            Gets the parent <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> of this <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.IResource.Type">
+            <summary>
+            Gets the <see cref="T:System.String"/> type of this <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/>. Used to refer to the part of the repository for which authorization is being checked.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Api.Authorization.IResource.Identifier">
+            <summary>
+            Gets the <see cref="T:System.String"/> identifier of this <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/>. Used to refer to specific entries in the repository.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.IResource.NewChild(HAKOM.Security.Core.Net.Api.Authorization.IResource)">
+            <summary>
+            Gets a new child in the <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> hierarchy.
+            </summary>
+            <param name="child">The child object used for comparison with the <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> used to call this method.</param>
+            <returns>
+            If the <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> used to call this method doesn't have a type or identifier, the given <paramref name="child"/> will be returned.
+            If the <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> used to call this method is the same object as the given <paramref name="child"/>, it will be returned.
+            Otherwise a new <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> will be created using the properties of the given <paramref name="child"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Throws an <see cref="T:System.ArgumentNullException"/> when the given <paramref name="child"/> is null.</exception>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.IResourceFactory">
+            <summary>
+            Used to create <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> objects.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.IResourceFactory.Create(System.String)">
+            <summary>
+            Creates a new <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> with the given <paramref name="type"/>.
+            </summary>
+            <param name="type">The <see cref="T:System.String"/> used to set the <see cref="P:HAKOM.Security.Core.Net.Api.Authorization.IResource.Type"/>.</param>
+            <returns>
+            A new <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> with <see cref="P:HAKOM.Security.Core.Net.Api.Authorization.IResource.Type"/> equal to the given <paramref name="type"/> and null <see cref="P:HAKOM.Security.Core.Net.Api.Authorization.IResource.Identifier"/>.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Api.Authorization.IResourceFactory.Create(System.String,System.String)">
+            <summary>
+            Creates a new <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> with the given <paramref name="type"/> and <paramref name="identifier"/>.
+            </summary>
+            <param name="type">The <see cref="T:System.String"/> used to set the <see cref="P:HAKOM.Security.Core.Net.Api.Authorization.IResource.Type"/>.</param>
+            <param name="identifier">The <see cref="T:System.String"/> used to set the <see cref="P:HAKOM.Security.Core.Net.Api.Authorization.IResource.Identifier"/>.</param>
+            <returns>
+            A new <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> with <see cref="P:HAKOM.Security.Core.Net.Api.Authorization.IResource.Type"/> equal to the given <paramref name="type"/>
+            and <see cref="P:HAKOM.Security.Core.Net.Api.Authorization.IResource.Identifier"/> equal to the given <paramref name="identifier"/>.
+            </returns>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Api.Authorization.Permissions">
+            <summary>
+            During authorization it will be checked, if the user has permissions to acces or edit data in a <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/>. This describes the types
+            of permissions used in is process.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Security.Core.Net.Api.Authorization.Permissions.None">
+            <summary>
+            No permissions.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Security.Core.Net.Api.Authorization.Permissions.Create">
+            <summary>
+            Describes create permissions.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Security.Core.Net.Api.Authorization.Permissions.Read">
+            <summary>
+            Describes read permissions.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Security.Core.Net.Api.Authorization.Permissions.Write">
+            <summary>
+            Describes write permissions.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Security.Core.Net.Api.Authorization.Permissions.Delete">
+            <summary>
+            Describes delete permissions
+            </summary>
+        </member>
+        <member name="F:HAKOM.Security.Core.Net.Api.Authorization.Permissions.All">
+            <summary>
+            A user with all permissions can freely read write and delete data.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Authentication.ChallengeContext">
+            <summary>
+            Represents event data for an authentication challenge.
+            </summary>
+            <remarks>
+            Challenge event handlers should translate the result of their challenge into one or more <see cref="T:System.Security.Claims.ClaimsIdentity"/> instances and add them to the event data by calling <see cref="M:HAKOM.Security.Core.Net.Authentication.ChallengeContext.AddIdentity(System.Security.Claims.ClaimsIdentity)"/>.
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Authentication.ChallengeContext.Identities">
+            <summary>
+            A list of all the identities that have been added to this events data by any event handlers.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Authentication.ChallengeContext.Errors">
+            <summary>
+            Gets a <see cref="T:System.Collections.Generic.IReadOnlyList`1"/> representing errors, that may have occurred during the authentication challenge.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Authentication.ChallengeContext.#ctor">
+            <summary>
+            Creates a new instance of challenge event arguments to be passed to <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.ChallengeHandler"/>s.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Authentication.ChallengeContext.AddIdentity(System.Security.Claims.ClaimsIdentity)">
+            <summary>
+            Adds an identity to the current events data.
+            </summary>
+            <param name="identity"></param>
+        </member>
+        <member name="M:HAKOM.Security.Core.Net.Authentication.ChallengeContext.Fail(System.Exception)">
+            <summary>
+            Adds an error to the <see cref="P:HAKOM.Security.Core.Net.Authentication.ChallengeContext.Errors"/> list, indicating to subsequent event handlers as well as the <see cref="T:HAKOM.Security.Core.Net.Api.Authentication.IIdentityProvider"/> that caused the challenge event to be invoked that some part of the challenge process has failed.
+            </summary>
+            <param name="exception">The error that occurred during the challenge</param>
+        </member>
+        <member name="T:HAKOM.Security.Core.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.AuthenticationSectionDoesNotContainAnyIdentityProvidersExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The configured authentication section does not contain any identity providers, but these are required..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.AuthorizationServiceTypeNotSpecifiedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The configured authorization service with name &apos;{0}&apos; did not specify a type but it is required..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.ChallengeFailedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The current identity provider issued a challenge as part of its authentication process and that challenge failed with one or more errors..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.ConfigurationDoesNotContainAnAuthenticationSectionExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Authentication must be configured under &apos;Security:Authentication&apos; but that section does not seem to exist in the currently used configuration..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.CouldNotInitializeAuthorizationServiceExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Unable to initialize authorization service &apos;{0}&apos; (type: &apos;{1}&apos;)..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.CouldNotInitializeIdentityProviderExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Unable to initialize identity provider &apos;{0}&apos; (type: &apos;{1}&apos;)..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.CouldNotParsePermissionExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Unable to parse the value &apos;{0}&apos; as a valid permission..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.CurrentWindowsIdentityDoesNotHaveANameExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The Windows account running the current process does not appear to have a well defined name..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.EmptyOrMalformedClaimTransformationSectionExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The claim transformation section is either empty or malformed, but is required to be there..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.IdentityHasNoMatchingClaimTypeExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The given identity does not have a required claim of type &apos;{0}&apos;. If the identity provider used to authenticate the identity does not issue such a claim, consider configuring a claim transformation that maps any claim uniquely identifying the subject within the identity provider to a claim named &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.IdentityProviderNameNotSpecifiedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The configured identity provider located as the {0}. entry did not specify a name but it is required..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.IdentityProviderNotConfiguredExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The identity provider &apos;{0}&apos; has not been configured, but this is required..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.IdentityProviderTypeNotSpecifiedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The configured identity provider with name &apos;{0}&apos; did not specify a type but it is required..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.InvalidStaticIdentityProviderConfigurationExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The configuration for the identity provider &apos;{0}&apos; contains invalid items or does not contain required items..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.InvalidStaticIdentityProviderConfigurationExceptionWithDetailsMessage">
+            <summary>
+              Looks up a localized string similar to The configuration for the identity provider &apos;{0}&apos; is contains invalid items or does not contain required items. Details: {1}.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.MissingClaimTypeMessage">
+            <summary>
+              Looks up a localized string similar to At least one configured claim is missing a &apos;Type&apos; or has an empty &apos;Type&apos; configured..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.MissingClaimValueMessage">
+            <summary>
+              Looks up a localized string similar to At least one configured claim is missing a &apos;Value&apos; or has an empty &apos;Value&apos; configured..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.MultipleAuthorizationServicesConfiguredWithoutDefaultExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Multiple authorization services configured without a default specified..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.MultipleIdentityProvidersConfiguredWithoutDefaultExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Multiple identity providers where configured without specifying a default..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.NotAuthenticatedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Not authenticated..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.SpecifiedDefaultAuthorizationServiceIsNotConfiguredExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The specified default authorization service is not configured: &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.SpecifiedDefaultIdentityProviderIsNotConfiguredExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The specified default identity provider (&apos;{0}&apos;) is not configured, but is required to..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.UnauthorizedForObjectExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Unauthorized access for &apos;{0}&apos;: &apos;{1}&apos; with requested permissions: &apos;{2}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Core.Net.Properties.Strings.UnauthorizedForObjectTypeExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Unauthorized access for objects of type &apos;{0}&apos; with requested permissions: &apos;{1}&apos;..
+            </summary>
+        </member>
+    </members>
+</doc>

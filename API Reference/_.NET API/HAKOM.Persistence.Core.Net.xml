@@ -1,0 +1,970 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Persistence.Core.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Caching.CacheKeyGenerator`1">
+            <summary>
+            Provides a base class for implementations of <see cref="T:HAKOM.Persistence.Core.Net.Api.Caching.ICacheKeyGenerator`1"/>
+            using one or more keys derived from an instance of the type.
+            </summary>
+            <typeparam name="TCacheEntry"></typeparam>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.CacheKeyGenerator`1.GetUniqueKey(System.String,System.String)">
+            <summary>
+            Returns a key based on
+            <list type="bullet">
+            <item>The given <paramref name="keyName"/></item>
+            <item>The given <paramref name="keyValue"/></item>
+            </list>
+            </summary>
+            <param name="keyName">The name of the key.</param>
+            <param name="keyValue">The value of the key</param>
+            <returns></returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.CacheKeyGenerator`1.GetUniqueKeys(`0)">
+            <summary>
+            Returns all keys that can be used to retrieve an item of type
+            <typeparamref name="TCacheEntry"/>.
+            </summary>
+            <param name="item">The item for which to get all keys.</param>
+            <returns>A list of all the keys that can be used to retrieve the item from the cache.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.CacheKeyGenerator`1.GetKeys(`0)">
+            <summary>
+            Override this, returning one or more keys that identify the item.
+            For example, if an item is to be identified by its "id" property as well as by its
+            "name" property, this should return something like
+            new[] {("id", item.Id.ToString()),("name", Item.Name.ToString())}
+            </summary>
+            <param name="item">The item for which keys should be returned</param>
+            <returns>A collection of tuples containing a key which consists of its name and value.</returns>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Caching.ICacheKeyGenerator`1">
+            <summary>
+            Provides one or more unique keys identifying an item of type <typeparamref name="TCacheEntry"/>
+            for use in caching.
+            </summary>
+            <typeparam name="TCacheEntry">The type of object for which keys should be provided.</typeparam>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.ICacheKeyGenerator`1.GetUniqueKeys(`0)">
+            <summary>
+            Returns all keys that can be used to retrieve the item from
+            the cache later on. For example, an item may be identified in the cache by 
+            its "id" property as
+            well as by its "name". In this case, <see cref="M:HAKOM.Persistence.Core.Net.Api.Caching.ICacheKeyGenerator`1.GetUniqueKeys(`0)"/> should return two unique strings:
+            <list type="bullet">
+            <item>one that can be used to find the item by its "id",</item>
+            <item>one that can be used to find the item by its "name".</item>
+            </list>
+            </summary>
+            <param name="item">The item for which keys should be returned.</param>
+            <returns>A collection of keys used to identify that specific item in the cache.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.ICacheKeyGenerator`1.GetUniqueKey(System.String,System.String)">
+            <summary>
+            Returns the key that can be used to retrieve an item based on
+            the given parameters <paramref name="keyName"/> and <paramref name="keyValue"/>.
+            </summary>
+            <param name="keyName">The name of the key, for example "id" if the item is identified by its "id" property.</param>
+            <param name="keyValue">The value of the key for that item.</param>
+            <returns>The string identifying the item for retrieval from the cache.</returns>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Caching.ICache`1">
+            <summary>
+            Represents some form of caching that can be used to circumvent
+            slower storage media for retrieval of items of a specific type.
+            </summary>
+            <typeparam name="TCacheEntry">The type of objects cached by this instance.</typeparam>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.ICache`1.GetOrCreate(System.String,System.String,System.Func{Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions,System.Threading.Tasks.Task{`0}},Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions)">
+            <summary>
+            Attempts to retrieve the item from the cache which is identified
+            by the given combination of <paramref name="keyName"/> and <paramref name="keyValue"/>.
+            If none is found, it calls the given <paramref name="factory"/> which should
+            access the actual store for retrieval and adds that item into the cache.
+            </summary>
+            <param name="keyName">The name which identifies the type of key used (i.e. "name", "id", etc).</param>
+            <param name="keyValue">The value of the key identifying the item.</param>
+            <param name="factory">
+            A function used for retrieval of the item in case no cached copy is available.
+            The function receives the default <see cref="T:Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions"/> for the item and
+            may adjust these if necessary.
+            </param>
+            <param name="options">
+            Optional <see cref="T:Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions"/> which will be used with the factory, if there is no cached copy.
+            If this is left empty, the new cache entry will never expire and will have to be manually removed with one of the Delete methods.
+            </param>
+            <returns>
+            	A <see cref="T:System.Threading.Tasks.Task`1"/> that completes once the item has been retrieved
+            	either from the cache or the underlying storage media.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.ICache`1.TryGetOrCreate(System.String,System.String,System.Func{Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions,System.Threading.Tasks.Task{HAKOM.ErrorHandling.Core.Net.Api.Result{`0}}},Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions)">
+            <summary>
+            Attempts to retrieve the item from the cache which is identified
+            by the given combination of <paramref name="keyName"/> and <paramref name="keyValue"/>.
+            If none is found, it calls the given <paramref name="factory"/> which should
+            access the actual store for retrieval and adds that item into the cache.
+            </summary>
+            <param name="keyName">The name which identifies the type of key used (i.e. "name", "id", etc).</param>
+            <param name="keyValue">The value of the key identifying the item.</param>
+            <param name="factory">
+            A function used for retrieval of the item in case no cached copy is available.
+            The function receives the default <see cref="T:Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions"/> for the item and
+            may adjust these if necessary.
+            </param>
+            <param name="options">
+            Optional <see cref="T:Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions"/> which will be used with the factory, if there is no cached copy.
+            If this is left empty, the new cache entry will never expire and will have to be manually removed with one of the Delete methods.
+            </param>
+            <returns>
+            	A <see cref="T:System.Threading.Tasks.Task`1"/> the <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> holds the retrieved cashed item.Completes once the item has been retrieved
+            	either from the cache or the underlying storage media. 
+            </returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.ICache`1.Delete(System.String,System.String)">
+            <summary>
+            Clears any cached copy identified by the given combination of
+            <paramref name="keyName"/> and <paramref name="keyValue"/>.
+            If none is found, the cache remains untouched.
+            </summary>
+            <param name="keyName">The name which identifies the type of key used (i.e. "name", "id", etc).</param>
+            <param name="keyValue">The value of the key identifying the item.</param>
+            <returns>
+            	A <see cref="T:System.Threading.Tasks.Task"/> that completes once the item has been removed from the cache.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.ICache`1.Delete(`0)">
+            <summary>
+            Deletes all cached copies of the given <paramref name="item"/> from the cache.
+            </summary>
+            <param name="item">The item to remove from the cache.</param>
+            <returns>
+            	A <see cref="T:System.Threading.Tasks.Task"/> that completes when the item has been
+            	removed from the cache.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.ICache`1.DeleteAll">
+            <summary>
+            Deletes all items of type <typeparamref name="TCacheEntry"/> from the cache.
+            </summary>
+            <returns>
+            	A <see cref="T:System.Threading.Tasks.Task"/> that completes when all items of type 
+            	<typeparamref name="TCacheEntry"/> have been cleared from the cache.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.ICache`1.SetScope(System.String)">
+            <summary>
+            Sets the scope of the cache. Unless set, all instances of
+            <see cref="T:HAKOM.Persistence.Core.Net.Api.Caching.ICache`1"/> share the same data. Once a scope is set,
+            items are only shared across instances which have their scope set to the same
+            <see cref="T:System.String"/> value.
+            </summary>
+            <param name="scope">A string naming the scope for the cache to use.</param>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Caching.ILookupKeyCollection`1">
+            <summary>
+            Maintains a list of keys that can be used to look up a single entry
+            within an <see cref="T:HAKOM.Persistence.Core.Net.Api.Caching.ICache`1"/> and their mapping to a unique
+            <see cref="T:System.Guid"/>.
+            </summary>
+            <typeparam name="TCacheEntry">The type of entries this collection holds keys for.</typeparam>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.ILookupKeyCollection`1.Add(System.Guid,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Adds the given <paramref name="lookupKeys"/> too the collection,
+            mapping them to the given <paramref name="id"/>.
+            </summary>
+            <param name="id">The <see cref="T:System.Guid"/> to map the given <paramref name="lookupKeys"/> to.</param>
+            <param name="lookupKeys">The keys to add to the collection.</param>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.ILookupKeyCollection`1.TryGetId(System.String,System.Guid@)">
+            <summary>
+            Returns true if the collection contains a key matching the given
+            <paramref name="lookupKey"/>, setting <paramref name="id"/> to the id
+            mapped internally to that key.
+            </summary>
+            <param name="lookupKey">The key for which to get the id.</param>
+            <param name="id">The id mapped to the given <paramref name="lookupKey"/>
+            (defaults to an empty <see cref="T:System.Guid"/> if none is found).
+            </param>
+            <returns>True if an id for the given <paramref name="lookupKey"/> has been found.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.ILookupKeyCollection`1.TryRemove(System.String,System.Guid@)">
+            <summary>
+            Attempts to remove the given key from the collection.
+            </summary>
+            <param name="lookupKey">The key to remove.</param>
+            <param name="id">
+            If successul, contains the the id the key was mapped to.
+            (defaults to an empty <see cref="T:System.Guid"/> if there was no such <paramref name="lookupKey"/> in the collection)
+            </param>
+            <returns>True if removal was successful, false otherwise</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.ILookupKeyCollection`1.Remove(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Attempts to remove all the given keys from the collection.
+            </summary>
+            <param name="lookupKeys">The key to remove.</param>
+            <returns>
+            An <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing all the ids mapped to keys removed.
+            Note: the enumeration of the ids returned does not necessarily correspond to the
+            enumeration of the given <paramref name="lookupKeys"/>.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.ILookupKeyCollection`1.RemoveAll">
+            <summary>
+            Removes all the keys from the collection returning all removed ids.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.ILookupKeyCollection`1.RemoveAll(System.Func{System.String,System.Boolean})">
+            <summary>
+            Removes all keys for which <paramref name="selector"/> returns true.
+            </summary>
+            <param name="selector">Function to determine if a key should be removed.</param>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing all the ids mapped to keys removed.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Caching.ILookupKeyCollection`1.RemoveAll(System.Guid)">
+            <summary>
+            Removes all keys mapped to the given <paramref name="id"/>.
+            </summary>
+            <param name="id">The id for which to remove all keys.</param>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> of all the keys removed.</returns>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Configuration.Exceptions.ConfigurationRepositoryNameMissingException">
+            <summary>
+            The exception that is thrown if the persistence repository section of the configuration has no 'Name' attribute.
+            </summary>
+            <remarks>
+            <para>
+            When using the configuration for the provision of repository information, every repository tag has to have a 'Name' attribute: 
+            </para>
+            <para>
+            This exception is identified by error code HK12039.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.Configuration.Exceptions.ConfigurationRepositoryNameMissingException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Configuration.Exceptions.IncompleteRepositoryConfigurationException">
+            <summary>
+            Thrown when the repository configuration does not contain a provider and name setting.
+            </summary>
+            <remarks>
+            <para>
+            When using the <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.StorageProvider"/> or the <see cref="T:HAKOM.Persistence.Core.Net.Api.Configuration.IRepositoryConfiguration"/> the configuration must at least contain information about the provider and the name.
+            </para>
+            <para>
+            This exception is identified by error code HK12013.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.Configuration.Exceptions.IncompleteRepositoryConfigurationException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Configuration.Exceptions.RepositoryConfigurationSettingMissingException">
+            <summary>
+            The exception that is thrown if the persistence repository section of the configuration has one or more missing settings.
+            </summary>
+            <remarks>
+            <para>
+            When using the configuration for the provision of repository information, at least the following setting must be provided: 
+            <list type="bullet">
+            	<item><term>Type</term><description>Persistence:Repositories:Repository:Provider:Type</description></item>
+            </list> 
+            </para>
+            <para>
+            This exception is identified by error code HK12015.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.Configuration.Exceptions.RepositoryConfigurationSettingMissingException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.Configuration.IRepositoryConfiguration.Name">
+            <summary>
+            Configured name of repository
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Exceptions.CouldNotInitializeRepositoryException">
+            <summary>
+            Thrown when a configured repository could not be initialized.
+            </summary>
+            <remarks>
+            <para>
+            This may be due to incorrect configuration or an issue with the underlying driver/libraries used to access that type of repository.
+            </para>
+            <para>
+            Make sure the configuration for that repository is correct and that the type of repository is supported.
+            </para>
+            <para>This error is identified by code HK12031.</para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.Exceptions.CouldNotInitializeRepositoryException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Exceptions.RepositoryNotFoundException">
+            <summary>
+            Thrown when the specified repository name is not found in the configuration.
+            </summary>
+            <remarks>
+            <para>
+            When using the <see cref="M:HAKOM.Persistence.Core.Net.Api.IRepositoryStore`1.Load(System.String,System.Threading.CancellationToken)"/> one of the HAKOM.Persistence.Repositories.Repository configuration entries must be present where the "Name" attribute matches the name of the repository to be loaded. 
+            When using the <see cref="T:HAKOM.Persistence.Core.Net.Api.Configuration.IRepositoryConfigurationProvider"/> the dictionary's key must match the "Name" attribute of one of the HAKOM.Persistence.Repositories.Repository configuration entries.
+            </para>
+            <para>
+            This exception is identified by error code HK12008.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.Exceptions.RepositoryNotFoundException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 404 (Not Found).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Exceptions.StorageProviderMismatchException">
+            <summary>
+            Thrown when the type of the specified storage provider does not correspond to the type of the <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStore`1"/>.
+            </summary>
+            <para>
+            When calling the <see cref="M:HAKOM.Persistence.Core.Net.Api.Storage.IStore`1.Configure(`0,System.Threading.CancellationToken)"/> method, the given storage provider must be of the same type TStorageProvider as the instantiated class. 
+            </para>
+            <para>
+            This exception is identified by error code HK12007.
+            </para>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.Exceptions.StorageProviderMismatchException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Extensions.ResourceFactoryExtensions">
+            <summary>
+            Extension methods for creating <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> objects. Used for authorization.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Persistence.Core.Net.Api.Extensions.ResourceFactoryExtensions.REPOSITORY_RESOURCE_TYPE">
+            <summary>
+            A constant used for the creation of repository resources.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Extensions.ResourceFactoryExtensions.RepositoryResource(HAKOM.Security.Core.Net.Api.Authorization.IResourceFactory)">
+            <summary>
+            Creates a new repository <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/>.
+            </summary>
+            <param name="resourceFactory">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResourceFactory"/> used to create the <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/>.</param>
+            <returns>
+            The newly created <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> with its <see cref="P:HAKOM.Security.Core.Net.Api.Authorization.IResource.Type"/> equal to <see cref="F:HAKOM.Persistence.Core.Net.Api.Extensions.ResourceFactoryExtensions.REPOSITORY_RESOURCE_TYPE"/>.
+            </returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Extensions.ResourceFactoryExtensions.RepositoryResource(HAKOM.Security.Core.Net.Api.Authorization.IResourceFactory,System.String)">
+            <summary>
+            Creates a new repository <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> with the given <paramref name="identifier"/>.
+            </summary>
+            <param name="resourceFactory">The <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResourceFactory"/> used to create the <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/>.</param>
+            <param name="identifier">The <see cref="T:System.String"/> identifier used in the creation.</param>
+            <returns>
+            The newly created <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> with its <see cref="P:HAKOM.Security.Core.Net.Api.Authorization.IResource.Type"/> equal to <see cref="F:HAKOM.Persistence.Core.Net.Api.Extensions.ResourceFactoryExtensions.REPOSITORY_RESOURCE_TYPE"/>
+            and its <see cref="P:HAKOM.Security.Core.Net.Api.Authorization.IResource.Identifier"/> equal to the given <paramref name="identifier"/>.
+            </returns>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.IRepository">
+            <summary>
+            Represents a place for persisting data. This may be a database, a file system, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.IRepository.Name">
+            <summary>
+            The name of the repository. This should be unique within a single <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IApplicationContext"/>, since components accessing repositories usually rely on being able to identify individual repositories by their name. 
+            </summary>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.IRepository.Configure(HAKOM.Persistence.Core.Net.Api.Configuration.IRepositoryConfiguration,System.Threading.CancellationToken)">
+            <summary>
+            Configures the repository. This could for example, contain information such as connection strings for the underlying database.
+            </summary>
+            <param name="configuration">Configuration that should be used by repository.</param>
+            <param name="cancellationToken">Propagates a notification if the operation should be canceled.</param>
+            <returns></returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.IRepositoryFactory`1.Create(HAKOM.Persistence.Core.Net.Api.Configuration.IRepositoryConfiguration,System.Threading.CancellationToken)">
+            <summary>
+            Creates an instance of an <see cref="T:HAKOM.Persistence.Core.Net.Api.IRepository"/> based on <typeparamref name="TRepository"/> 
+            using the specified <paramref name="repositoryConfiguration"/>.
+            </summary>
+            <param name="repositoryConfiguration">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/> used to create.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> of the created <see cref="T:HAKOM.Persistence.Core.Net.Api.Configuration.IRepositoryConfiguration"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.IRepositoryFactory`1.TryCreate(HAKOM.Persistence.Core.Net.Api.Configuration.IRepositoryConfiguration,System.Threading.CancellationToken)">
+            <summary>
+            Tries to create an instance of an <see cref="T:HAKOM.Persistence.Core.Net.Api.IRepository"/> based on <typeparamref name="TRepository"/> 
+            using the specified <paramref name="repositoryConfiguration"/>.
+            </summary>
+            <param name="repositoryConfiguration">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Configuration.IRepositoryConfiguration"/> used to create.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> containing the created <see cref="T:HAKOM.Persistence.Core.Net.Api.Configuration.IRepositoryConfiguration"/>.</returns>
+            <remarks>
+            The <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> will provide additional information about success or failure.
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.IRepositoryInformation.Name">
+            <summary>
+            The name of the repository.
+            </summary>
+            <remarks>
+            The name of a repository is usually defined by its specific entry in the repository configuration.
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.IRepositoryInformation.Type">
+            <summary>
+            The type of repository, i.e. the underlying type of database/driver it uses.
+            </summary>
+            <remarks>
+            Example values
+            <list type="bullet">
+            <item>oracle</item>
+            <item>sqlserver</item>
+            <item>postgresql</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.IRepositoryInformation.Version">
+            <summary>
+            The version of the repository.
+            </summary>
+            <remarks>
+            This version describes the data of HAKOM objects it supports, not the version of the underlying database/driver.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.IRepositoryInformationStoreFactory">
+            <summary>
+            Creates a store used to retrieve information about a repository.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.IRepositoryInformationStoreFactory.Create``1(HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider,System.Threading.CancellationToken)">
+            <summary>
+            Creates an instance of an <see cref="T:HAKOM.Persistence.Core.Net.Api.IRepositoryInformationStore"/> of the specified <typeparamref name="TRepositoryInformation"/>
+            using the specified <paramref name="storageProvider"/>.
+            </summary>
+            <param name="storageProvider">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/> used for read and write operations on the storage.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> of the created store.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.IRepositoryInformationStoreFactory.TryCreate``1(HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider,System.Threading.CancellationToken)">
+            <summary>
+            Tries to create an instance of an <see cref="T:HAKOM.Persistence.Core.Net.Api.IRepositoryInformationStore"/> of the specified <typeparamref name="TRepositoryInformation"/>
+            using the specified <paramref name="storageProvider"/>.
+            </summary>
+            <param name="storageProvider">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/> used for read and write operations on the storage.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> of the created store. May be null</returns>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Ordering.Exceptions.InvalidOrderExpressionException">
+            <summary>
+            This exception is thrown whenever an attempt is made to create an ordering (<see cref="T:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1"/>) based on an expression that is not a simple property-accessing expression.
+            </summary>
+            <remarks>
+            The following is <b>not</b> a valid expression to order by:
+            <code>
+            var ordering = new Order&lt;MyType&gt;().By(st=&gt;st.SomeMethod());
+            </code>
+            <b>Neither</b> is this:
+            <code>
+            var ordering = new Order&lt;MyType&gt;().By(st=&gt;StaticType.StaticMethod());
+            </code>
+            <b>Nor</b> this:
+            <code>
+            var ordering = new Order&lt;MyType&gt;().By(_=&gt;33);
+            </code>
+            <b>Instead</b>, orderings should only be created by specifying property accessors. Example:
+            <code>
+            var ordering = new Order&lt;MyType&gt;().By(mt=&gt;mt.MyProperty);
+            </code>
+            Property access must also be on the type for which the ordering occurs, so <b>this is invalid</b>:
+            <code>
+            var ordering = new Order&lt;MyType&gt;().By(_=&gt;StaticType.StaticProperty);
+            </code>
+            Accessing nested properties is <b>okay</b>:
+            <code>
+            var ordering = new Order&lt;MyType&gt;().By(mt=&gt;mt.MyProperty.AnotherProperty);
+            </code>
+            but please be aware that support for ordering items in a store this way may be limited.
+            <para>
+            This exception can be identified by code: HK12033.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.Ordering.Exceptions.InvalidOrderExpressionException.EquivalentHttpStatusCode">
+            <summary>
+            When this occurs during a request against a web service, it is most likely due to the request containing an ordering expression that is not supported and should thus return an error response with HTTP status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1">
+            <summary>
+            Defines a rule for ordering items of <typeparamref name="TResult"/> when querying them from a store.
+            </summary>
+            <typeparam name="TResult">The type of data to be ordered.</typeparam>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1.Direction">
+            <summary>
+            The direction (ascending or descending) in which the items should be ordered.
+            </summary>
+            <remarks>
+            <para>
+            If set to <see cref="F:HAKOM.Persistence.Core.Net.Api.Ordering.Direction.Unspecified"/>, the order may depend on the store implementation.
+            </para>
+            <para>
+            For example, if the store is backed by a relational database, the order may depend on existing indexes, some of which may even be generated by the database automatically.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1.Ascending">
+            <summary>
+            Creates an instance of <see cref="T:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1"/> with its <see cref="P:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1.Direction"/> property set to <see cref="F:HAKOM.Persistence.Core.Net.Api.Ordering.Direction.Ascending"/>.
+            </summary>
+            <returns>The new <see cref="T:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1.Descending">
+            <summary>
+            Creates an instance of <see cref="T:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1"/> with its <see cref="P:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1.Direction"/> property set to <see cref="F:HAKOM.Persistence.Core.Net.Api.Ordering.Direction.Descending"/>.
+            </summary>
+            <returns>The new <see cref="T:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1.TryGetExpression">
+            <summary>
+            Attempts to return a string representation of the expression that should be used to order the items.
+            </summary>
+            <remarks>
+            <para>
+            Example:
+            <code language="csharp title=&quot;Getting the expression string&quot; linenums=&quot;1&quot;">
+            Order&lt;SomeType&gt; order;
+            
+            order = new().By(item=>item.MyProperty);
+            var expression = order.TryGetExpression().GetValueOrThrow();
+            Console.WriteLine(expression);// MyProperty
+            
+            order = new().By(item=>item.MyOtherProperty.MyProperty);
+            var expression = order.TryGetExpression().GetValueOrThrow();
+            Console.WriteLine(expression);// MyOtherProperty.MyProperty
+            
+            public class MyType {
+            	public MyProperty {get;}
+            	public string MyMethod() => "value";
+            	public MyType MyOtherProperty {get;}
+            }
+            </code>
+            </para>
+            </remarks>
+            <returns>A result containing the string representation of the expression to order by.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1.GetExpression">
+            <summary>
+            Returns a string representation of the expression that should be used to order the items.
+            </summary>
+            <remarks>
+            <para>
+            Example:
+            <code language="csharp title=&quot;Getting the expression string&quot; linenums=&quot;1&quot;">
+            Order&lt;SomeType&gt; order;
+            
+            order = new().By(item=>item.MyProperty);
+            var expression = order.GetExpression();
+            Console.WriteLine(expression);// MyProperty
+            
+            order = new().By(item=>item.MyOtherProperty.MyProperty);
+            var expression = order.GetExpression();
+            Console.WriteLine(expression);// MyOtherProperty.MyProperty
+            
+            public class MyType {
+            	public MyProperty {get;}
+            	public string MyMethod() => "value";
+            	public MyType MyOtherProperty {get;}
+            }
+            </code>
+            </para>
+            </remarks>
+            <exception cref="T:HAKOM.Persistence.Core.Net.Api.Ordering.Exceptions.InvalidOrderExpressionException">Thrown if the expression used to create this instance is invalid.</exception>
+            <returns>A string representation of the expression.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1.By``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},HAKOM.Persistence.Core.Net.Api.Ordering.Direction)">
+            <summary>
+            Creates a new <see cref="T:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1"/> based on the given expression.
+            </summary>
+            <remarks>
+            The <paramref name="expression"/> must be a simple property accessing expression.
+            <para>
+            The following code shows examples of expressions that are valid and examples that are invalid.
+            <code language="csharp title=&quot;Creating orderings&quot; linenums=&quot;1&quot;">
+            Order&lt;SomeType&gt; order;
+            
+            // The following are OK:
+            order = new().By(item=>item.MyProperty);
+            order = new().By(item=>item.MyOtherProperty.MyProperty);
+            
+            // The following are NOT OK:
+            order = new().By(item=>item.MyMethod());
+            order = new().By(item=>item.MyOtherProperty.MyMethod());
+            order = new().By(item=>32);
+            order = new().By(item=>"foo");
+            order = new().By(_=>StaticType.StaticProperty);
+            order = new().By(_=>StaticType.StaticMethod());
+            
+            public class MyType {
+            	public MyProperty {get;}
+            	public string MyMethod() => "value";
+            	public MyType MyOtherProperty {get;}
+            }
+            
+            public static class StaticType {
+            	public static StaticProperty {get;}
+            	public static string StaticMethod() => "value";
+            }
+            </code>
+            </para>
+            </remarks>
+            <typeparam name="TProperty">The type of the property that </typeparam>
+            <param name="expression"></param>
+            <param name="direction"></param>
+            <exception cref="T:HAKOM.Persistence.Core.Net.Api.Ordering.Exceptions.InvalidOrderExpressionException">Thrown when the expression is anything other than a simple property access expression on the delegate parameter.</exception>
+            <returns>A new <see cref="T:HAKOM.Persistence.Core.Net.Api.Ordering.Order`1"/> based on the given <paramref name="expression"/> and <paramref name="direction"/>.</returns>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.References.IReference">
+            <summary>
+            Represents a reference to a stored object.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.References.IReference`2">
+            <summary>
+            Represents a reference to a stored object. Its data may be retrieved from the store at any time by calling the <see cref="M:HAKOM.Persistence.Core.Net.Api.References.IReference`1.Resolve(System.Threading.CancellationToken)"/> method.
+            </summary>
+            <typeparam name="TIdentifier">The type of the unique identifier used to retrieve the objects data from the store.</typeparam>
+            <typeparam name="TReferred">The type of data this reference points to.</typeparam>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.References.IReference`2.Identifier">
+            <summary>
+            Gets the identifier of the referred object.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.References.IReference`1">
+            <summary>
+            Represents a reference to a stored object. Its data may be retrieved from the store at any time by calling the <see cref="M:HAKOM.Persistence.Core.Net.Api.References.IReference`1.Resolve(System.Threading.CancellationToken)"/> method.
+            </summary>
+            <typeparam name="TReferred">The type of data this reference points to.</typeparam>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.References.IReference`1.Resolve(System.Threading.CancellationToken)">
+            <summary>
+            Resolves the reference and retrieves the data from the store.
+            </summary>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>Returns the resolved reference (data from the store of type <typeparamref name="TReferred"/>).</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.References.IReference`1.TryResolve(System.Threading.CancellationToken)">
+            <summary>
+            Resolves the reference and retrieves the data from the store.
+            </summary>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>Returns a <see cref="T:System.Threading.Tasks.Task`1"/> of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> containing the resolved reference (data from the store of type <typeparamref name="TReferred"/>).</returns>
+            <remarks>
+            The <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> will provide additional information about success or failure.
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.Storage.Configuration.IStorageProviderConfiguration.Type">
+            <summary>
+            A string that specifies the type of storage that should be used by the <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.Storage.Configuration.IStorageProviderConfiguration.ElevatedSettings">
+            <summary>
+            Optional additional settings to use when the underlying storage should be accessed using elevated privileges.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.Storage.Configuration.IStorageProviderConfiguration.Settings">
+            <summary>
+            The settings that should be used to connect to the underlying storage system (i.e. the database).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Storage.Exceptions.StoreIsReadonlyException">
+            <summary>
+            Thrown when the Writer of a read-only <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.Store`3"/> is accessed.
+            </summary>
+            <para>
+            When accessing the <see cref="P:HAKOM.Persistence.Core.Net.Api.Storage.Store`3.Writer"/> the store must be initialized with a <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageWriterFactory`1"/> which returns a corresponding TStorageWriter.
+            </para>
+            <para>
+            This exception is identified by error code HK12027.
+            </para>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.Storage.Exceptions.StoreIsReadonlyException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageInformation">
+            <summary>
+            Used to get information about the storage.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Api.Storage.IStorageInformation.RepositoryName">
+            <summary>
+            Gets the repository name of the storage information.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageInformationFactory">
+            <summary>
+            Creates a <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageInformation"/> used for storage specific information and properties.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Storage.IStorageInformationFactory.Create(System.String)">
+            <summary>
+            Creates an instance of <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageInformation"/> of the Storage from <paramref name="repositoryName"/>.
+            </summary>
+            <param name="repositoryName">The name of the repository to create the <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageInformation"/> from.</param>
+            <returns>an instance of <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageInformation"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProviderFactory.Create(System.String,HAKOM.Persistence.Core.Net.Api.Storage.Configuration.IStorageProviderConfiguration,System.Threading.CancellationToken)">
+            <summary>
+            Creates an instance of an <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/> using the specified <paramref name="configuration"/>.
+            </summary>
+            <remarks>
+            Ignores any settings from <see cref="P:HAKOM.Persistence.Core.Net.Api.Storage.Configuration.IStorageProviderConfiguration.ElevatedSettings"/>.
+            </remarks>
+            <param name="repositoryName">The repository the storage provider is created for.</param>
+            <param name="configuration">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.Configuration.IStorageProviderConfiguration"/> used for the creation process.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> of the created <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProviderFactory.TryCreate(System.String,HAKOM.Persistence.Core.Net.Api.Storage.Configuration.IStorageProviderConfiguration,System.Threading.CancellationToken)">
+            <summary>
+            Tries to create an instance of an <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/> using the specified <paramref name="configuration"/>.
+            </summary>
+            <remarks>
+            Ignores any settings from <see cref="P:HAKOM.Persistence.Core.Net.Api.Storage.Configuration.IStorageProviderConfiguration.ElevatedSettings"/>.
+            </remarks>
+            <param name="repositoryName">The repository the storage provider is created for.</param>
+            <param name="configuration">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.Configuration.IStorageProviderConfiguration"/> used for the creation process.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that completes with a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> with information about whether it could successfully create the <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProviderFactory.CreateElevated(System.String,HAKOM.Persistence.Core.Net.Api.Storage.Configuration.IStorageProviderConfiguration,System.Threading.CancellationToken)">
+            <summary>
+            Creates an instance of an <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/> using the specified <paramref name="configuration"/>.
+            </summary>
+            <remarks>
+            Additionally uses the settings from <see cref="P:HAKOM.Persistence.Core.Net.Api.Storage.Configuration.IStorageProviderConfiguration.ElevatedSettings"/>.
+            </remarks>
+            <param name="repositoryName">The repository the storage provider is created for.</param>
+            <param name="configuration">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.Configuration.IStorageProviderConfiguration"/> used for the creation process.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> of the created <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProviderFactory.TryCreateElevated(System.String,HAKOM.Persistence.Core.Net.Api.Storage.Configuration.IStorageProviderConfiguration,System.Threading.CancellationToken)">
+            <summary>
+            Tries to create an instance of an <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/> using the specified <paramref name="configuration"/>.
+            </summary>
+            <remarks>
+            Additionally uses the settings from <see cref="P:HAKOM.Persistence.Core.Net.Api.Storage.Configuration.IStorageProviderConfiguration.ElevatedSettings"/>.
+            </remarks>
+            <param name="repositoryName">The repository the storage provider is created for.</param>
+            <param name="configuration">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.Configuration.IStorageProviderConfiguration"/> used for the creation process.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that completes with a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> with information about whether it could successfully create the <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Storage.IStorageReaderFactory`1.Create(HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider,System.Threading.CancellationToken)">
+            <summary>
+            Creates an instance of an <typeparamref name="TStorageReader"/> using the specified <paramref name="storageProvider"/>.
+            </summary>
+            <param name="storageProvider">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/> used for read and write operations on the storage.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> containing the created <typeparamref name="TStorageReader"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Storage.IStorageReaderFactory`1.TryCreate(HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider,System.Threading.CancellationToken)">
+            <summary>
+            Tries to create an instance of an <typeparamref name="TStorageReader"/> using the specified <paramref name="storageProvider"/>.
+            </summary>
+            <param name="storageProvider">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/> used for read and write operations on the storage.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> containing the created <typeparamref name="TStorageReader"/>.</returns>
+            <remarks>
+            The <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> will provide additional information about success or failure.
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Storage.IStorageWriterFactory`1.Create(HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider,System.Threading.CancellationToken)">
+            <summary>
+            Creates an instance of an <typeparamref name="TStorageWriter"/> using the specified <paramref name="storageProvider"/>.
+            </summary>
+            <param name="storageProvider">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/> used for read and write operations on the storage.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> containing the created <typeparamref name="TStorageWriter"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Storage.IStorageWriterFactory`1.TryCreate(HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider,System.Threading.CancellationToken)">
+            <summary>
+            Tries to create an instance of an <typeparamref name="TStorageWriter"/> using the specified <paramref name="storageProvider"/>.
+            </summary>
+            <param name="storageProvider">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/> used for read and write operations on the storage.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> containing the created <typeparamref name="TStorageWriter"/>.</returns>
+            <remarks>
+            The <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> will provide additional information about success or failure.
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Persistence.Core.Net.Api.Storage.StorageProvider.ApplyProviderSettings(System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
+            <summary>
+            Configures the storage provider using the given <paramref name="settings"/>.
+            Override this in a derived class. The implementation should return a dictionary of all settings that could not be applied.
+            When possible, implementations should always call 
+            <code>
+            settings = await base.ApplyProviderSettings(<paramref name="settings"/>).ConfigureAwait(false);
+            </code>
+            first. This allows base implementations to handle common settings without the need for
+            derived implementations to explicitly ignore them (or act on them again).
+            If a derived implementation wants to act on a setting that is dealt with by its base implementation,
+            it can do so before calling base.ApplyProviderSettings(<paramref name="settings"/>).
+            </summary>
+            <param name="settings">The settings to apply to the storage provider.</param>
+            <returns>The remaining settings that could not be applied.</returns>
+        </member>
+        <member name="T:HAKOM.Persistence.Core.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.CacheHitForItemWithKeyLogMessage">
+            <summary>
+              Looks up a localized string similar to Item for key &quot;{0}&quot; successfully retrieved from cache..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.CacheMissForItemWithKeyLogMessage">
+            <summary>
+              Looks up a localized string similar to No item for key &quot;{0}&quot; found in cache..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.CachingItemWithKeyLogMessage">
+            <summary>
+              Looks up a localized string similar to Item identified by key &quot;{0}&quot; added to cache..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.ConfigurationRepositoryNameMissingExceptionMessage">
+            <summary>
+              Looks up a localized string similar to At least one &apos;Repository&apos; in the provided configuration, has no &apos;Name&apos; Attribute set or it has no value..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.CouldNotInitializeRepositoryExceptionMessage">
+            <summary>
+              Looks up a localized string similar to There was an error when attempting to initialize repository &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.DeserializationOfStorageInformationFailedMessage">
+            <summary>
+              Looks up a localized string similar to To deserialize an object for IReference, the &quot;storageInformation&quot; property is required, which must correspond to the IStorageInformation interface..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.FailedToRetrieveVersionInformationFromRepositoryExceptionMessage">
+            <summary>
+              Looks up a localized string similar to No version information is available for repository &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.IncompleteRepositoryConfigurationExceptionMessage">
+            <summary>
+              Looks up a localized string similar to A repository configuration is lacking some information &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.InvalidatedAllCachedItemsOfTypeLogMessage">
+            <summary>
+              Looks up a localized string similar to Purged all items of type {0} from cache..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.InvalidatedCachedItemWithKeysLogMessage">
+            <summary>
+              Looks up a localized string similar to Removed items with keys &quot;{0}&quot; from cache..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.InvalidOrderExpressionExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The expression &apos;{0}&apos; cannot be used to order items during retrieval from a store. Please use only property accessing expressions. Example: &apos;{1}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.PropertyIsMissingInSerializationInfoMessage">
+            <summary>
+              Looks up a localized string similar to Cannot deserialize &apos;{0}&apos; because property &apos;{1}&apos; is null or missing in serialization info..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.ReferenceDeserializationMissingStorageInformationMessage">
+            <summary>
+              Looks up a localized string similar to The &quot;storageInformation&quot; element for the deserialization of an IReference is missing..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.RepositoryConfigurationSettingMissingException">
+            <summary>
+              Looks up a localized string similar to In at least one &apos;Repository&apos; in the provided configuration, the &apos;{0}&apos; tag has not been set or has no value..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.RepositoryNotFoundExceptionMessage">
+            <summary>
+              Looks up a localized string similar to No repository named &apos;{0}&apos; available..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.RepositoryTypeNotAvailableExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The repository configured under the name &apos;{0}&apos; does not support repository implementations of type &apos;{1}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.RepositoryUnsupportedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The repository &apos;{0}&apos; is not supported. Reason: &apos;{1}&apos;.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.RepositoryVersionIsIncompatibleMessage">
+            <summary>
+              Looks up a localized string similar to The repository being accessed is incompatible with this version of the client. Client version: {0}, Repository version: {1}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.SerializeIReferenceCannotCreateReferenceContractInstanceExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The creation of an instance of the ReferenceContract (or ResolvedReferenceContract) failed for reference type &quot;{0}&quot;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.SerializeIReferenceDoesNotFindAccordingInterfaceExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The type &quot;{0}&quot; either does not implement the interface IReference&lt;TIdentifer, TReferred&gt; or the &quot;TReferred&quot; type of the implementation is not &quot;{1}&quot;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.StorageProviderMismatchExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Attempted to initialize store {0} with a storage provider of type {1}. Expected was {2}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.StoreIsReadonlyExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The writer cannot be called as the store is readonly..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Core.Net.Properties.Strings.UnknownTypeOfCacheKeyLogMessage">
+            <summary>
+              Looks up a localized string similar to An element of type {0} was evicted from the cache but has an unknown type of key ({1}). This may indicate some kind of conflict between classes sharing one instance of IMemoryCache..
+            </summary>
+        </member>
+    </members>
+</doc>

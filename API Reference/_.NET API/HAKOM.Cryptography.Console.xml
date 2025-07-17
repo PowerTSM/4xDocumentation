@@ -1,0 +1,256 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Cryptography.Console</name>
+    </assembly>
+    <members>
+        <member name="P:HAKOM.Cryptography.Console.Api.Exceptions.ErrorDuringXMLParingException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="M:HAKOM.Cryptography.Console.Commands.Certificate.Commands.Create.CreateCertificateCommand.Create(System.String,System.String,System.DateTimeOffset,System.DateTimeOffset,System.Boolean,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="store">for example: 'LocalUser' or 'FileSystem'</param>
+            <param name="name">for example the Name attribute of the Certificate Element</param>
+            <param name="validFrom"></param>
+            <param name="validTo"></param>
+            <param name="showEnvironmentVariableInstructions">if true, will show the necessary environment variable adjustments to configure the new certificate</param>
+            <param name="showXmlFileInstructions">if true, will show the necessary xml config file adjustments to configure the new certificate</param>
+            <returns></returns>
+        </member>
+        <member name="T:HAKOM.Cryptography.Console.Program">
+            <summary>
+            This class represents the entry point of the console application.
+            The application can either run standalone (using the <see cref="M:HAKOM.Cryptography.Console.Program.Main(System.String[])"/> method below,
+            or be built-into another console application by calling <see cref="M:HAKOM.Cryptography.Console.Api.Extensions.ContainerExtensions.UseCryptographyConsole(HAKOM.DependencyInjection.Core.Net.Api.IContainer)"/>
+            which will then add the crypto commands to it as subcommands.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Cryptography.Console.Program.#ctor(HAKOM.Cryptography.Console.Commands.Certificate.CertificateCommand,HAKOM.Cryptography.Console.Commands.Encrypt.EncryptCommand,HAKOM.Cryptography.Console.Commands.Decrypt.DecryptCommand,System.CommandLine.RootCommand,Microsoft.Extensions.Logging.ILogger{HAKOM.Cryptography.Console.Program})">
+            <summary>
+            Creates a new instance of the console application. All commands/subcommands are 
+            injected here.
+            </summary>
+            <param name="certificateCommand">The command used for creating/managing certificates.</param>
+            <param name="encryptCommand">The command used to encrypt cleartext for use in configuration.</param>
+            <param name="decryptCommand">The command used to decrypt encrypted text for debugging.</param>
+            <param name="rootCommand">The main entry point of the application.</param>
+            <param name="logger">An optional <see cref="T:Microsoft.Extensions.Logging.ILogger"/> instance for the application to use.</param>
+        </member>
+        <member name="M:HAKOM.Cryptography.Console.Program.Main(System.String[])">
+            <summary>
+            When run as a standalone-application, this starts the application from the
+            <see cref="T:System.CommandLine.RootCommand"/> and parses the given command line arguments.
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HAKOM.Cryptography.Console.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.ApplicationDescription">
+            <summary>
+              Looks up a localized string similar to Manage certificates and encrypt/decrypt strings using them..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.AttemptingToDecryptStringLogMessage">
+            <summary>
+              Looks up a localized string similar to Attempting to decrypt &quot;{Input}&quot; using certificate &quot;{CertificateName}&quot;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.AttemptingToEncryptStringLogMessage">
+            <summary>
+              Looks up a localized string similar to Attempting to encrypt &quot;{Input}&quot; using certificate &quot;{CertificateName}&quot;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.CertificateCommandDescription">
+            <summary>
+              Looks up a localized string similar to Manage available certificates..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.CertificateStoreOptionDescription">
+            <summary>
+              Looks up a localized string similar to Sets the store option name of the certificate store. These values are already present in the default implementation: {0}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.ConfigurationFileNotFoundExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The configuration file &apos;{0}&apos; was not found..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.CreateCertificateCommand_ShellAdjustmentHelpText">
+             <summary>
+               Looks up a localized string similar to In order to configure the new certificate you must adjust your environment variables like so:
+            CMD.EXE:
+            
+            {0}
+            
+            Powershell:
+            
+            {1}
+            
+            Bash:
+            
+            {2}.
+             </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.CreateCertificateCommand_XMLAdjustmentHelpText">
+             <summary>
+               Looks up a localized string similar to In order to configure the new Certificate you must adjust your xml configuration file so it contains the new certificate: 
+            
+            {0}.
+             </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.CreateCertificateCommandDescription">
+            <summary>
+              Looks up a localized string similar to Create a new certificate and add it to a store..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.CreateCertificateNameOptionDescription">
+            <summary>
+              Looks up a localized string similar to The name to give the certificate..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.CryptographyConsoleFailedWithErrorLogMessage">
+            <summary>
+              Looks up a localized string similar to Application failed with code {Code}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.CryptographyConsoleFinishedSuccessfullyLogMessage">
+            <summary>
+              Looks up a localized string similar to Application finished successfully with code {Code}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.DecryptCommandDescription">
+            <summary>
+              Looks up a localized string similar to Decrypt a string using a configured certificate..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.DecryptCommandInputArgumentDescription">
+            <summary>
+              Looks up a localized string similar to The string to be decrypted..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.DeleteCertificateCommandDescription">
+            <summary>
+              Looks up a localized string similar to Delete an existing certificate from a store..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.EncryptCommandCertificateOptionDescription">
+            <summary>
+              Looks up a localized string similar to The name of the configured certificate to use for encryption..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.EncryptCommandDescription">
+            <summary>
+              Looks up a localized string similar to Encrypt a string using a configured certificate..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.EncryptCommandInputArgumentDescription">
+            <summary>
+              Looks up a localized string similar to The string to be encrypted..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.ErrorDuringXMLParingExceptionMessage">
+            <summary>
+              Looks up a localized string similar to There was an error during XML import of &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.FailedToDecryptStringLogMessage">
+            <summary>
+              Looks up a localized string similar to Failed to decrypt &quot;{Input}&quot; using certificate &quot;{CertificateName}&quot;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.FailedToEncryptStringLogMessage">
+            <summary>
+              Looks up a localized string similar to Failed to encrypt &quot;{Input}&quot; using certificate &quot;{CertificateName}&quot;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.FilenameCannotBeEmptyConsoleErrorMessage">
+            <summary>
+              Looks up a localized string similar to The file name for the certificate must not be empty..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.FilenameMustEndInDotPfxConsoleErrorMessage">
+            <summary>
+              Looks up a localized string similar to The file name must end in &quot;.pfx&quot;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.FilenamePromptConsoleOutMessage">
+            <summary>
+              Looks up a localized string similar to File name for the new certificate:.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.ListCertificatesCommandDescription">
+            <summary>
+              Looks up a localized string similar to List all certificates available..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.ListCertificatesCommandList_NoCertificatesFound">
+            <summary>
+              Looks up a localized string similar to No certificates found!.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.ListCertificatesCommandList_StoreNameStatement">
+            <summary>
+              Looks up a localized string similar to Listing certificates for store &apos;{0}&apos; ....
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.PasswordPrompt">
+            <summary>
+              Looks up a localized string similar to Certificate password (for securing the private key):.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.SaveToConfigFileOptionDescription">
+            <summary>
+              Looks up a localized string similar to The path to the configuration file where the certificate should be written. This option is disabled by default..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.SaveToEnvironmentVariableOptionDescription">
+            <summary>
+              Looks up a localized string similar to If set to true will save the certificate to environment variable. This option is enabled by default..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.StartingCryptographyConsoleLogMessage">
+            <summary>
+              Looks up a localized string similar to Starting application using parameters: &quot;{Args}&quot;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.SuccessfullyDecryptedStringLogMessage">
+            <summary>
+              Looks up a localized string similar to Successfully decrypted &quot;{Input}&quot; using certificate &quot;{CertificateName}&quot;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.SuccessfullyEncryptedStringLogMessage">
+            <summary>
+              Looks up a localized string similar to Successfully encrypted &quot;{Input}&quot; using certificate &quot;{CertificateName}&quot;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.ValidFromOptionDescription">
+            <summary>
+              Looks up a localized string similar to Sets the valid from date of a certificate. (Default: Now).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Cryptography.Console.Properties.Strings.ValidToOptionDescription">
+            <summary>
+              Looks up a localized string similar to Sets the valid to date of a certificate. (Default: 100 years from now).
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Testing.IntegrationTesting.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Testing.IntegrationTesting.Net.Api.Http.ServiceFixture`1">
+            <summary>
+            Used to run a collection of integration tests against a locally hosted service.
+            </summary>
+            <typeparam name="TService">The implementation of <see cref="T:HAKOM.Http.Core.Net.Api.Service"/> to host.</typeparam>
+        </member>
+        <member name="M:HAKOM.Testing.IntegrationTesting.Net.Api.Http.ServiceFixture`1.GetUri(System.String)">
+            <summary>
+            Returns an absolute URL that can be used to access an endpoint of the hosted service.
+            </summary>
+            <remarks>
+            This method should be used to get a URL whenever a request is made against the hosted service, since the port under which it is running may change depending on the environment the tests are run in.
+            </remarks>
+            <param name="path">The path of the endpoint to access</param>
+            <returns>A <see cref="T:System.Uri"/> to use for accessing the endpoint.</returns>
+        </member>
+        <member name="M:HAKOM.Testing.IntegrationTesting.Net.Api.Http.ServiceFixture`1.GetUri(System.String,System.ValueTuple{System.String,System.String}[])">
+            <summary>
+            Returns an absolute URL that can be used to access an endpoint of the hosted service.
+            </summary>
+            <remarks>
+            Same as <see cref="M:HAKOM.Testing.IntegrationTesting.Net.Api.Http.ServiceFixture`1.GetUri(System.String)"/> but with the ability to add query parameters. The method also takes care of formatting/escaping the parameters so that the caller doesnt have to worry about it.
+            </remarks>
+            <param name="path">The path of the endpoint to access</param>
+            <param name="queryParams">Zero or more query parameters (as key-value pairs) to add to the uri.</param>
+            <returns>A <see cref="T:System.Uri"/> to use for accessing the endpoint.</returns>
+        </member>
+        <member name="M:HAKOM.Testing.IntegrationTesting.Net.Api.Http.ServiceFixture`1.InitializeAsync">
+            <summary>
+            Run when the fixture is initialized.
+            </summary>
+            <remarks>Starts the service.</remarks>
+            <returns>A task that completes when the service is up and running.</returns>
+        </member>
+        <member name="M:HAKOM.Testing.IntegrationTesting.Net.Api.Http.ServiceFixture`1.DisposeAsync">
+            <summary>
+            Run when the fixture is disposed (i.e. when the tests associated with it are done).
+            </summary>
+            <remarks>Stops the service.</remarks>
+            <returns>A task that completes when the service has been stopped.</returns>
+        </member>
+        <member name="M:HAKOM.Testing.IntegrationTesting.Net.Api.Http.ServiceFixture`1.GetTestServiceUrl(System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Generates a URL to host the service under, based on the next available port in the given range.
+            </summary>
+            <param name="minPort">Lower bound or port range.</param>
+            <param name="maxPort">Upper bound of port range.</param>
+            <param name="scheme">The scheme (defaults to http).</param>
+            <param name="host">The host (defaults to localhost).</param>
+            <returns>A string representing the URL under which the service can be hosted.</returns>
+            <exception cref="T:System.InvalidOperationException">THrown if no unused port is available within the given range.</exception>
+        </member>
+    </members>
+</doc>

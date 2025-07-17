@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.DependencyInjection.Configuration.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.DependencyInjection.Configuration.Net.Api.Exceptions.AssemblyNotFoundException">
+            <summary>
+            Indicates that a given assembly from the CustomRegistration-Section in the configuration could not be found 
+            in the executing path.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Api.Exceptions.AssemblyNotFoundException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Configuration.Net.Api.Exceptions.FailedToLoadAssemblyException">
+            <summary>
+            Indicates that there was an issue loading the given assembly. The <see cref="P:System.Exception.InnerException"/> should provide more information.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Api.Exceptions.FailedToLoadAssemblyException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Configuration.Net.Api.Exceptions.IncompleteCustomRegistrationException">
+            <summary>
+            Indicates a faulty configuration for custom service registrations.
+            </summary>
+             <remarks>
+            <para>
+            Make sure none of the required settings is missing or empty.
+            </para>
+            <para>
+            This exception is identified by error code HK08015
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Api.Exceptions.IncompleteCustomRegistrationException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Configuration.Net.Api.Exceptions.RegistrationMethodNotFoundException">
+            <summary>
+            Indicates that the method given for registration of a type configured in the CustomRegistration section is 
+            either missing or does not have the expected parameters.
+            </summary>
+            <remarks>
+            <para>
+            Ensure that a public method with that name exists in the class specified in the CustomRegistration section.
+            </para>
+            <para>
+            This exception is identified by error code HK08017
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Api.Exceptions.RegistrationMethodNotFoundException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Configuration.Net.Api.Extensions.ContainerExtensions">
+            <summary>
+            Contains <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> extension methods for adding services via configuration.
+            </summary>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Configuration.Net.Api.Extensions.ContainerExtensions.UseConfiguredRegistrations(HAKOM.DependencyInjection.Core.Net.Api.IContainer,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Allows registration of services from external dependencies based on configuration.
+            </summary>
+            <param name="container">The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> where the custom type registrations should be added.</param>
+            <param name="configuration">The <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> which contains the section "CustomRegistrations".</param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> where the custom type registrations are added.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when either the given <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> or <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/></exception>
+            <exception cref="T:HAKOM.DependencyInjection.Configuration.Net.Api.Exceptions.IncompleteCustomRegistrationException">Thrown when the section "CustomRegistrations" in the <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> is incomplete.</exception>
+            <exception cref="T:HAKOM.DependencyInjection.Configuration.Net.Api.Exceptions.AssemblyNotFoundException">Thrown when the given assembly in the section "CustomRegistration" in the <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> cannot be found.</exception>
+            <exception cref="T:HAKOM.DependencyInjection.Configuration.Net.Api.Exceptions.RegistrationMethodNotFoundException">
+            Thrown when the given RegistrationMethod in the section "CustomRegistration" in the <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> is not a valid Method in the given class.
+            </exception>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Configuration.Net.Api.IAssemblyLoader">
+            <summary>
+            Responsible for loading an assembly from the given path.
+            </summary>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Configuration.Net.Api.IAssemblyLoader.Load(System.String,System.String)">
+            <summary>
+            Attempts to load an assembly from the given <paramref see="fileName"/>.
+            </summary>
+            <param name="fileName">The absolute or relative location of the file to be loaded.</param>
+            <param name="referencesRoot">Optionally, an absolute path to a directory in which assemblies referenced by the assembly given in <paramref name="fileName"/> are located.</param>
+            <returns></returns>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Configuration.Net.Api.ICustomRegistrationOptions">
+            <summary>
+            Configures additional dependencies that should be registered with an <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> on startup.
+            For this to work, the given <see cref="P:HAKOM.DependencyInjection.Configuration.Net.Api.ICustomRegistrationOptions.Assembly"/> should contain a public, static class named as configured in <see cref="P:HAKOM.DependencyInjection.Configuration.Net.Api.ICustomRegistrationOptions.ClassName"/>.
+            That class should define a public static method that takes an <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> as its first and only parameter and that method should have the same name as configured in <see cref="P:HAKOM.DependencyInjection.Configuration.Net.Api.ICustomRegistrationOptions.RegistrationMethod"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Api.ICustomRegistrationOptions.Name">
+            <summary>
+            The name of this registration. Must be unique across all configured <see cref="T:HAKOM.DependencyInjection.Configuration.Net.Api.ICustomRegistrationOptions"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Api.ICustomRegistrationOptions.Assembly">
+            <summary>
+            The absolute or relative path to the .dll file that contains the class specified under <see cref="P:HAKOM.DependencyInjection.Configuration.Net.Api.ICustomRegistrationOptions.ClassName"/>.
+            If the path is relative, the location where the file will be looked for depends on any previously registered instance of <see cref="T:HAKOM.Persistence.FileSystem.Net.Api.IDefaultResourcePathProvider"/>.
+            If there is no <see cref="T:HAKOM.Persistence.FileSystem.Net.Api.IDefaultResourcePathProvider"/> registerd, <see cref="P:HAKOM.Persistence.FileSystem.Net.Api.IDefaultResourcePathProvider.Default"/> will be used.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Api.ICustomRegistrationOptions.RegistrationMethod">
+            <summary>
+            Name of the method that should be called with the current <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> as its first parameter.
+            This value should not be fully qualified, only containing the method name itself.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Api.ICustomRegistrationOptions.ClassName">
+            <summary>
+            Fully qualified name of the class that implements the given <see cref="P:HAKOM.DependencyInjection.Configuration.Net.Api.ICustomRegistrationOptions.RegistrationMethod"/>.
+            </summary>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Configuration.Net.Api.ICustomRegistrationOptions.Validate">
+            <summary>
+            Validates if all fields have valid values assigned.
+            </summary>
+        </member>
+        <member name="M:HAKOM.DependencyInjection.Configuration.Net.CustomRegistrationOptions.Validate">
+            <inheritdoc/>
+            <exception cref="T:HAKOM.DependencyInjection.Configuration.Net.Api.Exceptions.IncompleteCustomRegistrationException"></exception>
+        </member>
+        <member name="T:HAKOM.DependencyInjection.Configuration.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Properties.Strings.AssemblyNotFoundExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The assembly &apos;{0}&apos; configured for the custom registration with name &apos;{1}&apos; could not be found at the path(s): &apos;{2}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Properties.Strings.FailedToLoadAssemblyExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Failed to load assembly &apos;{0}&apos; ({1}: {2}). See inner exception for details..
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Properties.Strings.FailedToLoadAssemblyLogMessage">
+            <summary>
+              Looks up a localized string similar to Failed to load assembly &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Properties.Strings.FailedToLoadAssemblyLogMessgeEventName">
+            <summary>
+              Looks up a localized string similar to FailedToLoadAssembly.
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Properties.Strings.IncompleteCustomRegistrationExceptionMessage">
+            <summary>
+              Looks up a localized string similar to One of the custom registration is incomplete, please provide all attributes and tags in the configuration..
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Properties.Strings.IncompleteCustomRegistrationPropertyExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The property &apos;{0}&apos; of the custom registration &apos;{1}&apos; is null or empty. Please provide the {0}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.DependencyInjection.Configuration.Net.Properties.Strings.RegistrationMethodNotFoundExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The method &apos;{0}&apos; specified for registration configured for the custom registration with name &apos;{1}&apos; could not be found or has other parameters than IContainer..
+            </summary>
+        </member>
+    </members>
+</doc>

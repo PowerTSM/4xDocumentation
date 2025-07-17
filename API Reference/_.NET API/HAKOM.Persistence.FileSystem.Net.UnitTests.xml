@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Persistence.FileSystem.Net.UnitTests</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Persistence.FileSystem.Net.UnitTests.FilesInAssemblyDictionary">
+            <summary>
+            For mocking System.IO calls using files embedded in a (test) assembly
+            </summary>
+        </member>
+    </members>
+</doc>

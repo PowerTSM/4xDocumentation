@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.TSM.Net.IntegrationTests</name>
+    </assembly>
+    <members>
+        <member name="M:HAKOM.TSM.Net.IntegrationTests.Api.Data.Persistence.TimeSeries.TimeSeriesDataStoreOfTStorageProviderTConfigurationTStorageReaderTStorageWriterTests.ReadingDataFromANonCyclicTimeSeriesShouldReturnTheGivenFromDate">
+            <summary>
+            TSM-4917
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HAKOM.TSM.Net.IntegrationTests.Api.Data.Persistence.TimeSeries.TimeSeriesDataStoreOfTStorageProviderTConfigurationTStorageReaderTStorageWriterTests.WritingDataAndReadingWithHistoricDateTimeAndExactlyAt">
+            <summary>
+            TSM-5226
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

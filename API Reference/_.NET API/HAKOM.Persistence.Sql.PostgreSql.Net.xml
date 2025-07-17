@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Persistence.Sql.PostgreSql.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Persistence.Sql.PostgreSql.Net.Api.Exceptions.InvalidColumnTypeForBooleanValueException">
+            <summary>
+            Thrown when the read database column is neither boolean nor integer.
+            </summary>
+            <remarks>
+            <para>
+            When using <see cref="M:HAKOM.Persistence.Sql.Net.Api.SqlStorageProvider`6.ReadBool(`3,System.Int32,System.Nullable{System.Boolean},System.Boolean)"/> with the <see cref="T:HAKOM.Persistence.Sql.PostgreSql.Net.Api.IPostgreSqlStorageProvider"/> the column to read must be either boolean or integer. It the type is integer, "0" is equivalent to false and anything except "0" is true.
+            </para>
+            <para>
+            This exception is identified by error code HK12011.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.PostgreSql.Net.Api.Exceptions.InvalidColumnTypeForBooleanValueException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.PostgreSql.Net.Api.Exceptions.PostgreSqlException">
+            <summary>
+            All PostgreSql related exceptions are thrown within this class.
+            </summary>
+            <remarks>
+            These exceptions should not be thrown by code outside this module.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Persistence.Sql.PostgreSql.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.PostgreSql.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.PostgreSql.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.PostgreSql.Net.Properties.Strings.InvalidColumnTypeForBooleanValueExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The type of a requested column is &apos;{0}&apos; which cannot be translated into a boolean value..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.PostgreSql.Net.Properties.Strings.PropertyIsMissingInSerializationInfoMessage">
+            <summary>
+              Looks up a localized string similar to Cannot deserialize &apos;{0}&apos; because property &apos;{1}&apos; is null or missing in serialization info..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Persistence.Sql.PostgreSql.Net.Properties.Strings.PropertyIsNotValidInSerializationInfoMessage">
+            <summary>
+              Looks up a localized string similar to {0} in SerializationInfo is not a valid type..
+            </summary>
+        </member>
+    </members>
+</doc>
