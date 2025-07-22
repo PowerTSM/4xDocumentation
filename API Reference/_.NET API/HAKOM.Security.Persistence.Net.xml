@@ -1,0 +1,366 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Security.Persistence.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Security.Persistence.Net.Api.Authentication.Exceptions.AuthenticationStorageProviderMismatchException">
+            <summary>
+            THrown when an attempt is made to call <see cref="M:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider.Configure(HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider,System.Threading.CancellationToken)"/> with a storage provider that the instance does not support.
+            </summary>
+            <remarks>
+            <para>
+            This probably means that the user identity provider has been registered incorrectly. Make sure it is registered using the <see cref="M:HAKOM.Security.Persistence.Net.Api.Authentication.Extensions.ContainerExtensions.UseIdentifierProvider``2(HAKOM.DependencyInjection.Core.Net.Api.IContainer)"/> method.
+            </para>
+            <para>
+            This exception is identified by error code HK14021.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Api.Authentication.Exceptions.AuthenticationStorageProviderMismatchException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Persistence.Net.Api.Authentication.Exceptions.IdentifierTypeNotSupportedException">
+            <summary>
+            This error occurs when an attempt is made to retrieve a user identifier of a type that is not supported by the <see cref="T:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider"/>.
+            </summary>
+            <remarks>
+            <para>
+            When calling <see cref="M:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider.GetUserIdentifier``1(System.Security.Claims.ClaimsIdentity,System.Threading.CancellationToken)"/> with a TIdentifier that is not supported, this exception will be thrown.
+            Make sure to call it only with supported types.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Api.Authentication.Exceptions.IdentifierTypeNotSupportedException.EquivalentHttpStatusCode">
+            <summary>
+            When this error occurs while processing an HTTP request, the request should fail with status 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Persistence.Net.Api.Authentication.Exceptions.IncompleteClaimException">
+            <summary>
+            Thrown when an attempt is made to obtain a user identifier based on a clam that lacks an issuer value or type.
+            </summary>
+            <para>
+            This exception is identified by error code HK14022.
+            </para>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Api.Authentication.Exceptions.IncompleteClaimException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Api.Authentication.Exceptions.IncompleteClaimException.Claim">
+            <summary>
+            The incomplete claim.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Persistence.Net.Api.Authentication.Extensions.ContainerExtensions">
+            <summary>
+            Provides extension methods for adding services necessary for user authentication.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authentication.Extensions.ContainerExtensions.UseUserIdentifierProviders(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers implementations for authenticating the user.
+            </summary>
+            <param name="container">The container to register the services with.</param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> itself.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authentication.Extensions.ContainerExtensions.UseDefaultIdentifierProvider(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers <see cref="T:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider"/> implementation of HAKOM for Oracle, PostgreSQL and SQLServer with the container.
+            </summary>
+            <param name="container">The container to register the attribute stores with.</param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> itself.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authentication.Extensions.ContainerExtensions.UseIdentifierProvider``2(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers implementations of <see cref="T:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider"/>.
+            </summary>
+            <typeparam name="TStorageProvider">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/> used to access data in storage.</typeparam>
+            <typeparam name="TUserIdentifierProvider">The type of <see cref="T:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider"/> which will be registered.</typeparam>
+            <param name="container">The container to register the store with.</param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> itself.</returns>
+        </member>
+        <member name="T:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierCache`1">
+            <summary>
+            A cache for user identifiers which locally stores known identifiers based on repository and a unique claim value of the user/identity.
+            </summary>
+            <remarks>
+            This can be used by implementations of <see cref="T:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider"/> that would normally access a storage provider to retrieve some identifier
+            </remarks>
+            <typeparam name="TIdentifier">The type of identifier this cache stores.</typeparam>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierCache`1.CacheIdentifier(System.String,System.Security.Claims.Claim,`0)">
+            <summary>
+            Adds a known identifier to the cache
+            </summary>
+            <param name="repositoryName">The name of the repository in which the identifier is associated to the given claim value.</param>
+            <param name="claim">The claim that uniquely identifies the user.</param>
+            <param name="identifier">The identifier to cache.</param>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierCache`1.TryGetCachedIdentifier(System.String,System.Security.Claims.Claim,`0@)">
+            <summary>
+            Attempts to get an identifier from the local cache (as opposed to retrieving it by querying the storage provider)
+            </summary>
+            <param name="repositoryName">The repository for which to get the identifier.</param>
+            <param name="claim">The claim identifying the user.</param>
+            <param name="identifier">When a value has been previously cached and is not expired, this parameter will hold the cached value.</param>
+            <returns><see langword="true"/> if an identifier has been found, <see langword="false"/> otherwise.</returns>
+        </member>
+        <member name="T:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider">
+            <summary>
+            Provides a means to retrieve a unique identifier for a user/application based on its identity.
+            </summary>
+            <remarks>
+            <para>
+            Some parts of HAKOM software associate persisted data with an individual user/application (i.e. for auditing purposes).
+            Implementations of this interface are used to generate a unique identifier for a given <see cref="T:System.Security.Claims.ClaimsIdentity"/> that can be then used in the database.
+            </para>
+            <para>
+            For example, an implementation may store a unique claim of the identity and return the primary key value of the new record that can then be used to link other data to that individual.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider.GetUserIdentifier``1(System.Security.Claims.ClaimsIdentity,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves the user identifier associated with the given <see cref="T:System.Security.Claims.ClaimsIdentity"/>.
+            </summary>
+            <param name="identity">The claims identity of the user.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> of <typeparamref name="TIdentifier"/> representing the user identifier.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider.TryGetUserIdentifier``1(System.Security.Claims.ClaimsIdentity,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to retrieve the user identifier associated with the given <see cref="T:System.Security.Claims.ClaimsIdentity"/>.
+            </summary>
+            <param name="identity">The claims identity of the user.</param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task`1"/> of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> containing the <typeparamref name="TIdentifier"/> 
+            representing the user identifier.
+            </returns>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <remarks>
+            The <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> will provide additional information about success or failure of the operation.
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider.Configure(HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider,System.Threading.CancellationToken)">
+            <summary>
+            Configures the current instantce with an instance of <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/>.
+            </summary>
+            <param name="storageProvider">The storage provider to associate with this instance.</param>
+            <param name="cancellationToken">A token that may be used to attempt to cancel the operation.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> that completes once the operation has finished.</returns>
+        </member>
+        <member name="T:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProviderFactory">
+            <summary>
+            Used for creating a new instance of <see cref="T:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider"/>.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProviderFactory.Create(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Creates an instance of <see cref="T:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider"/> for the given repository.
+            </summary>
+            <param name="repositoryName">The repository the users/identities should be associated with.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>An <see cref="T:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider"/> object.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProviderFactory.TryCreate(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to create an instance of <see cref="T:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider"/>  for the given repository.
+            </summary>
+            <param name="repositoryName">The repository the users/identities should be associated with.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> containing an <see cref="T:HAKOM.Security.Persistence.Net.Api.Authentication.IUserIdentifierProvider"/> object.</returns>
+            <remarks>
+            The <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> will provide additional information about success or failure.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Security.Persistence.Net.Api.Authorization.Exceptions.MissingRepositoryIdentifierException">
+            <summary>
+            This error occurs when attempting to access a resource that requires authorization without that resource being associated to a specific repository.
+            </summary>
+            <remarks>
+            <para>
+            When using repository based authorization, rules that control the access to any given resources are retrieved from a repository.
+            This means that every resource must have a repository associated with it (by having a parent with the resource type 'Repository' and the repositories name as its identifier).
+            </para>
+            <para>
+            Encountering this error means that the resource has a parent with the correct type ('Repository') but no specific identifier, thus the authorization service cannot load the authorization rules for this resource as it does not know where to load them from.
+            </para>
+            <para>
+            This error can be identified by its code HK14028.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Api.Authorization.Exceptions.MissingRepositoryIdentifierException.EquivalentHttpStatusCode">
+            <summary>
+            When this error is encountered while processing an HTTP request, the service should respond with an HTTP status 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Persistence.Net.Api.Authorization.Exceptions.UnknownRepositoryForResourceException">
+            <summary>
+            This error occurs when attempting to access a resource without it being associated to a specific repository.
+            </summary>
+            <remarks>
+            <para>
+            When using repository based authorization, rules that control the access to any given resources are retrieved from a repository.
+            This means that every resource must have a repository associated with it (by having a parent with the resource type 'Repository' and the repositories name as its identifier).
+            </para>
+            <para>
+            Make sure that the <see cref="P:HAKOM.Security.Persistence.Net.Api.Authorization.Exceptions.UnknownRepositoryForResourceException.Resource"/> has an appropriate parent resource assigned to it.
+            </para>
+            <para>
+            This error can be identified by its code HK14027.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Api.Authorization.Exceptions.UnknownRepositoryForResourceException.EquivalentHttpStatusCode">
+            <summary>
+            When this error is encountered while processing an HTTP request, the service should respond with an HTTP status 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Api.Authorization.Exceptions.UnknownRepositoryForResourceException.Resource">
+            <summary>
+            The resource being accessed.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Persistence.Net.Api.Authorization.Extensions.ContainerExtensions">
+            <summary>
+            Provides extension methods for registering implementations of interfaces used for authorization with the container.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authorization.Extensions.ContainerExtensions.UseRepositoryAuthorization(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers a repository authorization service with the container. The repository authorization service uses an
+            <see cref="T:HAKOM.Security.Persistence.Net.Api.Authorization.Persistence.IAuthorizationRuleStore"/> to fetch authorization rules from the repository.
+            </summary>
+            <param name="container">The container to register the default implementations with.</param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> itself.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authorization.Extensions.ContainerExtensions.UseAuthorizationRuleStore``2(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers an implementation of <see cref="T:HAKOM.Security.Persistence.Net.Api.Authorization.Persistence.IAuthorizationRuleStore"/>.
+            </summary>
+            <typeparam name="TStorageProvider">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/> which this store will use.</typeparam>
+            <typeparam name="TAuthorizationRuleStore">The implementation of <see cref="T:HAKOM.Security.Persistence.Net.Api.Authorization.Persistence.IAuthorizationRuleStore"/> which will be registered.</typeparam>
+            <param name="container">The container to register the default implementations with.</param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> itself.</returns>
+        </member>
+        <member name="T:HAKOM.Security.Persistence.Net.Api.Authorization.IResourceAuthorizationRules">
+            <summary>
+            Represents a cached association between a <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> and its corresponding <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule"/> rules.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Api.Authorization.IResourceAuthorizationRules.Resource">
+            <summary>
+            Gets the <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> to which the <see cref="P:HAKOM.Security.Persistence.Net.Api.Authorization.IResourceAuthorizationRules.Rules"/> rules apply.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Api.Authorization.IResourceAuthorizationRules.Rules">
+            <summary>
+            Gets the collection of <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule"/> rules associated with the <see cref="P:HAKOM.Security.Persistence.Net.Api.Authorization.IResourceAuthorizationRules.Resource"/>.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Persistence.Net.Api.Authorization.Persistence.IAuthorizationRuleStore">
+            <summary>
+            Used to find authorization rules.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authorization.Persistence.IAuthorizationRuleStore.FindAuthorizationRules(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Finds all <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule"/>s for the given <paramref name="resourceType"/> as well as all default rules.
+            </summary>
+            <param name="resourceType">The resource type by which the results will be filtered.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> which can be used to interrupt the process.</param>
+            <returns>An <see cref="T:System.Collections.Generic.IAsyncEnumerable`1"/> containing all default rules and rules for the specified <paramref name="resourceType"/>.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authorization.Persistence.IAuthorizationRuleStore.TryFindAuthorizationRules(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to find all <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule"/>s for the given <paramref name="resourceType"/> as well as all default rules.
+            </summary>
+            <param name="resourceType">The resource type by which the results will be filtered.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> which can be used to interrupt the process.</param>
+            <returns>
+            An <see cref="T:System.Collections.Generic.IAsyncEnumerable`1"/> of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> containing all default rules and rules for the specified <paramref name="resourceType"/>,
+            if successful and a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure"/> otherwise.
+            </returns>
+        </member>
+        <member name="T:HAKOM.Security.Persistence.Net.Api.Authorization.Persistence.IAuthorizationRuleStoreFactory">
+            <summary>
+            Used to create <see cref="T:HAKOM.Security.Persistence.Net.Api.Authorization.Persistence.IAuthorizationRuleStore"/>s.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authorization.Persistence.IAuthorizationRuleStoreFactory.Create(HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider,System.Threading.CancellationToken)">
+            <summary>
+            Creates a new <see cref="T:HAKOM.Security.Persistence.Net.Api.Authorization.Persistence.IAuthorizationRuleStore"/> based on the given <paramref name="storageProvider"/>.
+            </summary>
+            <param name="storageProvider">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/>, which will be used to determine which implementation of <see cref="T:HAKOM.Security.Persistence.Net.Api.Authorization.Persistence.IAuthorizationRuleStore"/> will be created.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/>, which can be used to interrupt the process.</param>
+            <returns>An awaitable <see cref="T:System.Threading.Tasks.Task`1"/> containing the store.</returns>
+        </member>
+        <member name="M:HAKOM.Security.Persistence.Net.Api.Authorization.Persistence.IAuthorizationRuleStoreFactory.TryCreate(HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to create a new <see cref="T:HAKOM.Security.Persistence.Net.Api.Authorization.Persistence.IAuthorizationRuleStore"/> based on the given <paramref name="storageProvider"/>.
+            </summary>
+            <param name="storageProvider">The <see cref="T:HAKOM.Persistence.Core.Net.Api.Storage.IStorageProvider"/>, which will be used to determine which implementation of <see cref="T:HAKOM.Security.Persistence.Net.Api.Authorization.Persistence.IAuthorizationRuleStore"/> will be created.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/>, which can be used to interrupt the process.</param>
+            <returns>
+            An awaitable <see cref="T:System.Threading.Tasks.Task`1"/> containing a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/>, if the attempt was successful, or a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure"/> otherwise.
+            </returns>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Authorization.ResourceAuthorizationRules.Resource">
+            <summary>
+            Gets the <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.IResource"/> to which the <see cref="P:HAKOM.Security.Persistence.Net.Authorization.ResourceAuthorizationRules.Rules"/> rules apply.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Authorization.ResourceAuthorizationRules.Rules">
+            <summary>
+            Gets the collection of <see cref="T:HAKOM.Security.Core.Net.Api.Authorization.AuthorizationRule"/> rules associated with the <see cref="P:HAKOM.Security.Persistence.Net.Authorization.ResourceAuthorizationRules.Resource"/>.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Security.Persistence.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Properties.Strings.AuthenticationStorageProviderMismatchExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Attempted to initialize user identifier provider {0} with a storage provider of type {1}. Expected was {2}.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Properties.Strings.IdentifierTypeNotSupportedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The requested type of identifier (&apos;{0}&apos;) is not supported. Supported types: {1}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Properties.Strings.IncompleteClaimExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Attempt to obtain a user identifier based on a claim lacking an issuer a type or a value..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Properties.Strings.MissingRepositoryIdentifierExceptionMessage">
+            <summary>
+              Looks up a localized string similar to No repository identifier specified..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Security.Persistence.Net.Properties.Strings.UnknownRepositoryForResourceExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Cannot authorize on the given resource because it is not associated with a specific repository. Resource type: &apos;{0}&apos;, resource identifier: {1}..
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,778 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.TSM.Http</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.TSM.Http.Api.Repositories.Attributes.AttributesController">
+            <summary>
+            Controller for the attributes endpoint. Provides access to CRUD operations on attributes.
+            </summary>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.Attributes.AttributesController.#ctor(Microsoft.Extensions.Logging.ILogger{HAKOM.TSM.Http.Api.Repositories.Attributes.AttributesController})">
+            <summary>
+            Creates an instance of this controller.
+            </summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger"/> to use for logging during any of the controller actions.</param>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.Attributes.AttributesController.FindAttributes(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.Attributes.Persistence.IAttributeSearchParameters,HAKOM.Persistence.Core.Net.Api.Ordering.Order{HAKOM.TSM.Net.Api.Attributes.IAttribute}[],HAKOM.Persistence.Core.Net.Api.Paging.Range{HAKOM.TSM.Net.Api.Attributes.IAttribute},System.Threading.CancellationToken)">
+            <summary>
+            Returns all available attributes within a repository.
+            </summary>
+            <param name="repository">
+            The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> to find attributes in. This value will be set during model binding based on
+            the "repository" parameter in the path.
+            </param>
+            <param name="searchParameters">
+            This value will be set during model binding based on
+            the "repository" parameter in the path. The parameters to filter the returned results. This value will be set during model binding based on the following query parameters:
+            <list type="table">
+            <listheader>
+            <item>
+            <term>Parameter</term>
+            <term>Description</term>
+            </item>
+            </listheader>
+            <item>
+            <description>name</description>
+            <description>Allows finding time series with a specific <see cref="P:HAKOM.TSM.Net.Api.Attributes.IAttribute.Name"/> only. Use ? or * as a wild card character.</description>
+            </item>
+            <item>
+            <description>description</description>
+            <description>Allows finding time series with a specific <see cref="P:HAKOM.TSM.Net.Api.Attributes.IAttribute.Description"/> only. Use ? or * as a wild card character.</description>
+            </item>
+            <item>
+            <description>type</description>
+            <description>
+            Allows finding time series with a specific <see cref="P:HAKOM.TSM.Net.Api.Attributes.IAttribute.Type"/> only. 
+            Use either the <see cref="P:HAKOM.TSM.Net.Api.Attributes.IAttributeType.Name"/> directly or the references identifier by writing 'id:' in front.
+            </description>
+            </item>
+            </list>
+            </param>
+            <param name="orderings">
+            A list of orderings by which to sort the result
+            </param>
+            <param name="cancellationToken">
+            A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation.
+            This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.
+            </param>
+            <param name="range">Used to specify a range of results that should be returned instead of the entire result.</param>
+            <returns>
+            An <see cref="T:System.Collections.Generic.IAsyncEnumerable`1"/>, where each result containse either an <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference"/>
+            or a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/> explaining what went wrong, while attempting to get the attribute reference.
+            </returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.Attributes.AttributesController.SaveAttribute(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.Attributes.IAttribute,System.Threading.CancellationToken)">
+            <summary>
+            Persists the given <paramref name="attribute"/> to the repository.
+            </summary>
+            <param name="repository">
+            The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which the attribute will be persisted. This value will be set
+            during model binding based on the "repository" parameter in the path.
+            </param>
+            <param name="attribute">The <see cref="T:HAKOM.TSM.Net.Api.Attributes.IAttribute"/> which will be persisted.</param>
+            <param name="cancellationToken">
+            A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation.
+            This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.
+            </param>
+            <returns>An awaitable <see cref="T:System.Threading.Tasks.Task"/> signifying completion of the save operation.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.Attributes.AttributesController.GetAttribute(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference)">
+            <summary>
+            Gets an instance of <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference"/> based on the given name or id in the route.
+            </summary>
+            <param name="repository">
+            The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> which will be searched for the attribute. This value will be set
+            during model binding based on the "repository" parameter in the path.
+            </param>
+            <param name="attributeReference">
+            The <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference"/> to the loaded attribute. Model binding takes care of actually loading the attribute based on
+            the value of the "attribute" parameter in the path.
+            </param>
+            <returns>The <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference"/> from the repository.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.Attributes.AttributesController.UpdateAttribute(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference,HAKOM.TSM.Net.Api.Attributes.IAttribute,System.Threading.CancellationToken)">
+            <summary>
+            Saves a new attribute or updates an existing one, if one can be found
+            with the given <paramref name="attributeReference"/>.
+            </summary>
+            <param name="repository">
+            The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which the attribute will be persisted. This value will be set
+            during model binding based on the "repository" parameter in the path.
+            </param>
+            <param name="attributeReference">
+            The <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference"/> which will be used to identify the new or existing attribute in the repository.
+            </param>
+            <param name="attribute">The <see cref="T:HAKOM.TSM.Net.Api.Attributes.IAttribute"/> which will be persisted.</param>
+            <param name="cancellationToken">
+            A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation.
+            This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.
+            </param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task`1"/> containing either an <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference"/> to the persisted attribute
+            or an explanation for why it failed.
+            </returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.Attributes.AttributesController.DeleteAttribute(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference,System.Threading.CancellationToken)">
+            <summary>
+            Deletes the attribute referred to by the given <paramref name="attributeReference"/> from the repository.
+            </summary>
+            <param name="repository">
+            The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> from which the attribute will be deleted. This value will be set
+            during model binding based on the "repository" parameter in the path.
+            </param>
+            <param name="attributeReference">
+            The <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference"/> which will be used to identify the attribute which will be deleted.
+            </param>
+            <param name="cancellationToken">
+            A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation.
+            This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.
+            </param>
+            <returns>An awaitable <see cref="T:System.Threading.Tasks.Task"/> signifying completion of the operation.</returns>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Api.Repositories.Attributes.Exceptions.UnsupportedAttributeReferenceOrStoreTypeException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Api.Repositories.Attributes.Exceptions.ReferenceToADifferentUnitException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Api.Repositories.AttributeTypes.AttributeTypesController">
+            <summary>
+            Controller for attribute types endpoint. Provides information about the available attribute types
+            as well as creating new and deleting existing attribute types.
+            </summary>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.AttributeTypes.AttributeTypesController.GetAllAttributeTypes(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,System.Threading.CancellationToken)">
+            <summary>
+            Finds attribute types available within a repository.
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which look.
+            This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation. 
+            This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            </summary>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.AttributeTypes.AttributeTypesController.SaveAttributeType(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.Attributes.IAttributeType,System.Threading.CancellationToken)">
+            <summary>
+            Saves a new <see cref="T:HAKOM.TSM.Net.Api.Attributes.IAttributeType"/>.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to store the new attribute type. 
+            This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="attributeType">The attribute type to be saved.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation. 
+            This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>An awaitable Task.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.AttributeTypes.AttributeTypesController.GetSpecificAttributeType(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeTypeReference)">
+            <summary>
+            Retrieves a single specific <see cref="T:HAKOM.TSM.Net.Api.Attributes.IAttributeType"/> within the <paramref name="repository"/>.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to look for the given attribute type
+            This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="attributeTypeReference">The <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeTypeReference"/> to the <see cref="T:HAKOM.TSM.Net.Api.Attributes.IAttributeType"/> to load. 
+            Model binding takes care of actually loading the attribute type reference based on the value of the "attributeType" parameter in the path.</param>
+            <returns>An awaitable <see cref="T:HAKOM.TSM.Net.Api.Attributes.IAttributeType"/>.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.AttributeTypes.AttributeTypesController.DeleteAttributeType(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeTypeReference,System.Threading.CancellationToken)">
+            <summary>
+            Deletes a specific <see cref="T:HAKOM.TSM.Net.Api.Attributes.IAttributeType"/> from the <paramref name="repository"/>.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which the attribute type to delete resides. 
+            This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="attributeTypeReference">The attribute type to delete. 
+            This value will be set during model binding based on the "attributeType" value in the path.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> that can be used to attempt to abort the operation. 
+            Normally set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>An awaitable Task.</returns>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Api.Repositories.Calculations.Aggregations.AggregationsController">
+            <summary>
+            Controller for the aggregation endpoint. Enables the aggregation of time series.
+            </summary>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.Calculations.Aggregations.AggregationsController.CalculateBySearchCriteria(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.Calculation.ICalculationOptions,HAKOM.TSM.Net.Api.Data.Persistence.TimeSeries.ITimeSeriesDataReadingOptions,HAKOM.TSM.Net.Api.TimeSeries.Persistence.ITimeSeriesSearchParameters,HAKOM.TSM.Net.Api.Flags.FlagHandling,System.Threading.CancellationToken)">
+            <summary>
+            Aggregates given time series and time series found by attributes.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to look. This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="calculationOptions"><see cref="T:HAKOM.TSM.Net.Api.Calculation.ICalculationOptions"/> for setting the format in which the time series data used for the aggregation are read in.</param>
+            <param name="dataReadingOptions"><see cref="T:HAKOM.TSM.Net.Api.Data.Persistence.TimeSeries.ITimeSeriesDataReadingOptions"/> determining the desired properties of the final result.</param>
+            <param name="timeSeriesSearchParameters"><see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.ITimeSeriesSearchParameters"/> specify the attributes and other search parameters to use for search of time series to aggregate.
+            Every parameter has to start with "search." (eg. "search.attribute="Attribute1|AttributeValue1").</param>
+            <param name="flagHandling">Specifies which flag priority should be used for the result of the aggregation.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation. This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>A task containing the <see cref="T:HAKOM.TSM.Net.Api.Data.TimeSeries.ITimeSeriesDataCollection`1"/> aggregated based on the provided formula in the shape of a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> </returns>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Api.Repositories.Calculations.Formulas.FormulasController">
+            <summary>
+            Controller for the ad hoc formula endpoint. Enables the computation of provided formulas.
+            </summary>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.Calculations.Formulas.FormulasController.GetFormulaResult(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,System.String,HAKOM.TSM.Net.Api.Calculation.ICalculationOptions,HAKOM.TSM.Net.Api.Data.Persistence.TimeSeries.ITimeSeriesDataReadingOptions,System.Threading.CancellationToken)">
+            <summary>
+            Computes the value of the formula based on the provided information.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to look. This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="calculationOptions"><see cref="T:HAKOM.TSM.Net.Api.Calculation.ICalculationOptions"/> for setting the format in which the time series data used in the calculation are read in.</param>
+            <param name="dataReadingOptions"><see cref="T:HAKOM.TSM.Net.Api.Data.Persistence.TimeSeries.ITimeSeriesDataReadingOptions"/> determining the desired properties of the final result.</param>
+            <param name="formulaString">A string which holds the formula to be executed.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation. This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>A task containing the <see cref="T:HAKOM.TSM.Net.Api.Data.TimeSeries.ITimeSeriesDataCollection`1"/> computed based on the provided formula in the shape of a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> </returns>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Api.Repositories.RepositoriesController">
+            <summary>
+            Controller for repositories endpoint. Provides information about the available repositories.
+            </summary>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.RepositoriesController.#ctor(Microsoft.Extensions.Logging.ILogger{HAKOM.TSM.Http.Api.Repositories.RepositoriesController})">
+            <summary>
+            Creates a new instance of this controller.
+            </summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger"/> to use for logging during any of the controller actions.</param>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.RepositoriesController.GetInformationForAllRepositories(HAKOM.TSM.Net.Api.Persistence.ITsmRepositoryStore,System.Threading.CancellationToken)">
+            <summary>
+            Lists all available repositories.
+            </summary>
+            <param name="tsmRepositoryStore">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepositoryStore"/> to get the repositories from.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>Returns a stream of results that either contain a <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepositoryInformation"/> about the repository or an error indicating why a particular repository could not be accessed.</returns>
+            <response code="200">Returns a list of all available repositories.</response>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.RepositoriesController.TryGetRepositoryInformation(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,System.Threading.CancellationToken)">
+            <summary>
+            Gets the repository information to a given repository.
+            </summary>
+            <param name="repository">The name of the repository for which the information should be retrieved.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>Returns the repository information to a given repository.</returns>
+            <response code="200">Returns the repository information to a given repository.</response>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Assignments.Attributes.AttributeAssignmentsController">
+            <summary>
+            Controller for attribute assignments endpoint. Provides information about the attributes assigned 
+            to a time series as well as creating new and deleting existing attribute assignments.
+            </summary>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Assignments.Attributes.AttributeAssignmentsController.GetAllAttributeAssignments(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,System.Threading.CancellationToken)">
+            <summary>
+            Provides references to all attributes assigned to a time series.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to look.
+            This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="timeSeriesReference">An <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> to the time series
+            whose assigned attributes are being looked up.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation.
+            This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>An <see cref="T:System.Collections.Generic.IAsyncEnumerable`1"/> containing a collection of the attributes assigned to the time series <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/>.</returns>		
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Assignments.Attributes.AttributeAssignmentsController.DeleteAllAttributeAssignments(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,System.Threading.CancellationToken)">
+            <summary>
+            Deletes all attribute assignments from a time series.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to look.
+            This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="timeSeriesReference">An <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> to the time series
+            whose attribute assignments are being deleted</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation.
+            This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>An awaitable <see cref="T:System.Threading.Tasks.Task`1"/>.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Assignments.Attributes.AttributeAssignmentsController.GetSpecificAttributeAssignment(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference,System.Threading.CancellationToken)">
+            <summary>
+            Checks if an attribute is assigned to a specific time series.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to look.
+            This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="timeSeriesReference">An <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> to the time series
+            to which the attribute is potentially assigned.</param>
+            <param name="attributeReference">An <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference"/> to the attribute
+            whose assignment to the time series is being checked.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation.
+            This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>An awaitable Task containing the <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference"/>
+            if the attribute is assigned to the time series.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Assignments.Attributes.AttributeAssignmentsController.SaveAttributeAssignment(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference,System.Threading.CancellationToken)">
+            <summary>
+            Saves an assignment of an attribute assigned to a time series.
+             </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to look.
+            This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="timeSeriesReference">An <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> to the time series
+            to which the attribute is being assigned.</param>
+            <param name="attributeReference">An <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference"/> to the attribute
+            which is being assigned.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation.
+            This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>An awaitable Task containing the <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.Assignment.References.ITimeSeriesAssignmentReference`1"/>
+            of the attribute assigned to the time series <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/>.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Assignments.Attributes.AttributeAssignmentsController.DeleteAttributeAssignment(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference,System.Threading.CancellationToken)">
+            <summary>
+            Removes an assignment of an attribute to a time series.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to look.
+            This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="timeSeriesReference">An <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> to the time series
+            from which the attribute assignment is being deleted.</param>
+            <param name="attributeReference">An <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.References.IAttributeReference"/> to the attribute
+            whose assignment is being deleted.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation.
+            This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>An awaitable <see cref="T:System.Threading.Tasks.Task`1"/>.</returns>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Assignments.TimeSeries.TimeSeriesAssignmentsController">
+            <summary>
+            This controller handles all requests directly related to time series assignments of a time series within a repository.
+            </summary>
+            <remarks>
+            Actions within this controller are to be used for creating, retrieving and deleting time series assignments.
+            </remarks>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Assignments.TimeSeries.TimeSeriesAssignmentsController.#ctor(Microsoft.Extensions.Logging.ILogger{HAKOM.TSM.Http.Api.Repositories.TimeSeries.Assignments.TimeSeries.TimeSeriesAssignmentsController})">
+            <summary>
+            Creates a new instance of this controller.
+            </summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger"/> to be used in the output of relevant logs.</param>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Assignments.TimeSeries.TimeSeriesAssignmentsController.SaveTimeSeriesAssignment(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,System.Threading.CancellationToken)">
+            <summary>
+            Saves a new time series to time series assignment.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to store the new time series assignment.</param>
+            <param name="timeSeriesReference">The <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> which the <paramref name="assignedTimeSeriesReference"/> will be assigned to.</param>
+            <param name="assignedTimeSeriesReference">The <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> which will be assigned to <paramref name="timeSeriesReference"/>.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation. This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>Returns the saved time series assignment.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Assignments.TimeSeries.TimeSeriesAssignmentsController.GetTimeSeriesAssignments(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,System.Threading.CancellationToken)">
+            <summary>
+            Gets all time series which are assigned to <paramref name="timeSeriesReference"/>.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which the time series is saved.</param>
+            <param name="timeSeriesReference">The <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> for which all assigned time series will be returned.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation. This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>Returns all time series which are assigned to <paramref name="timeSeriesReference"/>.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Assignments.TimeSeries.TimeSeriesAssignmentsController.GetTimeSeriesAssignment(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,System.Threading.CancellationToken)">
+            <summary>
+            Gets the assigned time series.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which the time series is saved.</param>
+            <param name="timeSeriesReference">The <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> where the <paramref name="assignedTimeSeriesReference"/> is assigned to.</param>
+            <param name="assignedTimeSeriesReference">The <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> which is assigned to <paramref name="timeSeriesReference"/>.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation. This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>Returns the assigned time series.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Assignments.TimeSeries.TimeSeriesAssignmentsController.DeleteTimeSeriesAssignments(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,System.Threading.CancellationToken)">
+            <summary>
+            Deletes all assigned time series from <paramref name="timeSeriesReference"/>.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which the time series assignment is saved.</param>
+            <param name="timeSeriesReference">The <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> from which all time series assignments will be deleted.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation. This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns></returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Assignments.TimeSeries.TimeSeriesAssignmentsController.DeleteTimeSeriesAssignment(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,System.Threading.CancellationToken)">
+            <summary>
+            Deletes the assignment from <paramref name="timeSeriesReference"/> to <paramref name="assignedTimeSeriesReference"/> .
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which the time series assignment is saved.</param>
+            <param name="timeSeriesReference">The <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> from which the assignment to <paramref name="assignedTimeSeriesReference"/> will be deleted.</param>
+            <param name="assignedTimeSeriesReference">The <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> whose assignment to <paramref name="timeSeriesReference"/> will be deleted.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation. This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns></returns>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Data.Exceptions.ReadingQuotationEntriesForNonQuotationTimeSeriesIsNotSupportedException">
+            <summary>
+            Reading <see cref="T:HAKOM.TSM.Net.Api.Data.Persistence.TimeSeries.Quotation.IQuotationEntry"/> or 
+            <see cref="T:HAKOM.TSM.Net.Api.Data.Persistence.TimeSeries.Quotation.IAuditedQuotationEntry"/> for time series where 
+            quotation is not enabled is not supported.
+            </summary>
+            <remarks>
+            <para>
+            To read <see cref="T:HAKOM.TSM.Net.Api.Data.Persistence.TimeSeries.Quotation.IQuotationEntry"/> or 
+            <see cref="T:HAKOM.TSM.Net.Api.Data.Persistence.TimeSeries.Quotation.IAuditedQuotationEntry"/> the time series to 
+            read the data from has to have <see cref="P:HAKOM.TSM.Net.Api.TimeSeries.ITimeSeries.Quotation"/> set to <see langword="true"/>.
+            </para>
+            <para>
+            This exception is identified by error code HK15123.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Data.Exceptions.ReadingQuotationEntriesForNonQuotationTimeSeriesIsNotSupportedException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Data.TimeSeriesDataController">
+            <summary>
+            This controller handles all requests directly related to the data of individual time series within a repository.
+            </summary>
+            <remarks>
+            Actions within this controller are to be used for writing and reading data points to/from a specific time series.
+            </remarks>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Data.TimeSeriesDataController.#ctor(HAKOM.TSM.Net.Api.Data.TimeSeries.IDataTransformerFactory,Microsoft.Extensions.Logging.ILogger{HAKOM.TSM.Http.Api.Repositories.TimeSeries.Data.TimeSeriesDataController})">
+            <summary>
+            Creates a new instance of this controller.
+            </summary>
+            <param name="dataTransformerFactory">The factory used to create an <see cref="T:HAKOM.TSM.Net.Api.Data.TimeSeries.IDataTransformer"/> for transformations.</param>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger"/> to be used in the output of relevant logs.</param>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Data.TimeSeriesDataController.ReadTimeSeriesData(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,HAKOM.TSM.Net.Api.Data.Persistence.TimeSeries.ITimeSeriesDataReadingOptions,System.Nullable{HAKOM.TSM.Net.Api.Time.DateTimes.DateTimeOffsetAtOrBefore},System.Nullable{HAKOM.TSM.Net.Api.Quotations.QuotationBehavior})">
+            <summary>
+            Reads data for a specific time series.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> of the time series for which to read data. This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="timeSeriesReference">The <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> to read data from. This value will be set during model binding based on the "timeseries" parameter in the path.</param>
+            <param name="dataReadingOptions"> 
+            The <see cref="T:HAKOM.TSM.Net.Api.Data.Persistence.TimeSeries.ITimeSeriesDataReadingOptions"/> that define the parameters for reading the data, 
+            including the <see cref="T:HAKOM.TSM.Net.Api.Time.Periods.Period"/>, cyclicity as <see cref="T:System.Boolean"/>, <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.FunctionType"/>, 
+            <see cref="T:HAKOM.TSM.Net.Api.Time.Intervals.IInterval"/>, <see cref="T:HAKOM.TSM.Net.Api.Units.IUnit"/>, <see cref="T:HAKOM.TSM.Net.Api.Time.Intervals.IntervalTransformationMethod"/>,
+            <see cref="T:HAKOM.TSM.Net.Api.Time.TimeZones.ITimeZone"/> and historic date time as <see cref="T:HAKOM.TSM.Net.Api.Time.DateTimes.DateTimeOffsetAtOrBefore"/>.
+            </param>
+            <param name="quotationDateTime">The <see cref="T:HAKOM.TSM.Net.Api.Time.DateTimes.DateTimeOffsetAtOrBefore"/> to use when reading data from a specific quotation date and time, if the time series has quotation enabled.</param>
+            <param name="quotationBehavior">The <see cref="T:HAKOM.TSM.Net.Api.Quotations.QuotationBehavior"/> to use when reading data from a non-specific quotation date and time, if the time series has quotation enabled.</param>
+            <returns>A <see cref="T:HAKOM.TSM.Net.Api.Data.TimeSeries.ITimeSeriesDataCollection`1"/> with the data for the specified <paramref name="dataReadingOptions"/>.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Data.TimeSeriesDataController.WriteTimeSeriesData(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,HAKOM.TSM.Net.Api.Data.TimeSeries.ITimeSeriesDataCollection{System.Double},System.Nullable{System.DateTimeOffset})">
+            <summary>
+            Writes data to the specified time series.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> of the time series for which to write data. This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="timeSeriesReference">The <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> to write data to. This value will be set during model binding based on the "timeseries" parameter in the path.</param>
+            <param name="data">The <see cref="T:HAKOM.TSM.Net.Api.Data.TimeSeries.ITimeSeriesDataCollection`1"/> which will be written. The value should be contained in the request body.</param>
+            <param name="quotationDateTime">A <see cref="T:System.DateTimeOffset"/> to set the quotation date time for which the data will be written. Optional parameter, for use only with quotation time series.</param>
+            <returns></returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Data.TimeSeriesDataController.WriteTimeSeriesDataSpan(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,HAKOM.TSM.Net.Api.Units.Persistence.References.IUnitReference,System.Collections.Generic.IEnumerable{HAKOM.TSM.Net.Api.Data.TimeSeries.ITimeSeriesDataSpan{System.Double}})">
+            <summary>
+            Writes time series data spans to the specified time series.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> of the time series for which to read data. This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="timeSeriesReference">The <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> to read data from. This value will be set during model binding based on the "timeseries" parameter in the path.</param>
+            <param name="unitReference">The unit that the original data was in. If not configured the unit of the time series will be used.</param>
+            <param name="dataSpans">The data spans that will be written on the time series.</param>
+            <returns></returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Data.TimeSeriesDataController.DeleteTimeSeriesData(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,HAKOM.TSM.Net.Api.Time.Periods.Period,System.Threading.CancellationToken)">
+            <summary>
+            Deletes all time series data within the given period.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to look.
+            This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="timeSeriesReference">An <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> to the time series
+            where the data will be deleted</param>
+            <param name="period">The time <see cref="T:HAKOM.TSM.Net.Api.Time.Periods.Period"/> from which the data will be deleted.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation.
+            This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>An awaitable Task.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Data.TimeSeriesDataController.ReadAuditedQuotationEntries(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,HAKOM.TSM.Net.Api.Time.Periods.Period,System.Nullable{HAKOM.TSM.Net.Api.Time.DateTimes.DateTimeOffsetAtOrBefore},System.Nullable{HAKOM.TSM.Net.Api.Time.DateTimes.DateTimeOffsetAtOrBefore},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Reads all <see cref="T:HAKOM.TSM.Net.Api.Data.Persistence.TimeSeries.Quotation.IAuditedQuotationEntry"/> for a given period of time series data.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to look.
+            This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="timeSeriesReference">A <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> to the time series for which the 
+            <see cref="T:HAKOM.TSM.Net.Api.Data.Persistence.TimeSeries.Quotation.IAuditedQuotationEntry"/> are to be read.</param>
+            <param name="period">The time <see cref="T:HAKOM.TSM.Net.Api.Time.Periods.Period"/> of the time series data from which the associated <see cref="T:HAKOM.TSM.Net.Api.Data.Persistence.TimeSeries.Quotation.IAuditedQuotationEntry"/> is to be read.</param>
+            <param name="quotationDateTime">Filters the result for either exactly the quotation date and time or all quotation dates and times up until <paramref name="quotationDateTime"/>.</param>
+            <param name="historicDateTime">Filters the result for either exactly the historic date and time or all historic dates and times up until <paramref name="historicDateTime"/>.</param>
+            <param name="limit">Limits the result to the given number.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation.
+            This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>The <see cref="T:System.Collections.Generic.IAsyncEnumerable`1"/> containing <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> with the <see cref="T:HAKOM.TSM.Net.Api.Data.Persistence.TimeSeries.Quotation.IAuditedQuotationEntry"/> for the specified <paramref name="period"/> of time series data.</returns>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Api.Repositories.TimeSeries.Exceptions.UnsupportedTimeSeriesReferenceOrStoreTypeException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Api.Repositories.TimeSeries.TimeSeriesController">
+            <summary>
+            Controller for time series endpoint. Provides information about the available time series
+            as well as creating new, updating and deleting existing time series.
+            </summary>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.TimeSeriesController.#ctor(Microsoft.Extensions.Logging.ILogger{HAKOM.TSM.Http.Api.Repositories.TimeSeries.TimeSeriesController})">
+            <summary>
+            Creates a new instance of this controller.
+            </summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger"/> to use for logging during individual requests.</param>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.TimeSeriesController.SaveTimeSeries(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.ITimeSeries,System.Threading.CancellationToken)">
+            <summary>
+            Saves a new time series.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to store the new time series. This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="timeSeries">The time series to be saved.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation. This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>The saved time series.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.TimeSeriesController.FindTimeSeries(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.ITimeSeriesSearchParameters,HAKOM.Persistence.Core.Net.Api.Ordering.Order{HAKOM.TSM.Net.Api.TimeSeries.ITimeSeries}[],HAKOM.Persistence.Core.Net.Api.Paging.Range{HAKOM.TSM.Net.Api.TimeSeries.ITimeSeries},System.Threading.CancellationToken)">
+            <summary>
+            Finds time series within a repository.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> to find time series in. This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="searchParameters">
+            The parameters to filter the returned results. This value will be set during model binding based on the following query parameters:
+            <list type="table">
+            <listheader>
+            <item>
+            <term>Parameter</term>
+            <term>Description</term>
+            </item>
+            </listheader>
+            <item>
+            <description>name</description>
+            <description>Allows finding time series with a specific <see cref="P:HAKOM.TSM.Net.Api.TimeSeries.ITimeSeries.Name"/> only. Use * as a wild card character.</description>
+            </item>
+            <item>
+            <description>description</description>
+            <description>Allows finding time series with a specific <see cref="P:HAKOM.TSM.Net.Api.TimeSeries.ITimeSeries.Description"/> only. Use * as a wild card character.</description>
+            </item>
+            <item>
+            <description>functionType</description>
+            <description>Allows finding time series with a <see cref="P:HAKOM.TSM.Net.Api.TimeSeries.ITimeSeries.Function"/> only.</description>
+            </item>
+            <item>
+            <description>cyclic</description>
+            <description>Allows finding only cyclic/non-cyclic time series.</description>
+            </item>
+            <item>
+            <description>unit</description>
+            <description>Allows finding time series with a specific unit only.</description>
+            </item>
+            <item>
+            <description>formula</description>
+            <description>Allows finding time series with a specific formula only.</description>
+            </item>
+            <item>
+            <description>timeZone</description>
+            <description>Allows finding time series with a specific time zone only.</description>
+            </item>
+            <item>
+            <description>startOfTime</description>
+            <description>Allows finding time series with a specific start of time only.</description>
+            </item>
+            </list>
+            </param>
+            <param name="orderings">
+            Properties to order by.
+            </param>
+            <param name="range">Used to specify a range of results that should be returned instead of the entire result.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation. This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>A stream of result items - one for each found time series. If an error occurred while loading time series from the <paramref name="repository"/>, the last item will include defaults as to what happened.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.TimeSeriesController.GetSpecificTimeSeries(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference)">
+            <summary>
+            Retrieves the definition of a single specific time series within the <paramref name="repository"/>.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to look for the given time series. This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="timeSeriesReference">The <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference"/> to load. Model binding takes care of actually loading the time series reference based on the value of the "timeseries" parameter in the path.</param>
+            <returns></returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.TimeSeriesController.UpdateTimeSeries(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,HAKOM.TSM.Net.Api.TimeSeries.ITimeSeries,System.Threading.CancellationToken)">
+            <summary>
+            Updates a specific time series in the given <paramref name="repository"/>.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which the time series to update resides. This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="timeSeriesToUpdate">This will be set during model binding according to the "originalTimeSeries" value in the path of the request.</param>
+            <param name="timeSeries">The updated definition of the time series.</param>
+            <param name="cancellationToken"></param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that completes with a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> indicating success/failure of the update.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.TimeSeries.TimeSeriesController.DeleteSpecificTimeSeries(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.TimeSeries.Persistence.References.ITimeSeriesReference,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Deletes a specific time series from the <paramref name="repository"/>.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which the time series to delete resides. This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="timeSeriesReference">The time series to delete. This value will be set during model binding based on the "timeSeries" value in the path.</param>
+            <param name="cascade">Whether or not to also delete any data associated with the time series.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> that can be used to attempt to abort the operation. Normally set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that completes with a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> that indicates the success of the deletion.</returns>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Api.Repositories.Units.UnitsController">
+            <summary>
+            Controller for the units endpoint. Provides information about the available units
+            as well as creating and deleting new units.
+            </summary>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.Units.UnitsController.#ctor(Microsoft.Extensions.Logging.ILogger{HAKOM.TSM.Http.Api.Repositories.Units.UnitsController})">
+            <summary>
+            Creates a new instance of this controller.
+            </summary>
+            <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger"/> to use for logging during individual requests.</param>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.Units.UnitsController.SaveSpecificUnit(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.Units.IUnit,System.Threading.CancellationToken)">
+            <summary>
+            Saves a new <see cref="T:HAKOM.TSM.Net.Api.Units.IUnit"/>.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to store the new unit. This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="unit">The unit to be saved.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation. This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>Awaitable task, containing a reference to the saved unit in the form of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/>.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.Units.UnitsController.GetAllUnits(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,System.Threading.CancellationToken)">
+            <summary>
+            Finds all units within a repository.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to look for units. This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation. This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>An <see cref="T:System.Collections.Generic.IAsyncEnumerable`1"/> containing a collection of the units found in the repository in the form of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/>.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.Units.UnitsController.GetSpecificUnit(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.Units.Persistence.References.IUnitReference,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves the reference a single specific unit within the <paramref name="repository"/>.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which to look for the given unit. This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="unitReference">The <see cref="T:HAKOM.TSM.Net.Api.Units.Persistence.References.IUnitReference"/> to load. Model binding takes care of actually loading the unit reference based on the value of the "unit" parameter in the path.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation. This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>An <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/>.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.Units.UnitsController.UpdateUnit(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.Units.Persistence.References.IUnitReference,HAKOM.TSM.Net.Api.Units.IUnit,System.Threading.CancellationToken)">
+            <summary>
+            Saves a new unit or updates an existing one, if one can be found
+            with the given <paramref name="unitReference"/>.
+            </summary>
+            <param name="repository">
+            The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which the unit will be persisted. This value will be set
+            during model binding based on the "repository" parameter in the path.
+            </param>
+            <param name="unitReference">
+            The <see cref="T:HAKOM.TSM.Net.Api.Units.Persistence.References.IUnitReference"/> which will be used to identify the new or existing unit in the repository.
+            </param>
+            <param name="newUnit">
+            The <see cref="T:HAKOM.TSM.Net.Api.Units.IUnit"/> which will be saved or will update the existing unit.
+            </param>
+            <param name="cancellationToken">
+            A <see cref="T:System.Threading.CancellationToken"/> to cancel the operation.
+            This will usually be set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.
+            </param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task`1"/> containing either an <see cref="T:HAKOM.TSM.Net.Api.Units.Persistence.References.IUnitReference"/> to the persisted unit
+            or an explanation for why it failed.
+            </returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Repositories.Units.UnitsController.DeleteSpecificUnit(HAKOM.TSM.Net.Api.Persistence.ITsmRepository,HAKOM.TSM.Net.Api.Units.Persistence.References.IUnitReference,System.Threading.CancellationToken)">
+            <summary>
+            Deletes a specific unit from the <paramref name="repository"/>.
+            </summary>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> in which the unit to delete resides. This value will be set during model binding based on the "repository" parameter in the path.</param>
+            <param name="unitReference">A reference to the <see cref="T:HAKOM.TSM.Net.Api.Units.IUnit"/> to delete. This value will be set during model binding based on the "unit" value in the path.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> that can be used to attempt to abort the operation. Normally set to <see cref="P:Microsoft.AspNetCore.Http.HttpContext.RequestAborted"/>.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that completes with a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> that indicates the success of the deletion.</returns>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Api.Time.IntervalController">
+            <summary>
+            Controller for time endpoint. Provides information about the available sub routes in the time route.
+            </summary>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.Time.IntervalController.GetInterval(HAKOM.TSM.Net.Api.Time.Intervals.IInterval)">
+            <summary>
+            Provides an <see cref="T:HAKOM.TSM.Net.Api.Time.Intervals.IInterval"/>. 
+            The actual parsing of query parameters is handled by an internal implementation of <see cref="T:HAKOM.Serialization.Http.Net.Api.ICustomModelBinder"/>.
+            </summary>
+            <param name="interval">The <see cref="T:HAKOM.TSM.Net.Api.Time.Intervals.IntervalType"/> as parsed from the request query parameters.</param>
+            <returns>The parsed interval (or an error).</returns>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Api.TsmService">
+            <summary>
+            Class responsible for defining the configuration and behaviour of the TSM HTTP API
+            </summary>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.TsmService.#ctor">
+            <summary>
+            Create a new service.
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Api.TsmService.Name">
+            <summary>
+            The name of the service. This will be used in documentation, etc.
+            </summary>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.TsmService.ConfigureApplication(Microsoft.AspNetCore.Builder.WebApplication)">
+            <summary>
+            Configures the created <see cref="T:Microsoft.AspNetCore.Builder.WebApplication"/>.
+            </summary>
+            <param name="application">The application that's created during startup of the service.</param>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.TsmService.ConfigureBuilder(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            Called after basic setup of the <see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/>.
+            </summary>
+            <param name="builder">The builder used to create the service.</param>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.TsmService.ConfigureHakomServices(HAKOM.DependencyInjection.Core.Net.Api.IContainer,Microsoft.Extensions.Configuration.IConfiguration@)">
+            <summary>
+            Adds various services to the DI container used by the HTTP API.
+            </summary>
+            <param name="container">The container used by the HTTP API.</param>
+            <param name="hostConfiguration">The configuration containing settings for the application host (Urls, Kestrel-settings, etc).</param>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Api.TsmService.ConfigureMvc(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
+            <summary>
+            Configures the MVC application the service is based on.
+            </summary>
+            <param name="mvcBuilder">The builder for the MVC application.</param>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Properties.Strings.ReadingQuotationEntriesForNonQuotationTimeSeriesIsNotSupportedExceptionMessage">
+            <summary>
+              Looks up a localized string similar to To read quotation entries, the time series must have quotation enabled..
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Properties.Strings.ReferenceToADifferentUnitExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The identifier of the IUnitReference is {0}, which differs from the provided unit symbol {1}..
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Properties.Strings.RepositoryInformationCouldNotBeLoadedLogMessage">
+            <summary>
+              Looks up a localized string similar to The repository &apos;{0}&apos; could not be loaded..
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Properties.Strings.TimeSeriesAssignmentIsNotOfTypeIAttributeReferenceExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The assigned object is not an IAttributeReference..
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Properties.Strings.TimeSeriesAssignmentIsNotOfTypeITimeSeriesReferenceExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The assigned object is not an ITimeSeriesReference..
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Properties.Strings.UnsupportedAttributeReferenceOrStoreTypeExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The type of the attribute reference or store is not supported..
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Properties.Strings.UnsupportedTimeSeriesReferenceOrStoreTypeExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The type of the time series reference or store is not supported..
+            </summary>
+        </member>
+    </members>
+</doc>

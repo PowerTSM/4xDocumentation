@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Console.Core.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Console.Core.Net.Api.Command">
+            <summary>
+            Base class for console commands
+            </summary>
+        </member>
+    </members>
+</doc>

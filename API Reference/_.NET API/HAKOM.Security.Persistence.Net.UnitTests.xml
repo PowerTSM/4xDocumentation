@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Security.Persistence.Net.UnitTests</name>
+    </assembly>
+    <members>
+        <member name="M:HAKOM.Security.Persistence.Net.UnitTests.Authorization.ResourceAuthorizationRulesCacheKeyGeneratorTests.Chain(HAKOM.Security.Core.Net.Api.Authorization.IResource[])">
+            <summary>
+            Starts with the lowest child and last one is the parent
+            </summary>
+            <param name="resources">Will order from child -> parent</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

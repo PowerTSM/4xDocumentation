@@ -1,0 +1,411 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Logging.Core.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Logging.Core.Net.Api.Exceptions.NamespaceDoc">
+            <summary>
+            This namespace contains exceptions thrown by the module.
+            </summary>
+            <remarks>
+            These exceptions should not be thrown by code outside this module.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Logging.Core.Net.Api.Exceptions.NoConfigurationRegisteredWithContainerException">
+            <summary>
+            Thrown when attempting to setup logging based on configured settings, without actually having the required <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> service registered first.
+            </summary>
+            <remarks>
+            <para>
+            When using <see cref="M:HAKOM.Logging.Core.Net.Api.Extensions.ContainerExtensions.UseConfiguredLogging(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.String)"/> to register logging, there must have been a registration of <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> with the container beforehand.
+            </para>
+            <para>
+            This exception is identified by error code HK05001
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.Exceptions.NoConfigurationRegisteredWithContainerException.EquivalentHttpStatusCode">
+            <summary>
+            When unhandled within an HTTP request, this exception should cause the request to fail
+            with an HTTP status code of 500 (internal server error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.Core.Net.Api.Extensions.ContainerExtensions">
+            <summary>
+            Extension methods for registering loggers with the 
+            dependency injection container.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Logging.Core.Net.Api.Extensions.ContainerExtensions.UseLogging(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},Microsoft.Extensions.Configuration.IConfigurationSection)">
+            <summary>
+            Registers loggers configured in <paramref name="configureLoggers"/>.
+            Optionally instructs the loggers to use the <see cref="T:Microsoft.Extensions.Configuration.IConfigurationSection"/>
+            given in <paramref name="configurationSection"/>.
+            </summary>
+            <param name="container">The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to register the loggers with.</param>
+            <param name="configureLoggers">Add <see cref="T:Microsoft.Extensions.Logging.ILoggerProvider"/> instances in this
+            <see cref="T:System.Action`1"/>.</param>
+            <param name="configurationSection">The <see cref="T:Microsoft.Extensions.Configuration.IConfigurationSection"/> loggers
+            should use for additional options.</param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to use for chaining of additional registrations.</returns>
+        </member>
+        <member name="M:HAKOM.Logging.Core.Net.Api.Extensions.ContainerExtensions.UseLogging(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean,System.String)">
+            <summary>
+            Registers loggers configured in <paramref name="configureLoggers"/>.
+            Optionally uses the specified section (<paramref name="configurationSection"/>) within an already registered <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/>
+            to configure the loggers.
+            </summary>
+            <param name="container">The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to register the loggers with.</param>
+            <param name="configureLoggers">Add <see cref="T:Microsoft.Extensions.Logging.ILoggerProvider"/> instances in this
+            <see cref="T:System.Action`1"/>.</param>
+            <param name="addConfiguration">Wether or not to use configuration.</param>
+            <param name="configurationSection">The key of the section within the configuration that contains logger configuration.</param>
+            <returns>The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to use for chaining of additional registrations.</returns>
+        </member>
+        <member name="M:HAKOM.Logging.Core.Net.Api.Extensions.ContainerExtensions.UseConfiguredLogging(HAKOM.DependencyInjection.Core.Net.Api.IContainer,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.String)">
+            <summary>
+            Registers loggers based on the contents of the configuration section
+            specified in <paramref name="configurationSection"/>.
+            Allows adding additional loggers in <paramref name="configureAdditionalLoggers"/>.
+            </summary>
+            <param name="container">The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to register the loggers with.</param>
+            <param name="configureAdditionalLoggers">An <see cref="T:System.Action`1"/> that can be used to add additional loggers.</param>
+            <param name="configurationSection">A <see cref="T:System.String"/> specifying which section within the registered <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> contains the loggers to be used.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:HAKOM.Logging.Core.Net.Api.Exceptions.NoConfigurationRegisteredWithContainerException"></exception>
+        </member>
+        <member name="T:HAKOM.Logging.Core.Net.Api.Extensions.NamespaceDoc">
+            <summary>
+            Extension methods for adding logging to <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> instances.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.Core.Net.Api.File.Exceptions.CouldNotOpenFileStreamException">
+            <summary>
+            Thrown when an attempt was made to log messages to a file that could not be opened for writing.
+            </summary>
+            <remarks>
+            When file logging is configured to log to a file that cannot be written to, this exception is thrown.
+            Reasons may include
+            <list type="bullet">
+            <item>
+            <term>the file being locked by another process</term>
+            </item>
+            <item>
+            <term>the process having no permission to write to the file/directory</term>
+            </item>
+            </list>
+            <para>
+            This exception is identified by error code HK05003
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.Exceptions.CouldNotOpenFileStreamException.FileName">
+            <summary>
+            The name of the file which could not be opened.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Logging.Core.Net.Api.File.Exceptions.CouldNotOpenFileStreamException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates a new instance of this exception.
+            </summary>
+            <param name="fileName">The name of the file which could not be opened.</param>
+            <param name="cause">The underlying <see cref="T:System.Exception"/> that caused this error.</param>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.Exceptions.CouldNotOpenFileStreamException.EquivalentHttpStatusCode">
+            <summary>
+            When unhandled within an HTTP request, the request should respond with an HTTP status code
+            of 500 (internal server error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.Core.Net.Api.File.Exceptions.FailedToWriteLogAfterMultipleAttemptsException">
+            <summary>
+            Thrown when - after multiple attempts - log messages could no longer be written to
+            a file.
+            </summary>
+            <remarks>
+            When a log file - which has previously been successfully opened for writing - cannot be written to, this exception will be thrown. 
+            <para>This may be due to the file being locked for writing by a separate process.
+            Initially, these failures will be ignored so as to not congest the queue of log messages.
+            However, if multiple attempts fail, this exception will be thrown.
+            </para>
+            <para>
+            This exception is identified by error code HK05004
+            </para>
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Logging.Core.Net.Api.File.Exceptions.FailedToWriteLogAfterMultipleAttemptsException.#ctor(System.Collections.Generic.IEnumerable{System.Exception})">
+            <summary>
+            Creates a new instance of this exception.
+            </summary>
+            <param name="failedAttempts">The exceptions for each failed attempt made at writing to the file.</param>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.Exceptions.FailedToWriteLogAfterMultipleAttemptsException.EquivalentHttpStatusCode">
+            <summary>
+            When unhandled within an HTTP request it should respond with an HTTP status code of
+            500 (internal server error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.Core.Net.Api.File.Exceptions.NamespaceDoc">
+            <summary>
+            This namespace contains all the exceptions thrown when an error occurs that relates to file logging.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.Core.Net.Api.File.Exceptions.UnknownEncodingException">
+            <summary>
+            This exception is thrown when the file logger is configured to use an encoding
+            that is unknown.
+            </summary>
+            <remarks>
+            <para>
+            When configuring a file logger, a text encoding may be specified for the output file.
+            If the encoding is unknown, this exception will be thrown.
+            </para>
+            <para>
+            For a list of supported encodings, please consult &lt;a href=&quot;https://docs.microsoft.com/en-us/dotnet/api/system.text.encoding#list-of-encodings&quot;&gt;Microsofts list of encodings supported by .NET&lt;/a&gt;
+            </para>
+            <para>
+            This exception is identified by error code HK05002
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.Exceptions.UnknownEncodingException.UnknownEncoding">
+            <summary>
+            The encoding string that is not a valid/known encoding.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.Exceptions.UnknownEncodingException.EquivalentHttpStatusCode">
+            <summary>
+            When this exception is thrown within an HTTP request, the request should return a response with
+            status code 500 (Internal server error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.Core.Net.Api.File.Extensions.LoggingBuilderExtensions">
+            <summary>
+            Defines extension methods on <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/> to be used to add file logging.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Logging.Core.Net.Api.File.Extensions.LoggingBuilderExtensions.AddFile(Microsoft.Extensions.Logging.ILoggingBuilder,System.Action{HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions},System.IO.Abstractions.IFileSystem)">
+            <summary>
+            Add file logging to the builder, using <paramref name="configure"/> to set options.
+            </summary>
+            <remarks>
+            Example:
+            <code language="csharp title=&quot;Program.cs&quot; linenums=&quot;1&quot; hl_lines=&quot;23-26&quot;">
+            public interface IApplication {
+            	void Run();
+            }
+            
+            internal class Application : IApplication {
+            	
+            	private readonly ILogger&lt;IApplication&gt; _logger;
+            	
+            	public Application(ILogger&lt;IApplication&gt; logger) {
+            		_logger = logger;
+            	}
+            	
+            	
+            	void Run() {
+            		_logger.LogError("There's nothing to do here");
+            	}
+            }
+            
+            var appContext = IApplicationContext.Create((container)=&gt; 
+              container
+            	.Use&lt;IApplication,Application&gt;();
+            	.UseLogging((loggingBuilder)=&gt; 
+            		loggingBuilder.AddFile((options)=&gt; 
+            			options.Append = false;
+            			options.FileNameTemplate="example-{timestamp}.log"
+            		}
+            	});
+            }
+            
+            var app = appContext.Start&lt;Application&gt;();
+            app.Run();
+            </code>
+            </remarks>
+            <param name="loggingBuilder">The <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/> to add file logging to.</param>
+            <param name="configure">A <see cref="T:System.Action`1"/> that allows you to modify the default options.</param>
+            <param name="fileSystem">Optional <see cref="T:System.IO.Abstractions.IFileSystem"/> implementation to use.</param>
+            <returns>The <paramref name="fileSystem"/> itself for chaining.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="loggingBuilder"/> is null.</exception>
+        </member>
+        <member name="T:HAKOM.Logging.Core.Net.Api.File.Extensions.NamespaceDoc">
+            <summary>
+            Extension methods for adding file logging to <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/> instances.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions">
+            <summary>
+            Defines a set of options that control how logs are written to a file on disk.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.LogLevel">
+            <summary>
+            Sets the minimum <see cref="T:Microsoft.Extensions.Logging.LogLevel"/> for which messages should be written
+            to the file. Defaults to <see cref="F:Microsoft.Extensions.Logging.LogLevel.Information"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.QueueSize">
+            <summary>
+            Defines how many messages can be written to the queue before additional
+            messages have to wait for previous messages to be written to disk.
+            Defaults to 1024.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.FinalFlushGracePeriod">
+            <summary>
+            Defines how long to wait for all remaining messages in the queue
+            to be written to disk before disposing of the logger.
+            Defaults to 1.5ms * <see cref="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.QueueSize"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.TimeToWaitForOpenSlot">
+            <summary>
+            Defines how long to wait for the queue to be ready for additional messages.
+            If the messages already in the queue are not written to disk fast enough 
+            and a new message cant be written within this time, the message will be lost
+            from the log. If this occurs frequently, consider increasing <see cref="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.QueueSize"/>.
+            Defaults to 100us * <see cref="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.QueueSize"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.MaxFileSize">
+            <summary>
+            Defines a limit for the size of logfiles (in Kilobytes). Once that limit
+            is exceeded, a new file will be created.
+            Defaults to <see cref="F:System.UInt32.MaxValue"/> (4 Gb).
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.Append">
+            <summary>
+            Defines if existing content should be replaced (false) or appended to (true).
+            Defaults to true.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.Path">
+            <summary>
+            The path in which the log file(s) should be created.
+            Environment variables may be used, i.e. '%HOMEPATH%\logs'
+            Defaults to '.';
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.FileNameTemplate">
+            <summary>
+            A template string that's used to define the name of the log file.
+            The following placeholders can be used:
+            <list type="bullet">
+            	<item>{timestamp} The date/time at which the file was created.</item>
+            	<item>{host} The name of the machine the process is running on.</item>
+            	<item>{processId} The id of the process that created the file.</item>
+            	<item>{processName} The name of the process that created the file.</item>
+            </list>
+            Defaults to '{host}.{processName}.{timeStamp}.log'.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.FileNameTimeStampFormat">
+            <summary>
+            A format string that's used to format the {timestamp} in <see cref="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.FileNameTemplate"/>.
+            Please refer to https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings
+            for details.
+            Defaults to 'yyyyMMdd\THHmm'.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.FileNameTimeStampType">
+            <summary>
+            Wether to use local time or UTC as the {timestamp} in the file name.
+            Defaults to <see cref="F:System.DateTimeKind.Local"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.TimeStampFormat">
+            <summary>
+            A format string that's used to format the timestamp prepended to each log message.
+            Please refer to https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings
+            for details.
+            Defaults to 'yyyy-MM-dd\THH\:mm\:ss.fffzzz'.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.TimeStampType">
+            <summary>
+            Wether to use local time or UTC as the timestamp prepended to each log message.
+            Defaults to <see cref="F:System.DateTimeKind.Local"/>.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.Encoding">
+            <summary>
+            The <see cref="P:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions.Encoding"/> to use in the log file.
+            Defaults to <see cref="P:System.Text.Encoding.UTF8"/>.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.Core.Net.AssemblyDoc">
+            <summary>
+            This assembly provides basic extension methods for registering logging services with <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> instances.
+            It also provides an implementation of <see cref="T:Microsoft.Extensions.Logging.ILogger"/> that logs to a file on disk.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Logging.Core.Net.File.FileLoggerOptions">
+             <summary>
+             The default values are 
+             <list>
+            		<item>Based on personal preference/experience (LocalTime before UTC, UTF-8, etc.)</item>
+            		<item>Based on MS code (QueueSize)</item>
+            		<item>Based on what Nreco.Logging.File uses (files)</item>
+             </list>
+             Adjust these as we gather more experience.
+             
+             ***IMPORTANT*****IMPORTANT******IMPORTANT****IMPORTANT
+              Make sure to adjust the corresponding
+              XML documentation in <see cref="T:HAKOM.Logging.Core.Net.Api.File.IFileLoggerOptions"/>!!
+             ***IMPORTANT*****IMPORTANT******IMPORTANT****IMPORTANT
+            
+             </summary>
+        </member>
+        <member name="T:HAKOM.Logging.Core.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Properties.Strings.CouldNotDeserializeFileNameMessage">
+            <summary>
+              Looks up a localized string similar to Could not deserialize file name..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Properties.Strings.CouldNotDeserializeUnknownEncodingMessage">
+            <summary>
+              Looks up a localized string similar to Could not deserialize UnknownEncoding property..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Properties.Strings.CouldNotOpenFileStreamExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Could not open a file for logging:  {0}.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Properties.Strings.FailedToWriteLogAfterMultipleAttemptsExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Multiple attempts to write log messages to a file failed. See inner exception for details..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Properties.Strings.NoConfigurationRegisteredWithContainerExceptionMessage">
+            <summary>
+              Looks up a localized string similar to An IConfiguration singleton must be registered with the IContainer instance before calling .UseConfiguredLogging or .UseLogging with addConfiguration = true. Call .Configure on the IContainer instance first and add at least one IConfigurationProvider..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Logging.Core.Net.Properties.Strings.UnknownEncodingExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The encoding configured for file logging is unknown: &apos;{0}&apos;..
+            </summary>
+        </member>
+    </members>
+</doc>

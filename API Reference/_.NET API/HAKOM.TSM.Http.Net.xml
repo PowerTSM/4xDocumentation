@@ -1,0 +1,263 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.TSM.Http.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.TSM.Http.Net.Api.EnumerationController`2">
+            <summary>
+            Base class for controllers exposing endpoints for looking up known values of <see cref="T:HAKOM.TSM.Net.Api.IEnumeration`1"/> implementing types along with any additional properties that have been assigned to them.
+            </summary>
+            <remarks>
+            <para>
+            Implementations <b>must</b> have a <see cref="T:Microsoft.AspNetCore.Mvc.RouteAttribute"/> specifying the root of the endpoints underneath.
+            </para>
+            </remarks>
+            <typeparam name="TStruct">The type of struct for which to expose endpoints.</typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Net.Api.EnumerationController`2.#ctor(System.Collections.Generic.IEnumerable{HAKOM.TSM.Net.Api.IEnumerationPropertyProvider{`0}},HAKOM.ErrorHandling.Http.Net.Api.IHttpFailureFactory)">
+            <summary>
+            Creates an instance of the controller. Call this from derived types.
+            </summary>
+            <param name="propertyProviders">A collection of all the registered <see cref="T:HAKOM.TSM.Net.Api.IEnumerationPropertyProvider`1"/> implementations for <typeparamref name="TStruct"/>.</param>
+            <param name="httpFailureFactory">Used to generate common errors.</param>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Net.Api.EnumerationController`2.FindAllKnownEnumerations">
+            <summary>
+            Returns all known values of <typeparamref name="TStruct"/> along with any properties mapped to it.
+            </summary>
+            <remarks>
+            Any value of <typeparamref name="TStruct"/> is considered <i>known</i> if it has one or more properties mapped to it by an implementation of <see cref="T:HAKOM.TSM.Net.Api.IEnumerationPropertyProvider`1"/>.
+            </remarks>
+            <returns></returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Net.Api.EnumerationController`2.GetEnumerationByValue(`1)">
+            <summary>
+            Returns the <typeparamref name="TStruct"/> with the given <paramref name="value"/> along with any additional properties mapped to it.
+            </summary>
+            <param name="value">The value of the <typeparamref name="TStruct"/> for which to retrieve its properties.</param>
+            <returns>A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> indicating success or failure of retrieving the <typeparamref name="TStruct"/> with the given <paramref name="value"/>.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Net.Api.EnumerationController`2.GetEnumerationPropertyByValue(`1,System.String)">
+            <summary>
+            Returns the value of the property identified by <paramref name="propertyName"/> for the <typeparamref name="TStruct"/> with the given <paramref name="value"/>.
+            </summary>
+            <param name="propertyName">The name of the property for which to retrieve the value mapped to the <typeparamref name="TStruct"/> with the given <paramref name="value"/>.</param>
+            <param name="value">The value of the <typeparamref name="TStruct"/> for which to retrieve the value of the property with the given <paramref name="propertyName"/>.</param>
+            <returns>A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> indicating success or failure of retrieving a value for the property of <typeparamref name="TStruct"/> with the given <paramref name="value"/>.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Net.Api.EnumerationController`2.GetEnumerationByProperty(System.String,System.String)">
+            <summary>
+            Returns the <typeparamref name="TStruct"/> with a property named <paramref name="propertyName"/> mapped to a value of <paramref name="propertyValue"/> along with any additional properties mapped to it.
+            </summary>
+            <param name="propertyName">The name of the property by which to look up the <typeparamref name="TStruct"/> for which to retrieve its properties.</param>
+            <param name="propertyValue">The value of the property mapped to the <typeparamref name="TStruct"/> for which to retrieve its properties.</param>
+            <returns>A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> indicating success or failure of retrieving the <typeparamref name="TStruct"/> with the property identified by <paramref name="propertyName"/> being mapped to the given <paramref name="propertyValue"/>.</returns>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Net.Api.Exceptions.UnableToGetAttributeStoreForRequestException">
+            <summary>
+            Indicates that the current request depends on a <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.IAttributeTypeStore"/> that is currently not available.
+            </summary>
+            <remarks>
+            Make sure the request is within the context of a <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> (i.e. have a path/route-parameter of type <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/>) and that that parameter is bound properly.
+            <para>
+            This exception is identified by error code HK15097
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Net.Api.Exceptions.UnableToGetAttributeStoreForRequestException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Net.Api.Exceptions.UnableToGetAttributeTypeStoreForRequestException">
+            <summary>
+            Indicates that the current request depends on a <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.IAttributeTypeStore"/> that is currently not available.
+            </summary>
+            <remarks>
+            Make sure the request is within the context of a <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> (i.e. have a path/route-parameter of type <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/>) and that that parameter is bound properly.
+            <para>
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Net.Api.Exceptions.UnableToGetAttributeTypeStoreForRequestException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Net.Api.Exceptions.UnableToGetTimeSeriesStoreForRequestException">
+            <summary>
+            Indicates that the current request depends on a <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.ITimeSeriesStore"/> that is currently not available.
+            </summary>
+            <remarks>
+            Make sure the request is within the context of a <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> (i.e. have a path/route-parameter of type <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/>) and that parameter is bound properly.
+            <para>
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Net.Api.Exceptions.UnableToGetTimeSeriesStoreForRequestException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Net.Api.Exceptions.UnableToGetUnitStoreForRequestException">
+            <summary>
+            Indicates that the current request depends on a <see cref="T:HAKOM.TSM.Net.Api.Units.Persistence.IUnitStore"/> that is currently not available.
+            </summary>
+            <remarks>
+            Make sure the request is within the context of a <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> (i.e. have a path/route-parameter of type <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/>) and that parameter is bound properly.
+            <para>
+            This exception is identified by error code HK15100.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Net.Api.Exceptions.UnableToGetUnitStoreForRequestException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Net.Api.Extensions.ContainerExtensions">
+            <summary>
+            Provides extension methods on <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> for registering types used by the HTTP API.
+            </summary>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Net.Api.Extensions.ContainerExtensions.UseTsmModelBinders(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers custom model binders for mapping of incoming request data.
+            </summary>
+            <param name="container">The container to register the custom model binders.</param>
+            <returns>The <paramref name="container"/> for chaining.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Net.Api.Extensions.ContainerExtensions.UseTsmSwaggerOptionSetups(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers custom type mappers for various TSM related types so that they are correctly represented in automatically generated OpenAPI documents describing the TSM HTTP API.
+            </summary>
+            <remarks>
+            Registers an instance of <see cref="T:System.Action`1"/> as a singleton with the <paramref name="container"/> which gets picked up and called by <see cref="M:HAKOM.Documentation.Http.Net.Api.Extensions.MvcBuilderExtensions.AddDocumentation(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.String,System.String,System.String,System.String,System.String,System.String,System.Action{Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions})"/>.
+            </remarks>
+            <param name="container">The container to register the setup action with.</param>
+            <returns>The <paramref name="container"/> for chaining.</returns>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Net.Api.Extensions.HttpContextExtensions">
+            <summary>
+            Contains extension methods for passing state between middleware using <see cref="P:Microsoft.AspNetCore.Http.HttpContext.Items"/>.
+            </summary>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Net.Api.Extensions.HttpContextExtensions.SetRequestRepository(Microsoft.AspNetCore.Http.HttpContext,HAKOM.TSM.Net.Api.Persistence.ITsmRepository)">
+            <summary>
+            Whenever a request occurs in the context of a repository (i.e. /repositories/&lt;repository&gt;/...)
+            this method can be used to add that repository to the <see cref="P:Microsoft.AspNetCore.Http.HttpContext.Items"/> dictionary so
+            that other methods within the request pipeline do not have to repeat the call to
+            <see cref="M:HAKOM.Persistence.Core.Net.Api.IRepositoryStore`1.Load(System.String,System.Threading.CancellationToken)"/>.
+            </summary>
+            <param name="context">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> to add the repository to.</param>
+            <param name="repository">The <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> to use for this request.</param>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Net.Api.Extensions.HttpContextExtensions.TryGetRequestRepository(Microsoft.AspNetCore.Http.HttpContext,HAKOM.TSM.Net.Api.Persistence.ITsmRepository@)">
+            <summary>
+            Attempts to get the <see cref="T:HAKOM.TSM.Net.Api.Persistence.ITsmRepository"/> to use for this request.
+            </summary>
+            <param name="context">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> to get the repository from.</param>
+            <param name="repository">Returns the repository previously set by <see cref="M:HAKOM.TSM.Http.Net.Api.Extensions.HttpContextExtensions.SetRequestRepository(Microsoft.AspNetCore.Http.HttpContext,HAKOM.TSM.Net.Api.Persistence.ITsmRepository)"/>.</param>
+            <returns><see langword="true"/> if there is a repository set for this request. <see langword="false"/> otherwise.</returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Net.Api.Extensions.HttpContextExtensions.TryGetRequestTimeSeriesStore(Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to get the <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.ITimeSeriesStore"/> to use for this request.
+            </summary>
+            <param name="httpContext">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> to get the store from.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>
+            The <see cref="T:HAKOM.TSM.Net.Api.TimeSeries.Persistence.ITimeSeriesStore"/> set for this request. If there isn't one, a new instance will be created
+            with the repository from  the <paramref name="httpContext"/>.
+            </returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Net.Api.Extensions.HttpContextExtensions.TryGetRequestAttributeTypeStore(Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to get the <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.IAttributeTypeStore"/> to use for this request.
+            </summary>
+            <param name="httpContext">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> to get the store from.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>
+            The <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.IAttributeTypeStore"/> set for this request. If there isn't one, a new instance will be created
+            with the repository from  the <paramref name="httpContext"/>.
+            </returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Net.Api.Extensions.HttpContextExtensions.TryGetRequestAttributeStore(Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to get the <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.IAttributeStore"/> to use for this request.
+            </summary>
+            <param name="httpContext">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> to get the store from.</param>
+            <param name="cancellationToken">A token that may be used to cancel the operation.</param>
+            <returns>
+            The <see cref="T:HAKOM.TSM.Net.Api.Attributes.Persistence.IAttributeStore"/> set for this request. If there isn't one, a new instance will be created
+            with the repository from  the <paramref name="httpContext"/>.
+            </returns>
+        </member>
+        <member name="M:HAKOM.TSM.Http.Net.Api.Extensions.HttpContextExtensions.TryGetRequestUnitStore(Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves the <see cref="T:HAKOM.TSM.Net.Api.Units.Persistence.IUnitStore"/> for HTTP requests.
+            </summary>
+            <param name="httpContext"></param>
+            <param name="cancellationToken"></param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/></returns>
+        </member>
+        <member name="T:HAKOM.TSM.Http.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Net.Properties.Strings.DateTimeOffsetAtOrBeforeMustBePassedInTheCorrectFormatMessage">
+            <summary>
+              Looks up a localized string similar to Could not read &apos;{0}&apos;. Must be an ISO-8601 formatted date/time with an optional &quot;,exact&quot; suffix indicating wether the parameter specifies an exact point in time or any point in time before the one given..
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Net.Properties.Strings.FlagsMustBePassedAsByteValuesMessage">
+            <summary>
+              Looks up a localized string similar to Could not read &apos;{0}&apos; as a flag value. When passing a flag as a query parameter, make sure to pass its byte value as a single byte integer value (0-255)..
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Net.Properties.Strings.QuotationBehaviorMustBePassedAsIntegerValuesMessage">
+            <summary>
+              Looks up a localized string similar to Could not read &apos;{0}&apos; as a quotation behavior value. When passing a quotation behavior as a query parameter, make sure to pass its byte value as an integer..
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Net.Properties.Strings.TimeBasesMustBePassedAsIntegerValuesMessage">
+            <summary>
+              Looks up a localized string similar to Could not read &apos;{0}&apos; as a timebase value. When passing a timebase as a query parameter, make sure to pass its byte value as an integer..
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Net.Properties.Strings.UnableToGetAttributeStoreForRequestExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The current request does not have a repository associated with it. Without a repository, it&apos;s impossible to determine the attribute store..
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Net.Properties.Strings.UnableToGetAttributeTypeStoreForRequestExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The current request does not have a repository associated with it. Without a repository, it&apos;s impossible to determine the appropriate attribute type store..
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Net.Properties.Strings.UnableToGetTimeSeriesStoreForRequestExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The current request does not have a repository associated with it. Without a repository, it&apos;s impossible to determine the appropriate time series store..
+            </summary>
+        </member>
+        <member name="P:HAKOM.TSM.Http.Net.Properties.Strings.UnableToGetUnitStoreForRequestExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The current request does not have a repository associated with it. Without a repository, it&apos;s impossible to determine the appropriate unit store..
+            </summary>
+        </member>
+    </members>
+</doc>

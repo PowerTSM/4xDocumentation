@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Persistence.Sql.Net.UnitTests</name>
+    </assembly>
+    <members>
+        <member name="M:HAKOM.Persistence.Sql.PostgreSql.Net.UnitTests.SqlStorageProviderTests.MockDataReader.GetName(System.Int32)">
+            <summary>
+            Names a column index by converting int to string.
+            </summary>
+            <param name="i">The column to be named.</param>
+            <returns>The named column.</returns>
+        </member>
+        <member name="M:HAKOM.Persistence.Sql.PostgreSql.Net.UnitTests.SqlStorageProviderTests.DerivedSqlStorageProvider.ThrowColumnIsNullExceptionMock(HAKOM.Persistence.Sql.PostgreSql.Net.UnitTests.SqlStorageProviderTests.MockDataReader,System.Int32)">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>

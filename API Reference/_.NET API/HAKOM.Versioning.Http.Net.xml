@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Versioning.Http.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Versioning.Http.Net.Api.Exceptions.MissingAcceptHeaderInRequestException">
+            <summary>
+            Thrown when a request was made that did not include an Accept header.
+            </summary>
+            <remarks>
+            <para>
+            Ensure that a valid Accept header is included in your request.
+            </para>
+            <para>
+            This exception is identified by error code HK18005.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Versioning.Http.Net.Api.Exceptions.MissingAcceptHeaderInRequestException.EquivalentHttpStatusCode">
+            <summary>
+            A request that does not include an Accept header should return a status code 406 (Not Acceptable).
+            </summary>
+        </member>
+        <member name="T:HAKOM.Versioning.Http.Net.Api.Exceptions.NoCompatibleVersionFoundException">
+            <summary>
+            This error indicates that a request was made against an endpoint using an Accept header that includes an api-version
+            </summary>
+            <remarks>
+            <para>
+            Ensure, that 'Accept' header specifies an api-version parameter supported by this endpoint (check the 'X-Supported-Api-Versions' header of the response) or don't include an api-version parameter to request the services default version.
+            </para>
+            <para>If the service has enabled version information endpoints, you may also check these to determine supported api versions.</para>
+            <para>
+            This exception is identified by error code HK18006.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Versioning.Http.Net.Api.Exceptions.NoCompatibleVersionFoundException.EquivalentHttpStatusCode">
+            <summary>
+            Defines the HTTP status code that a web service should respond with if the current request fails due to this exception.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Versioning.Http.Net.Api.Extensions.ContainerExtensions">
+            <summary>
+            Provides methods for registering services with an instance of <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> for working with versions in HTTP APIs
+            </summary>
+        </member>
+        <member name="M:HAKOM.Versioning.Http.Net.Api.Extensions.ContainerExtensions.UseVersionedServiceInformation(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers an instance of <see cref="T:HAKOM.Versioning.Http.Net.Api.IVersionedServiceInformation"/> that contains information about the version of the HTTP API.
+            </summary>
+            <param name="container">The container to add the service to.</param>
+            <returns>The <paramref name="container"/> itself for chaining additional setup calls.</returns>
+        </member>
+        <member name="M:HAKOM.Versioning.Http.Net.Api.Extensions.ContainerExtensions.UseVersionStringSerializers(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers a serializer (see <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer"/>) for <see cref="T:HAKOM.Versioning.Core.Net.Api.IVersion"/> instances that serializes to/from a simple string.
+            </summary>
+            <param name="container">The container to add the service to.</param>
+            <returns>The <paramref name="container"/> itself for chaining additional setup calls.</returns>
+        </member>
+        <member name="M:HAKOM.Versioning.Http.Net.Api.Extensions.ContainerExtensions.UseVersionedServiceInformationSerializers(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers a serializer (see <see cref="T:HAKOM.Serialization.Core.Net.Api.ISerializer"/>) for <see cref="T:HAKOM.Versioning.Http.Net.Api.IVersionedServiceInformation"/> instances.
+            </summary>
+            <param name="container">The container to add the service to.</param>
+            <returns>The <paramref name="container"/> itself for chaining additional setup calls.</returns>
+        </member>
+        <member name="M:HAKOM.Versioning.Http.Net.Api.Extensions.ContainerExtensions.UseVersionedOpenApiSchemas(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers an impementation of <see cref="T:Swashbuckle.AspNetCore.SwaggerGen.IDocumentFilter"/> with the container that adds api-version parameters to the request and response content types.
+            </summary>
+            <param name="container">The container to add the service to.</param>
+            <returns>The <paramref name="container"/> itself for chaining additional setup calls.</returns>
+        </member>
+        <member name="T:HAKOM.Versioning.Http.Net.Api.Extensions.MvcBuilderExtensions">
+            <summary>
+            Defines extension methods for adding version-related capabilities and endpoints to an MVC framework based HTTP API.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Versioning.Http.Net.Api.Extensions.MvcBuilderExtensions.AddVersionedServiceInformationEndpoints(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.String)">
+            <summary>
+            Adds an additional endpoint
+            </summary>
+            <param name="mvcBuilder"></param>
+            <param name="basePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HAKOM.Versioning.Http.Net.Api.Extensions.MvcBuilderExtensions.SelectEndpointsByNamespaceAndMediaTypeVersion(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.Net.HttpStatusCode)">
+            <summary>
+            Adds media type based API versioning to an MVC framework based HTTP API.
+            </summary>
+            <param name="mvcBuilder">The <see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/> used to setup the application.</param>
+            <param name="statusCodeOnUnmatchedVersion">The HTTP status code that should be returned by the application if no matching endpoint can be found for a requested API version.</param>
+            <returns></returns>
+        </member>
+        <member name="T:HAKOM.Versioning.Http.Net.Api.IUnacceptableHandler">
+            <summary>
+            Handler for requests that are not acceptable based on the given "Accept"-header.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Versioning.Http.Net.Api.IUnacceptableHandler.Endpoint">
+            <summary>
+            The <see cref="T:Microsoft.AspNetCore.Http.Endpoint"/> that handles requests that cannot be accepted.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Versioning.Http.Net.Api.IUnacceptableHandler.DefaultMediaTypeToUse">
+            <summary>
+            The default media type that should be used to serialize the response of the <see cref="P:HAKOM.Versioning.Http.Net.Api.IUnacceptableHandler.Endpoint"/> if those present in the "Accept"-header cannot be used.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Versioning.Http.Net.Api.IUnsupportedVersionStatusCode">
+            <summary>
+            <para>
+            Used to define the type of status code that should be returned if a request is made with an api-version media type parameter that the endpoint does not support.
+            </para>
+            <para>
+            When calling <see cref="M:HAKOM.Versioning.Http.Net.Api.Extensions.MvcBuilderExtensions.SelectEndpointsByNamespaceAndMediaTypeVersion(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.Net.HttpStatusCode)"/> a default implementation of this interface is registered as a singleton causing these requests to fail with the given status code.
+            </para>
+            </summary>
+        </member>
+        <member name="P:HAKOM.Versioning.Http.Net.Api.IUnsupportedVersionStatusCode.Value">
+            <summary>
+            The status code that should be returned if the requested endpoint cannot satisfy any of the api-version parameters present in the "Accept"-header.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Versioning.Http.Net.Api.IVersionedServiceInformation">
+            <summary>
+            Describes a versioned HTTP API.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Versioning.Http.Net.Api.IVersionedServiceInformation.Version">
+            <summary>
+            Gets the services version.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Versioning.Http.Net.Api.IVersionedServiceInformation.SupportedApiVersions">
+            <summary>
+            Gets all the API versions supported by one or more endpoints the service.
+            </summary>
+            <remarks>
+            Note that this does not mean that all endpoints of the service must necessarily support all these API versions.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Versioning.Http.Net.Api.VersionInformationController">
+            <summary>
+            Provides version-related information about an HTTP API.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Versioning.Http.Net.Api.VersionInformationController.GetServiceInformation(HAKOM.Versioning.Http.Net.Api.IVersionedServiceInformation)">
+            <summary>
+            Retrieves information about the API including its version.
+            </summary>
+            <param name="serviceInformation">Injected. The registered instance of <see cref="T:HAKOM.Versioning.Http.Net.Api.IVersionedServiceInformation"/> determines what's returned by this endpoint.</param>
+            <returns></returns>
+        </member>
+        <member name="T:HAKOM.Versioning.Http.Net.DefaultUnacceptableHandler">
+            <summary>
+            <para>
+            This is the default handler for requests that do not meet any of the available versions.
+            </para>
+            <para>
+            If no "Accept"-header is present at all, it will still return a 406 (Not Acceptable) with an appropriate message, but if there is a valid "Accept"-header that specifies a version that is not supported, a 404 (Not Found) will be returned instead.
+            </para>
+            </summary>
+        </member>
+        <member name="T:HAKOM.Versioning.Http.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Versioning.Http.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Versioning.Http.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Versioning.Http.Net.Properties.Strings.MissingAcceptHeaderInRequestExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The request did not contain an Accept header..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Versioning.Http.Net.Properties.Strings.NoCompatibleVersionFoundExceptionMessage">
+            <summary>
+              Looks up a localized string similar to No compatible version for this endpoint was found..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Versioning.Http.Net.Properties.Strings.NoDescriptionForAssemblyExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Cannot add version information endpoints to a service without a specified description..
+            </summary>
+        </member>
+        <member name="P:HAKOM.Versioning.Http.Net.Properties.Strings.NoTitleForAssemblyExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Cannot add version information endpoints to a service without a specified title.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Versioning.Http.Net.UnacceptableStatusCode">
+            <summary>
+            Default implementation of <see cref="T:HAKOM.Versioning.Http.Net.Api.IUnsupportedVersionStatusCode"/>.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Versioning.Http.Net.VersionedNamespaceEndpointSelector">
+            <summary>
+            <para>
+            This implementation of <see cref="T:Microsoft.AspNetCore.Routing.Matching.EndpointSelector"/> checks the "api-version" parameter of all "Accept"-headers of the incoming request. It then choses the apropriate controller based on its location/namespace.</para>
+            <para>
+            For example, if someone requests api-version=1.0.0, it checks if any of the controllers that match this route are located under a v1_0_0 namespace (or v1 or v1_0).
+            </para>
+            <para>
+            If a controller does not have a version assigned to it via namespace/location, its assumed to match the current assemblys version (set by registering an <see cref="T:HAKOM.Versioning.Core.Net.Api.IVersion"/> instance).
+            </para>
+            <para>
+            It also calls <see cref="M:HAKOM.Http.Core.Net.Api.Extensions.HttpContextExtensions.SetEndpointMediaTypes(Microsoft.AspNetCore.Http.HttpContext,System.Collections.Generic.IReadOnlyList{System.Net.Http.Headers.MediaTypeHeaderValue})"/> to set all the media types that match the endpoint but not the version.
+            </para>
+            <para>
+            Finally, it sets a response header: <see cref="F:HAKOM.Versioning.Http.Net.VersionedNamespaceEndpointSelector.SUPPORTED_VERSIONS_HEADER_NAME"/> with a comma-separated list of all api-versions supported by the endpoint.
+            </para>
+            </summary>
+        </member>
+    </members>
+</doc>

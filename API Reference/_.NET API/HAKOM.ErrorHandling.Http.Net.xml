@@ -1,0 +1,465 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.ErrorHandling.Http.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.ExtraneousQueryParametersException">
+            <summary>
+            Indicates that a request was made to a resource with unsupported query parameters
+            </summary>
+            <remarks>
+            <para>
+            When encountering this error, make sure you do not pass along query parameters that are not explicitly supported by the endpoint you are trying to access.
+            </para>
+            <para>
+            When implementing new endpoints that use custom model binders which bind multiple query parameters to complex objects, make sure all of them call <see cref="M:HAKOM.Serialization.Http.Net.Api.Extensions.ModelBindingContextExtensions.SetBoundQueryParameters(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext,System.Collections.Generic.IEnumerable{System.String})"/>.
+            </para>
+            <para>
+            This error is identified by code HK09008.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.ExtraneousQueryParametersException.EquivalentHttpStatusCode">
+            <summary>
+            If this error occurs while processing an HTTP request, the request should be terminated with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedException">
+            <summary>
+            Indicates that some http behavior did not work during a http request.
+            </summary>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorException">
+            <summary>
+            Base class for exceptions indicating that an HTTP request failed due to a client error.
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates a new <see cref="T:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorException"/> instance.
+            </summary>
+            <param name="message">The <see cref="P:System.Exception.Message"/> for this instance.</param>
+            <param name="innerException">The <see cref="P:System.Exception.InnerException"/> for this instance.</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorException.#ctor(System.String)">
+            <summary>
+            Creates a new <see cref="T:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorException"/> instance.
+            </summary>
+            <param name="message">The <see cref="P:System.Exception.Message"/> for this instance.</param>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorExceptions.BadRequestException">
+            <summary>
+            Indicates that a request was made using incorrect or missing data.
+            </summary>
+            <remarks>
+            <para>
+            This exception is identified by error code HK09006.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorExceptions.BadRequestException.#ctor(System.String,Microsoft.AspNetCore.Mvc.ModelBinding.ModelError)">
+            <summary>
+            Creates a new instance of a <see cref="T:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorExceptions.BadRequestException"/> based on the model name for which validation failed and an instance of <see cref="T:Microsoft.AspNetCore.Mvc.ModelBinding.ModelError"/> describing the failure.
+            </summary>
+            <param name="model">The name of the model for which validation failed.</param>
+            <param name="error">Details regarding the failure.</param>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorExceptions.BadRequestException.#ctor(System.String,System.String,Microsoft.AspNetCore.Mvc.ModelBinding.ModelError)">
+            <summary>
+            Creates a new instance of a <see cref="T:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorExceptions.BadRequestException"/> based on the model name for which validation failed, the value that failed validation and an instance of <see cref="T:Microsoft.AspNetCore.Mvc.ModelBinding.ModelError"/> describing the failure.
+            </summary>
+            <param name="model">The name of the model for which validation failed.</param>
+            <param name="attemptedValue">The value for which validation failed.</param>
+            <param name="error">Details regarding the failure.</param>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorExceptions.BadRequestException.EquivalentHttpStatusCode">
+            <summary>
+            When thrown while processing an HTTP request, this exception should terminate the request with a status code 400 (Bad Request).
+            </summary>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorExceptions.MultipleErrorsOccurredException">
+            <summary>
+            Indicates that the multiple client errors occurred while processing the request.
+            </summary>
+            <remarks>
+            <para>
+            This exception is identified by error code HK09007.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorExceptions.MultipleErrorsOccurredException.#ctor(System.Collections.Generic.IEnumerable{HAKOM.ErrorHandling.Core.Net.Api.HakomException})">
+            <summary>
+            Creates a new instance of <see cref="T:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorExceptions.MultipleErrorsOccurredException"/> based on the given <paramref name="exceptions"/>.
+            </summary>
+            <param name="exceptions">The errors that caused the request to fail.</param>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorExceptions.MultipleErrorsOccurredException.EquivalentHttpStatusCode">
+            <summary>
+            When thrown while processing an HTTP request, this exception should terminate the request with the highest of all the status codes defined by the errors that caused it.
+            </summary>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorExceptions.NotFoundException">
+            <summary>
+            Indicates that the requested resource could not be found.
+            </summary>
+            <remarks>
+            <para>
+            This exception is identified by error code HK09005.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.HttpRequestFailedExceptions.ClientErrorExceptions.NotFoundException.EquivalentHttpStatusCode">
+            <summary>
+            Returns the HTTP status code that should be returned by an endpoint that throws this exception.
+            </summary>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.ProblemDetailsResponseException">
+            <summary>
+            Represents an exception caused by an HTTP response according to https://tools.ietf.org/html/rfc7807
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.ProblemDetailsResponseException.Extensions">
+            <summary>
+            Contains any properties included in the response that extend the problem-details object (see https://datatracker.ietf.org/doc/html/rfc7807#section-3.2).
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.ProblemDetailsResponseException.TryGetHakomErrorCode(System.String@)">
+            <summary>
+            If the underlying exception appears to have been a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/>, this method will return true and set <paramref name="code"/> to the code as reported by the response.
+            </summary>
+            <param name="code">If the method returns true, this parameter will contain the code representing the error that was raised by the service.</param>
+            <returns>True if the response appears to have been caused by a HAKOM error, false if some other unexpected exception caused the error response.</returns>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.ProblemDetailsResponseException.EquivalentHttpStatusCode">
+            <summary>
+            The status code of this error for an HTTP request is determined from the supplied error or problem details. 
+            If no status code can be determined, the default status code is 500 (Internal Server Error).
+            </summary>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Api.Extensions.ContainerExtensions">
+            <summary>
+            Registers types used for handling errors in an HTTP/Webservice context.
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Extensions.ContainerExtensions.UseResultJsonSerialization(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers types necessary for proper serialization/deserialization of errors.
+            </summary>
+            <param name="container">The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to register the serializer with.</param>
+            <returns>The <paramref name="container"/> for chaining additional calls on it.</returns>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Extensions.ContainerExtensions.UseHttpFailureFactory(HAKOM.DependencyInjection.Core.Net.Api.IContainer)">
+            <summary>
+            Registers and configures the default implementation of <see cref="T:HAKOM.ErrorHandling.Http.Net.Api.IHttpFailureFactory"/> in the specified <paramref name="container"/>		/// </summary>
+            <param name="container">The <see cref="T:HAKOM.DependencyInjection.Core.Net.Api.IContainer"/> to register the serializer with.</param>
+            <returns>The <paramref name="container"/> for chaining additional calls on it.</returns>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Api.Extensions.MvcOptionsExtensions">
+            <summary>
+            Extension methods for adding error-handling features to an application using Microsofts MVC framework.
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Extensions.MvcOptionsExtensions.AddProblemDetailsFormatter(Microsoft.AspNetCore.Mvc.MvcOptions)">
+            <summary>Adds RFC7807 compliant formatting of errors to the application.</summary>
+            <remarks>
+            <para>
+            Adds a <see cref="T:Microsoft.AspNetCore.Mvc.Formatters.IOutputFormatter"/> that can produce RFC7807 compliant application/problem+json responses from intances of
+            <list type="bullet">
+            <item><see cref="T:System.Exception"/> (or any type derived thereof),</item>
+            <item><see cref="T:Microsoft.AspNetCore.Mvc.ProblemDetails"/> (or any type derived thereof),</item>
+            <item><see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure"/>,</item>
+            <item><see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/></item>
+            </list>
+            </para>
+            <para>This should be added <i>after</i> all other custom output formatters have been added to the <see cref="P:Microsoft.AspNetCore.Mvc.MvcOptions.OutputFormatters"/> collection, otherwise it may have no effect.</para>
+            </remarks>
+            <param name="mvcOptions">The <see cref="T:Microsoft.AspNetCore.Mvc.MvcOptions"/> of the application to add error output to.</param>
+            <returns>The <paramref name="mvcOptions"/> themselves for chaining additional configuration.</returns>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Extensions.MvcOptionsExtensions.AddSuccessResultFormatter(Microsoft.AspNetCore.Mvc.MvcOptions)">
+            <summary>Adds implicit <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/> to <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success"/>/<see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1"/>
+            conversion to the application.</summary>
+            <remarks>
+            <para>
+            Adds a <see cref="T:Microsoft.AspNetCore.Mvc.Formatters.IOutputFormatter"/> that can convert into values as application/json responses from intances of
+            <list type="bullet">
+            <item><see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success"/>,</item>
+            <item><see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1"/></item>
+            </list>
+            </para>
+            <para>This should be added <i>after</i> all other custom output formatters have been added to the <see cref="P:Microsoft.AspNetCore.Mvc.MvcOptions.OutputFormatters"/> collection, otherwise it may have no effect.</para>
+            </remarks>
+            <param name="mvcOptions">The <see cref="T:Microsoft.AspNetCore.Mvc.MvcOptions"/> of the application to add success conversion to.</param>
+            <returns>The <paramref name="mvcOptions"/> themselves for chaining additional configuration.</returns>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Extensions.MvcOptionsExtensions.ReturnBadRequestOnExtraneousQueryParameters(Microsoft.AspNetCore.Mvc.MvcOptions)">
+            <summary>
+            Adds a filter to the request pipeline that makes checks if the client passed any query parameters not supported by the endpoint. If so, it short-circuits the rest of the request and responds with a 400 (Bad Request) response.
+            </summary>
+            <param name="mvcOptions">The <see cref="T:Microsoft.AspNetCore.Mvc.MvcOptions"/> used to configure the application.</param>
+            <returns>The <paramref name="mvcOptions"/> themselves for chaining additional configuration.</returns>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Api.Extensions.ProblemDetailsServiceExtensions">
+            <summary>
+            Provides additional methods for writing RFC7807 problem details to HTTP responses.
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Extensions.ProblemDetailsServiceExtensions.WriteAsync(Microsoft.AspNetCore.Http.IProblemDetailsService,Microsoft.AspNetCore.Http.HttpContext,HAKOM.ErrorHandling.Core.Net.Api.HakomException)">
+            <summary>
+            Writes an RFC7807 problem-details object to an HTTP response based on a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/>.
+            </summary>
+            <param name="problemDetailsService">The <see cref="T:Microsoft.AspNetCore.Http.IProblemDetailsService"/> to use for writing.</param>
+            <param name="httpContext">The current <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/>.</param>
+            <param name="hakomException">The <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/> for which to generate a problem-details response</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> that completes when the response has been written.</returns>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Api.Extensions.SchemaRepositoryExtensions">
+            <summary>
+            Provides extension methods to make OpenApi schemas used for error handling available to custom operation filters, etc.
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Extensions.SchemaRepositoryExtensions.TryGetProblemDetailsSchema(Swashbuckle.AspNetCore.SwaggerGen.SchemaRepository,Microsoft.OpenApi.Models.OpenApiSchema@)">
+            <summary>
+            Attempts to get the schema for problem details objects to be used in custom error responses.
+            </summary>
+            <param name="schemaRepository">The schema repository from which to get the schema.</param>
+            <param name="schema">If successful, the schema for problem details objects that should be returned when an error occurs.</param>
+            <returns><see langword="true"/> if the schema was found, <see langword="false"/> otherwise.</returns>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Extensions.SchemaRepositoryExtensions.GetFailureSchema(Swashbuckle.AspNetCore.SwaggerGen.SchemaRepository,Swashbuckle.AspNetCore.SwaggerGen.ISchemaGenerator)">
+            <summary>
+            Returns the OpenAPI schema for <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure"/> objects.
+            </summary>
+            <param name="schemaRepository">The repository of the current generation context.</param>
+            <param name="generator">The generator for the current generation context.</param>
+            <returns>The schema for objects of type <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure"/>.</returns>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Api.Extensions.WebApplicationBuilderExtensions">
+            <summary>
+            Adds services for error handling to a web application.
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Extensions.WebApplicationBuilderExtensions.AddHakomErrorHandling(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            Adds output of <see cref="T:Microsoft.AspNetCore.Mvc.ProblemDetails"/> to the application.
+            <para>This must be added <i>after</i> calling .AddMvc/.AddControllers, because the MVC framework adds additional services which have to be removed for consistent serialization of problem details across the application.</para>
+            <para>
+            For this to work properly, it requires that serialization is set up, so make sure to add the respective services. Example:
+            </para>
+            <code>
+            builder.Services.AddHakomServices(container=>{
+              container
+                 .UseSerializerFactory()
+                 .UseSerializationContractTypeProvider()
+                 .UseJsonSerialization()
+                 .UseDefaultJsonSerializer()
+                 .UseResultJsonSerialization();
+            });
+            </code>
+            </summary>
+            <param name="builder">The <see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/> to add error handling capabilities to.</param>
+            <returns>The <paramref name="builder"/> for chaining additional calls to it.</returns>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Api.IHttpFailureFactory">
+            <summary>
+            Creates a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/> that represent a HTTP response errors.
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.IHttpFailureFactory.CreateNotFound``1(System.String,System.String,System.Object)">
+            <summary>
+            Creates a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/> representing a 'Not Found' error for a specified resource and identifier.
+            </summary>
+            <typeparam name="TResult">The type of the result associated with the failure.</typeparam>
+            <param name="resource">The resource that was not found.</param>
+            <param name="identifierType">The type of identifier that was used to locate the resource (name, id, ...).</param>
+            <param name="identifierValue">The value of the identifier that was not found.</param>
+            <returns>A <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/> representing the 'Not Found' error.</returns>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Api.Serialization.Json.Extensions.JsonSerializerOptionsExtensions">
+            <summary>
+            Provides methods for adding HAKOM converters to <see cref="T:System.Text.Json.JsonSerializerOptions"/>.
+            </summary>
+            <remarks>
+            This only helps with deserializing without spinning up a DI container and using everything inside HAKOM.Serialization.* 
+            See
+            </remarks>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.Api.Serialization.Json.Extensions.JsonSerializerOptionsExtensions.AddErrorSerialization(System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Adds converters to <see cref="T:System.Text.Json.JsonSerializerOptions"/> to allow for serialization/deserialization of <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/>, <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> and <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.HakomException"/> types.
+            </summary>
+            <param name="options">The <see cref="T:System.Text.Json.JsonSerializerOptions"/> to add error serialization to.</param>
+            <returns>The <paramref name="options"/> for changing</returns>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.CustomProblemDetails">
+            <summary>
+            This class allows for custom serialization of RFC7807 problem details.
+            The major difference is that it respects our JSON serializer options (casing, indentation, etc)
+            And adds a "Root" extension to represent an Exception-hierarchy (as-in "InnerExceptions")
+            </summary>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.ProblemDetailsOutputFormatter">
+            <summary>
+            This handles proper serialization of any type within an MVC app that may be returned
+            in case of an error
+            </summary>
+            <remarks>There are quite a few ways in which an MVC application may behave when an error occurs:
+            <list type="bullet">
+            <item>Errors returned by the model-binding middleware</item>
+            <item>Exceptions thrown by a controller</item>
+            <item><see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure"/>/<see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/> instances returned by a controller.</item>
+            <item><see cref="T:Microsoft.AspNetCore.Mvc.ProblemDetails"/> returned by a controller or other MVC middleware/filters.</item>
+            </list>
+            This output formatter makes sure they are all serialized as RFC7807 compliant problem details or as <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result"/>/<see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Result`1"/> types and takes care of setting the appropriate HTTP Status code in the response.
+            </remarks>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.ProblemDetailsOutputFormatter.WriteAsync(Microsoft.AspNetCore.Mvc.Formatters.OutputFormatterWriteContext)">
+            <summary>
+            Maps all supported types to a <see cref="T:Microsoft.AspNetCore.Mvc.ProblemDetails"/> instance
+            which then gets handled by the registered <see cref="T:Microsoft.AspNetCore.Http.IProblemDetailsService"/>.
+            </summary>
+            <param name="context">The serialization context for the current request.</param>
+            <returns>A Task that completes when the output has been written</returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.ProblemDetailsOutputFormatter.IsFailureOfTValue(System.Type,System.Object,HAKOM.ErrorHandling.Core.Net.Api.HakomException@)">
+            <summary>
+            Checks if a type derives is a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/> and - if so, returns its <see cref="P:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1.Error"/> property.
+            </summary>
+            <param name="type">The type to check</param>
+            <param name="obj">An instance reference from which to get the type in case <paramref name="type"/> is null.</param>
+            <param name="exception">The value <see cref="P:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1.Error"/> of <paramref name="obj"/>, if obj</param>
+            <returns>Whether it is a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Failure`1"/> or not.</returns>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Http.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Http.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Http.Net.Properties.Strings.BadRequestExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Error processing value for parameter &apos;{0}&apos;: {1}.
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Http.Net.Properties.Strings.BadRequestExceptionValueMessage">
+            <summary>
+              Looks up a localized string similar to Error processing value &apos;{0}&apos; for parameter &apos;{1}&apos;: {2}.
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Http.Net.Properties.Strings.MultipleErrorsOccurredExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Multiple errors occurred..
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Http.Net.Properties.Strings.NoFurtherDetailsAvailableMessage">
+            <summary>
+              Looks up a localized string similar to No further details available..
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Http.Net.Properties.Strings.NotFoundExceptionMessage">
+            <summary>
+              Looks up a localized string similar to {0} with {1} &apos;{2}&apos; not found..
+            </summary>
+        </member>
+        <member name="P:HAKOM.ErrorHandling.Http.Net.Properties.Strings.ProblemDetailsResponseExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Request failed. {0}: {1}.
+            </summary>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Serialization.Json.CustomProblemDetailsJsonConverter">
+            <summary>
+            Writes <see cref="T:HAKOM.ErrorHandling.Http.Net.CustomProblemDetails"/> to JSON.
+            Inspired by Microsofts ProblemDetailsJsonConverter
+            but with improved support for JsonSerializerOptions and "inner exceptions".
+            </summary>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Serialization.Json.ExceptionJsonSerializer">
+            <summary>
+            Serializes <see cref="T:System.Exception"/> instances to JSON as (mostly, see below) RFC7807 compliant problem-details.
+            </summary>
+            <remarks>
+            <para>
+            Note that - depending on the media-type parameters, compliance may not be 100% since this serializer intentionally
+            honors media-type parameters like casing. Because of that, while RFC7807 specifies the properties in camelCase,
+            serializing an exception as "application/json;casing=Pascal" or "application/problem+json;casing=Pascal" will
+            result in an object some problem-details parsers may not understand (if they handle property names case-sensitively).
+            </para>
+            
+            <para>
+            Also: this is not 100% round-trip capable since some type-information about the serialized exception will undoubtedly
+            be lost. Therefor, any deserialization of a JSON problem-details object will return an instance of
+            <see cref="T:HAKOM.ErrorHandling.Http.Net.Api.Exceptions.ProblemDetailsResponseException"/> instead of the original exception.
+            </para>
+            
+            <para>
+            This _could_ be fixed by adding type information as an extension and deserializing accordingly. However, because
+            proper deserialization into the correct Exception is non-trivial and may expose security vulnerabilities,
+            we don't do that for now (maybe later).
+            </para>
+            </remarks>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Serialization.Json.ResultTypeInfoResolver">
+            <summary>
+            This class allows for polymorphic serialization/deserialization of Result-objects.
+            </summary>
+            <remarks>
+            <para>
+            The resolver changes the information System.Text.Json has about these objects so that it can serialize
+            Success and Failure objects. 
+            </para>
+            <para>
+            Basically, it tells it to add a type discriminator property ("successful", casing depends on media type)
+            to help a deserializer correctly distinguish between the two.
+            </para>
+            </remarks>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.Serialization.SerializerBasedProblemDetailsWriter">
+            <summary>
+            Writes RFC7807 problem details to a stream using the HAKOM.Serialization system.
+            </summary>
+        </member>
+        <member name="T:HAKOM.ErrorHandling.Http.Net.SuccessResultOutputFormatter">
+            <summary>
+            This handles proper serialization of any type within an MVC app that may be returned
+            in case of an success.
+            </summary>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.SuccessResultOutputFormatter.CanWriteResult(Microsoft.AspNetCore.Mvc.Formatters.OutputFormatterCanWriteContext)">
+            <summary>
+            Checks if the context object is a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success"/> and thus could be formated.
+            </summary>
+            <param name="context">The serialization context for the current request.</param>
+            <returns>Whether it can or cannot write.</returns>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.SuccessResultOutputFormatter.WriteAsync(Microsoft.AspNetCore.Mvc.Formatters.OutputFormatterWriteContext)">
+            <summary>
+            Maps all supported <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success"/>/<see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1"/> to their according value instances.
+            </summary>
+            <param name="context">The serialization context for the current request.</param>
+            <returns>A Task that completes when the output has been written</returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:HAKOM.ErrorHandling.Http.Net.SuccessResultOutputFormatter.IsSuccessOfTValue(System.Type,System.Object,System.Type@,System.Object@)">
+            <summary>
+            Checks if a type derives is a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1"/> and - if so, returns its <see cref="P:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1.Value"/> property as well as its type.
+            </summary>
+            <param name="type">The type to check</param>
+            <param name="obj">An instance reference from which to get the type in case <paramref name="type"/> is null.</param>
+            <param name="finalType">The type of <see cref="P:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1.Value"/>.</param>
+            <param name="valueObject">The value <see cref="P:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1.Value"/> of <paramref name="obj"/>>.</param>
+            <returns>Whether it is a <see cref="T:HAKOM.ErrorHandling.Core.Net.Api.Results.Success`1"/> or not.</returns>
+        </member>
+    </members>
+</doc>

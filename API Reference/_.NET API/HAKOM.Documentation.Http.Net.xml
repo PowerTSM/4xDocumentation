@@ -1,0 +1,390 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HAKOM.Documentation.Http.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HAKOM.Documentation.Http.Net.ApiExplorerGroupPerVersionConvention">
+            <summary>
+            This takes care of marking controllers with their respective api version.
+            </summary>
+            <remarks>
+            You could do this manually by attaching attributes to controllers but ... no.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.Api.DocumentationController">
+            <summary>
+            Provides documentation related endpoints.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Documentation.Http.Net.Api.DocumentationController.DEFAULT_DOCUMENT_VERSIONKEY">
+            <summary>
+            The key that is used to refer to the default OpenAPI document.
+            </summary>
+            <remarks>
+            The list of available OpenAPI documents returned by <see cref="M:HAKOM.Documentation.Http.Net.Api.DocumentationController.GetAvailableDocuments(HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration)"/> will always contain an entry with this key.
+            The link under this key is the one that should be used by default and will be the one that the request will be redirected to.
+            </remarks>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.Net.Api.DocumentationController.GetAvailableDocuments(HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration)">
+            <summary>
+            Returns links to all OpenAPI specifications available for this service.
+            </summary>
+            <param name="documentationConfiguration">An instance of <see cref="T:HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration"/> that specifies - among other things - the available versions.</param>
+            <returns>A dictionary in which each key represents a version number and each value holds the absolute URI to the specification.</returns>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.Net.Api.DocumentationController.RedirectToDefaultDocument(HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration)">
+            <summary>
+            Redirects to the default OpenAPI specification document for this version.
+            </summary>
+            <param name="documentationConfiguration">An instance of <see cref="T:HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration"/> that specifies - among other things - the available versions.</param>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.Api.Exceptions.MissingDocumentationConfigurationException">
+            <summary>
+            Thrown when an attempt is made to configure the routes for automatically generated OpenAPI documents without having configured it first.
+            </summary>
+            <remarks>
+            <para>
+            In order to configure the generation of the OpenApi documents, make sure to call <see cref="M:HAKOM.Documentation.Http.Net.Api.Extensions.MvcBuilderExtensions.AddDocumentation(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.String,System.String,System.String,System.String,System.String,System.String,System.Action{Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions})"/>.
+            </para>
+            <para>
+            This exception can be identified by its error code HK16003.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Net.Api.Exceptions.MissingDocumentationConfigurationException.EquivalentHttpStatusCode">
+            <summary>
+            This exception would normally be raised during startup of a service, so there is no status code to respond with as the service will not be in a state to accept requests in the first place.
+            <para>If the failing service is hosted behind a proxy, that proxy should probably return either a status code 500 (Internal Server Error) or 502 (Bad Gateway).</para>
+            </summary>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.Api.Extensions.MvcBuilderExtensions">
+            <summary>
+            Contains methods for adding documentation functionality to an MVC framework based web service.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Documentation.Http.Net.Api.Extensions.MvcBuilderExtensions.DEFAULT_SERVICE_TITLE">
+            <summary>
+            The title of the service that will be used in any generated OpenAPI document if no other title is available.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.Net.Api.Extensions.MvcBuilderExtensions.AddDocumentation(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.String,System.String,System.String,System.String,System.String,System.String,System.Action{Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions})">
+            <summary>
+            Adds automatically generated OpenAPI documentation to an HTTP API.
+            </summary>
+            <remarks>
+            <para>
+            When used, a new endpoint will be added to the API (<paramref name="basePath"/>/) which will redirect to the latest version generated for the API (one service may support multiple versions).
+            </para>
+            <para>If available, XML comments will be used to generate descriptions in the OpenAPI document.</para>
+            <para>This uses Swashbuckle to generate the documentation based on the MVC controllers registered with the application.
+            For more information on how to modify the generated document, please consult the official Swashbuckle documentation.</para>
+            </remarks>
+            <param name="builder">The <see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/> to add the documentation to.</param>
+            <param name="title">A title of the API to be used for the service in the OpenAPI document. If <see langword="null"/> but a singleton service for <see cref="T:HAKOM.Http.Core.Net.Api.IServiceInformation"/> has previously been registered, that implementations <see cref="P:HAKOM.Http.Core.Net.Api.IServiceInformation.Title"/> property will be used. If not available, the title will simply fallback to <see cref="F:HAKOM.Documentation.Http.Net.Api.Extensions.MvcBuilderExtensions.DEFAULT_SERVICE_TITLE"/>.</param>
+            <param name="description">A description of the API to be used in the OpenAPI document. If <see langword="null"/>, but a singleton service for <see cref="T:HAKOM.Http.Core.Net.Api.IServiceInformation"/> has previously been registered, that implementations <see cref="P:HAKOM.Http.Core.Net.Api.IServiceInformation.Description"/> property will be used. If not available, the description will simply fallback to an empty string.</param>
+            <param name="fileNamePrefix">The file name for the OpenAPI document. This will be suffixed by the APIs version. If <see langword="null"/> this will be the lower case of the assembly name followed by a hyphen or if the assemblies name is <see langword="null"/>, the constant "openapi-". </param>
+            <param name="xmlFileNamePattern">If XML comments should be used in the generation of the document and the generated XML documentation file is not named after the assembly (default behavior in Visual Studio), specify the name of the files here. Relative pathes are based in the working directory of the application.</param>
+            <param name="versionSeparator">The string to use in the final file name for the OpenAPI document between <paramref name="fileNamePrefix"/> and the documents version.</param>
+            <param name="basePath">The base path under which the documentation should be published.</param>
+            <param name="swaggerGenSetup">An action that can be used to customize the documentation. See the official Swashbuckle documentation for details.</param>
+            <returns>The <paramref name="builder"/> for chaining any additional setup.</returns>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.Net.Api.Extensions.MvcBuilderExtensions.AddTagDescription(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.String,System.String,System.Int32)">
+            <summary>
+            Ads a description to tags used to group endpoints in OpenAPI documents.
+            </summary>
+            <remarks>
+            <para>
+            When adding automatically generated OpenAPI documentation via <see cref="M:HAKOM.Documentation.Http.Net.Api.Extensions.MvcBuilderExtensions.AddDocumentation(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.String,System.String,System.String,System.String,System.String,System.String,System.Action{Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions})"/> to an MVC framework based HTTP API, all endpoints are automatically grouped using tags generated based on their namespace. In addition, individual controllers and actions can have tags assigned by using the <see cref="T:Microsoft.AspNetCore.Http.TagsAttribute"/>.
+            </para>
+            <para>
+            In order to add a short description to a tag that explains in a little more detail what the endpoints that are grouped by that particular tag have in common, call this method on the <paramref name="mvcBuilder"/>.
+            </para>
+            </remarks>
+            <param name="mvcBuilder">The <see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/> used to configure the application for which a specific auto-generated documentation tag should be extended with a description.</param>
+            <param name="tag">The tag that this description applies to. When multiple <see cref="M:HAKOM.Documentation.Http.Net.Api.Extensions.MvcBuilderExtensions.AddTagDescription(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.String,System.String,System.Int32)"/> calls are performed with the same <paramref name="tag"/>, the last description added during configuration will be used.</param>
+            <param name="description">A short text describing what endpoints grouped by this <paramref name="tag"/> have in common.</param>
+            <param name="order">When specified, determines the relative order by which the tag is to be sorted. Tags are sorted by <paramref name="order"/> first, then alphabetically by <paramref name="tag"/>.</param>
+            <returns>The <paramref name="mvcBuilder"/> for chaining of additional setup.</returns>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.Api.Extensions.SwaggerGenOptionsExtensions">
+            <summary>
+            Provides extension methods on <see cref="T:Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions"/> for non-trivial modification of generated OpenAPI documents.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.Net.Api.Extensions.SwaggerGenOptionsExtensions.AddCustomModelBinderFilters``1(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+            <summary>
+            Registers <see cref="T:Swashbuckle.AspNetCore.SwaggerGen.IOperationFilter"/> instances that cause proper documentation of parameters bound by <see cref="T:HAKOM.Serialization.Http.Net.Api.ICustomModelBinder"/> implementations.
+            </summary>
+            <remarks>
+            <para>
+            Whenever an implementation of <see cref="T:HAKOM.Serialization.Http.Net.Api.ICustomModelBinder"/> is used to bind parameters from the route or query to a complex object, the automatically generated OpenAPI specification of these parameters is likely to be wrong.
+             </para>
+             <para>
+             Therefor, in addition to registering the custom model binder, one should also  call this method with the <typeparamref name="TModel"/> supported by the binder. This cause operation filters to be registered that will - to the best of their ability - extract information about the models underlying paramters from the binder and document them accordingly.
+             </para>
+            </remarks>
+            <typeparam name="TModel">The model for which a custom model binder is being used.</typeparam>
+            <param name="swaggerGenOptions">The <see cref="T:Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions"/> used to configure the creation of the OpenAPI document.</param>
+            <returns>The <paramref name="swaggerGenOptions"/> for chaining of additional configuration method calls.</returns>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.Api.Extensions.WebApplicationExtension">
+            <summary>
+            Provides extension methods for adding automatically generated OpenAPI documentation to an MVC framework based HTTP API.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.Net.Api.Extensions.WebApplicationExtension.UseDocumentation(Microsoft.AspNetCore.Builder.WebApplication,System.Action{Swashbuckle.AspNetCore.Swagger.SwaggerOptions})">
+            <summary>
+            Configures the route template that can be used to access to the the OpenApi documentation.
+            </summary>
+            <remarks>
+            <para>
+            Make sure to call <see cref="M:HAKOM.Documentation.Http.Net.Api.Extensions.MvcBuilderExtensions.AddDocumentation(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.String,System.String,System.String,System.String,System.String,System.String,System.Action{Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions})"/> first.
+            </para>
+            </remarks>
+            <param name="webApplication">The <see cref="T:Microsoft.AspNetCore.Builder.WebApplication"/> to add the route template to.</param>
+            <param name="additionalConfiguration">An optional action that may be used to tweak the <see cref="T:Swashbuckle.AspNetCore.Swagger.SwaggerOptions"/> used for hosting the documentation</param>
+            <returns>The <paramref name="webApplication"/> itself for further configuration.</returns>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.Api.IDocumentationBasePath">
+            <summary>
+            Defines the base path under which automatically generated OpenAPI documents should be hosted.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Documentation.Http.Net.Api.IDocumentationBasePath.DEFAULT">
+            <summary>
+            The default path base for automatically generated documentation in an HTTP API.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Net.Api.IDocumentationBasePath.Value">
+            <summary>
+            The path to use. Must not start or end with a "/".
+            </summary>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.Net.Api.IDocumentationBasePath.TryValidate(System.String)">
+            <summary>
+            Validates that the given <paramref name="value"/> does not start or end with a "/".
+            </summary>
+            <param name="value">The path base to validate.</param>
+            <returns><see langword="true"/> if successful, <see langword="false"/> otherwise.</returns>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.Net.Api.IDocumentationBasePath.TryValidate">
+            <summary>
+            Validates the value of this instance.
+            </summary>
+            <returns><see langword="true"/> if successful, <see langword="false"/> otherwise.</returns>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.Net.Api.IDocumentationBasePath.ToString">
+            <summary>
+            Converts this instance to its string representation which is equal to <see cref="P:HAKOM.Documentation.Http.Net.Api.IDocumentationBasePath.Value"/>.
+            </summary>
+            <returns><see cref="P:HAKOM.Documentation.Http.Net.Api.IDocumentationBasePath.Value"/></returns>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration">
+            <summary>
+            Defines how automatically generated OpenAPI documentation should be hosted within a service.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration.CurrentVersion">
+            <summary>
+            The current version of the service to be documented.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration.SupportedVersions">
+            <summary>
+            A list of all API versions that the service supports.
+            </summary>
+            <remarks>
+            A separate OpenAPI document will be generated for each one of these.
+            </remarks>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration.FileNamePrefix">
+            <summary>
+            The name of the generated document. This will be suffixed with the appropriate version.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration.BasePath">
+            <summary>
+            The path under which the OpenAPI documents should be hosted.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration.VersionSeparator">
+            <summary>
+            A string that separates the <see cref="P:HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration.FileNamePrefix"/> from the version of the document.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration.GetFileNameForDefaultDocument">
+            <summary>
+            Gets the full file name for the default document including its extension (but without the <see cref="P:HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration.BasePath"/>).
+            </summary>
+            <returns>The file name for the default document.</returns>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration.GetFileNamesForVersionedDocuments">
+            <summary>
+            Gets the full file names for all the generated documents including the extension (but without the <see cref="P:HAKOM.Documentation.Http.Net.Api.IDocumentationConfiguration.BasePath"/>).
+            </summary>
+            <returns>The file name for each generated document.</returns>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.Api.IDocumentationFileNamePrefix">
+            <summary>
+            Defines the name of the generated OpenAPI document. The final document will consist of this suffixed by the APIs version.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Documentation.Http.Net.Api.IDocumentationFileNamePrefix.DEFAULT">
+            <summary>
+            The default prefix to use if nothing else is available/configured.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Net.Api.IDocumentationFileNamePrefix.Value">
+            <summary>
+            The actual value to use.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.Net.Api.IDocumentationFileNamePrefix.ToString">
+            <summary>
+            Converts this instance to its string representation which is equal to <see cref="P:HAKOM.Documentation.Http.Net.Api.IDocumentationFileNamePrefix.Value"/>.
+            </summary>
+            <returns><see cref="P:HAKOM.Documentation.Http.Net.Api.IDocumentationFileNamePrefix.Value"/></returns>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.Api.IDocumentationVersionSeparator">
+            <summary>
+            Defines the string that should be used in the file names of automatically generated documentation files for separation between the file name and its version.
+            </summary>
+        </member>
+        <member name="F:HAKOM.Documentation.Http.Net.Api.IDocumentationVersionSeparator.DEFAULT">
+            <summary>
+            The default value that should be used if nothing else is specified.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Net.Api.IDocumentationVersionSeparator.Value">
+            <summary>
+            The actual value to use.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.Net.Api.IDocumentationVersionSeparator.ToString">
+            <summary>
+            Converts this instance to its string representation which is equal to <see cref="P:HAKOM.Documentation.Http.Net.Api.IDocumentationVersionSeparator.Value"/>.
+            </summary>
+            <returns><see cref="P:HAKOM.Documentation.Http.Net.Api.IDocumentationVersionSeparator.Value"/></returns>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.CustomModelFromQueryOperationFilter`1">
+            <summary>
+            Generic IOperationFilter that generates proper documentation of query parameters that are bound using a custom model binder
+            </summary>
+            <remarks>
+            When you bind a complex model (i.e. an interface) from one or more query parameters and use an
+            implementation of <see cref="T:HAKOM.Serialization.Http.Net.Api.ICustomModelBinder"/> to do so, then the automatically generated
+            documentation of the endpoints query parameters is incorrect (how could it possibly know what your
+            model binder is doing?)
+            
+            So basically, if you ever register a <see cref="T:HAKOM.Serialization.Http.Net.Api.CustomModelFromQueryBinder`1"/>, you'll probably want to also
+            call <see cref="M:HAKOM.Documentation.Http.Net.Api.Extensions.SwaggerGenOptionsExtensions.AddCustomModelBinderFilters``1(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)"/> somewhere!
+            </remarks>
+            <typeparam name="TModel">The parameter type that is bound by the query parameters. </typeparam>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.Extensions.ApiDescriptionExtensions">
+            <summary>
+            Provides methods for getting complex information out of a generated <see cref="T:Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescription"/>.
+            </summary>
+        </member>
+        <member name="M:HAKOM.Documentation.Http.Net.Extensions.ApiDescriptionExtensions.GetTags(Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescription)">
+            <summary>
+            Gets all the tags that are applicable to a specific API descriptionm
+            </summary>
+            <remarks>
+            Basically, enabling the ApiExplorer causes any <see cref="T:Microsoft.AspNetCore.Http.TagsAttribute"/> used on controllers or actions
+            to be included in their api description.
+            
+            This goes one step further: if there are none, it tries to automatically generate some.
+            That way, similar endpoints are automatically grouped together even when there's no time to assign a tag to them :)
+            </remarks>
+            <param name="apiDescription"></param>
+            <returns>List of all tags for this specific api description</returns>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.OpenApiTagDeclaration">
+            <summary>
+            Container for information about a tag.
+            </summary>
+            <remarks>
+            The description is inherited from <see cref="T:Microsoft.OpenApi.Models.OpenApiTag"/>. This just includes an <see cref="P:HAKOM.Documentation.Http.Net.OpenApiTagDeclaration.Order"/> property to allow for sorting of tags (and thus sections) in the final OpenAPI document.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.OpenApiTagDeclarationFactory">
+            <summary>
+            Resolves a registered <see cref="T:HAKOM.Documentation.Http.Net.OpenApiTagDeclaration"/> for the given tag name.
+            </summary>
+            <remarks>
+            <see cref="T:HAKOM.Documentation.Http.Net.OpenApiTagDeclaration"/>s are used to attach additional information to tags
+            such as their description and the order we want them to be in in the final document.
+            The <see cref="T:HAKOM.Documentation.Http.Net.TagsFilter"/> actually takes care of that using <i>this</i> factory.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.Properties.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Net.Properties.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Net.Properties.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HAKOM.Documentation.Http.Net.Properties.Strings.MissingDocumentationConfigurationExceptionMessage">
+            <summary>
+              Looks up a localized string similar to No instance of IDocumentationConfiguration registered. Make sure to call mvcBuilder.AddDocumentation during setup!.
+            </summary>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.ServerDocumentFilter">
+            <summary>
+            This filter basically uses the current http context to generate a correct "servers" property in the OpenAPI document so that the whole "Try it out" thing actually works.
+            </summary>
+            <remarks>
+            Having a "server" property in the spec also helps with warnings by client generators/validators.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.SpecificationVersions">
+            <summary>
+            Return type for the SpecificationsController endpoint (i.e. /documentation/specifications
+            </summary>
+            <remarks>
+            A designated type was created to facilitate the use of custom examples (see SpecificationVersionsExample)
+            
+            This may sometimes be neccessary to create meaningful examples in the spec, so to fellow developers:
+            Use this as a basis for how to do it in other places if needed.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.SpecificationVersionsExample">
+            <summary>
+            Provides examples to be used in the OpenAPI definition of the response of the SpecificationsController.
+            </summary>
+            <remarks>
+            Internal note for developers: Use this also as a basis for implementing other example providers, i.e. for time series, etc.
+            </remarks>
+        </member>
+        <member name="T:HAKOM.Documentation.Http.Net.TagsFilter">
+            <summary>
+            Deals with tags in the OpenAPI document.
+            </summary>
+            <remarks>
+            This filter basically looks at all the tags declared, finds registered <see cref="T:HAKOM.Documentation.Http.Net.OpenApiTagDeclaration"/> implementations to get their descriptions and sorting order and sets the documents tags accordingly.
+            
+            That way, the tags/sections in the documentation are properly sorted and described.
+            </remarks>
+        </member>
+        <member name="T:UnusedComponentSchemaCleaner">
+            <summary>
+            Removes unreferenced component schemas from the OpenAPI document.
+            </summary>
+            <remarks>
+            Source: https://github.com/domaindrivendev/Swashbuckle.WebApi/issues/732
+            </remarks>
+        </member>
+    </members>
+</doc>
